@@ -1,3 +1,3 @@
-Projects/LikeLion_TypingTrainer/JAVA_TypingTrainer/src/db.properties
+LikeLion_TypingTrainer/JAVA_TypingTrainer/src/db.properties
 
-Projects/LikeLion_TypingTrainer/JAVA_TypingTrainer/common/JDBCTemplate.java
+LikeLion_TypingTrainer/JAVA_TypingTrainer/src/common/JDBCTemplate.java
