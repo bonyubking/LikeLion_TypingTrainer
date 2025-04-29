@@ -94,6 +94,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+resources/
 
 # External tool builders
 .externalToolBuilders/
