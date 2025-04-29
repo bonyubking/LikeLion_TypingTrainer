@@ -7,7 +7,7 @@ CREATE TABLE Users (
     nickname VARCHAR(50) NOT NULL
 );
 
--- 2. 게임 기록 테이블
+
 CREATE TABLE Game_records (
     record_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE Sentences (
     sentence_id INT AUTO_INCREMENT PRIMARY KEY,
     content TEXT NOT NULL,
     difficulty ENUM('상', '중', '하'),
-    language ENUM('한', '영'),
+    language ENUM('한', '영')
 );
 
 -- 5. 단어 테이블
@@ -42,7 +42,7 @@ CREATE TABLE Words (
     word_id INT AUTO_INCREMENT PRIMARY KEY,
     content VARCHAR(100) NOT NULL,
     difficulty ENUM('상', '중', '하'),
-    language ENUM('한', '영'),
+    language ENUM('한', '영')
 );
 
 -- 6. 게시글 테이블
