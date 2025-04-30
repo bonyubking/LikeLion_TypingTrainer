@@ -23,12 +23,14 @@ CREATE TABLE Game_records (
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
+DROP TABLE Songs;
 -- 3. 노래 테이블
 CREATE TABLE Songs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     lyrics TEXT,
     singer VARCHAR(50),
+    initial VARCHAR(50),
     genre VARCHAR(50)
 );
 
