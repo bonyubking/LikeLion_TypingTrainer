@@ -28,6 +28,7 @@ CREATE TABLE Songs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     lyrics TEXT,
+    singer VARCHAR(50),
     genre VARCHAR(50)
 );
 
