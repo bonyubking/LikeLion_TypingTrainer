@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import static com.typing.util.DBUtil.*; 
 
+//DB 연결되는지 콘솔에서 확인할 수 있는 클래스 
 public class DBTest {
 
 	public static void main(String[] args) {
