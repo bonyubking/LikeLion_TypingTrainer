@@ -11,12 +11,17 @@
 
 :root {
   /* 색상 변수들 */
-  --color-primary: #4f46e5; /*메인 컬러*/
-  --color-secondary: #22d3ee; /*포인트 컬러*/
-  --color-background: #f9fafb; /*배경 컬러*/
-  --color-text: #111827; /*기본 글씨색*/
-  --color-secondary: #22d3ee; /*보조 글씨색*/
-  --color-error: #ef4444; /*에러 색상*/
+  --color-primary:#E0E8F0;  /*메인 컬러*/
+  --color-primary-dark:#D2DDE8;  /*메인 컬러*/
+  --button-primary:#0045FF;
+  --button-secondary:#557087;
+  --button-cancel:#ef4444;
+  --text-primary: #132433;
+  --text-secondary:#557087;
+
+  /*텍스트 크기 변수들*/
+  --text-title-size:48px;
+  --text-desc-size: 20px;
 
   /* 폰트 변수들 */
   --font-main: "Noto Sans KR", sans-serif; /*메인 글씨체*/
@@ -43,6 +48,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
 html {
@@ -52,9 +58,26 @@ html {
 /* 링크 스타일 */
 a {
   text-decoration: none;
-  color: var(--color-primary);
 }
 
-a:hover {
-  color: var(--color-secondary);
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }

@@ -1,10 +1,43 @@
-const SERVER_URL = ProcessingInstruction.env.REACT_APP_SERVER_URL;
+const SERVER_URL = process.env.REACT_APP_HTTP_URL;
+const CHAT_URL = process.env.REACT_APP_CHAT_URL;
+
+
+/*
+API 요청 함수 생성
+- 설정할 것 : 메소드명, request_url, body(선택), method
+export const 메소드명 = async () => {
+    const request_url = `${SERVER_URL}/~~`; // api url 
+    const body = {
+        서버에서 받을 인자이름: 값,
+    } // post 요청일 경우 사용. GET이면 필요없음
+    
+    const response = await fetch(request_url, {
+        method: 'GET' 또는 'POST' 또는 'PUT',
+        body, <- GET이면 없어도 됨. POST면 있어야됨. 
+        ...REQUEST_OPTIONS, <- 공통 옵션. 꼭 필요함 
+    });
+    return handleResponse(response);  <- 호출한 페이지로 응답을 보냄
+}
+
+호출한 곳에서 사용하는 경우 
+- try~catch문 이용
+- 예시
+const 컴포넌트에서쓰일메소드명 = async () => {
+      try {
+        const chatData = await API요청메소드명();
+        //그외 데이터 처리 
+      } catch (error) {
+        console.error('채팅 데이터 로드 실패:', error);
+      }
+    };
+*/
 
 // 공통 fetch 요청 함수
 const REQUEST_OPTIONS = {
     headers: {
         'Content-Type': 'application/json',
     },
+    mode: 'cors' // CORS 모드 설정
 };
 
 // 응답 핸들링 함수
@@ -15,8 +48,19 @@ async function handleResponse(response) {
         error.status = errorResponse.status;
         throw error;
     }
-    
     return response.json();
+}
+
+// 최근 채팅 30건 조회
+export const getChats = async () => {
+    const request_url = `${SERVER_URL}/chat`; // api url 
+
+        const response = await fetch(request_url, {
+            method: 'GET',
+            ...REQUEST_OPTIONS,
+        });
+
+    return handleResponse(response); 
 }
 
 // 사용자 로그인
@@ -28,6 +72,7 @@ try{
 }catch(error){
     alert(error.message); // 에러 메세지 알림 
 }*/
+/*
 export const userLogin = async (id, password) => {
     const request_url = `${SERVER_URL}/~~~`; // 서버에 보낼 요청 api 
     const body = { // 서버에 보낼 정보 
@@ -44,7 +89,4 @@ export const userLogin = async (id, password) => {
     //호출한 페이지로 데이터 반환
     return handleResponse(response); 
 }
-
-// 사용자 회원가입
-
-// 
+*/
