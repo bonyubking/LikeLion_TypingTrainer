@@ -1,5 +1,5 @@
 -- Users
-INSERT INTO Users (uid, password, nickname) VALUES 
+INSERT INTO users (uid, password, nickname) VALUES 
 ('user01', 'pass1234', '홍길동'),
 ('user02', 'pass5678', '김영희'),
 ('user03', 'pass9999', '이철수');
