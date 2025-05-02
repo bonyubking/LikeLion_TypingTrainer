@@ -63,6 +63,39 @@ export const getChats = async () => {
     return handleResponse(response); 
 }
 
+
+export const fetchPosts = async () => {
+    const url = `${SERVER_URL}/post`;
+    const res = await fetch(url, {
+      method: 'GET',
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+  
+  /** 게시물 상세 조회 */
+  export const fetchPostById = async (postId) => {
+    const url = `${SERVER_URL}/post/${postId}`;
+    const res = await fetch(url, {
+      method: 'GET',
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+
+  /** 게시물 생성 */
+export const createPost = async ({ userId, title, content }) => {
+    const url = `${SERVER_URL}/post/create`;
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({userId, title, content }),
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+  
+
+
 // 사용자 로그인
 /* 호출한 페이지에서 사용하는 방법
 try{
