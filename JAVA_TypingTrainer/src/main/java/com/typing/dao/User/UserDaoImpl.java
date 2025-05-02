@@ -29,29 +29,54 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public String findByUid(String uid) {
+	public UserDto findByUid(String uid) {
 		Connection connection = DBUtil.sharedConnection();
 		ResultSet rs = null;
-		String result = null;
+		UserDto user = null;
 		try(
 			PreparedStatement ps = connection.prepareStatement(selectUidSql)){
 			ps.setString(1, uid);
 			
 			rs = ps.executeQuery();
-			
-			if(rs.next()) {result = uid;}
+			if(rs.next()) {
+				String uId = rs.getString("uid");
+				String password = rs.getString("password");
+				String nickname = rs.getString("nickname");
+				
+				user = new UserDto(uId,password,nickname);
+			}
 			rs.close();
 			connection.close();
-			return result;
+			return user;
 		}catch(SQLException e) {
-			throw new RuntimeException("회원 DB 조회 중 오류 발생"+e);
+			throw new RuntimeException("회원ID 이용한 DB 조회 중 오류 발생"+e);
 		}
 	}
 
 	@Override
-	public boolean checkNickname(String nickname) {
-		// TODO Auto-generated method stub
-		return false;
+	public UserDto checkNickname(String nickname) {
+		Connection connection = DBUtil.sharedConnection();
+		ResultSet rs = null;
+		boolean result = true;
+		UserDto user = null;
+		try(
+			PreparedStatement ps = connection.prepareStatement(selectNicknameSql)){
+			ps.setString(1, nickname);
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				String uId = rs.getString("uid");
+				String password = rs.getString("password");
+				
+				user = new UserDto(uId,password,nickname);
+			}
+			rs.close();
+			connection.close();
+			return user;
+		}catch(SQLException e) {
+			throw new RuntimeException("회원 닉네임 이용한 DB 조회 중 오류 발생"+e);
+		}
 	}
 
 }

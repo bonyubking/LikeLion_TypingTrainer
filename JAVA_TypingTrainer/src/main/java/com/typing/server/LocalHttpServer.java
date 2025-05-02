@@ -89,7 +89,52 @@ public class LocalHttpServer {
         });
         
         httpServer.createContext("/login", exchange -> {
-            // POST /login -> userController.login 호출
+        	// 프리플라이트 처리 완료
+        	if (CORSFilter.handlePreflight(exchange)) {
+                return;
+            }
+        	
+        	if("POST".equals(exchange.getRequestMethod())) {
+        		// CORS 설정
+        		CORSFilter.applyCORS(exchange);
+        		
+        		// 요청 바디 읽고 DTO로 변환
+        		InputStream inputStream = exchange.getRequestBody();
+        		byte[] bytes = inputStream.readAllBytes();
+        		String body = new String(bytes);
+        		UserDto req = JsonUtil.fromJson(body,UserDto.class); // 없는 필드는 Null이나 기본값으로 설정됨 
+        		System.out.println("login requestbody"+body);
+        		
+                // userController.login(dto) 호출
+        		try {
+        			UserDto res = userController.login(req);
+        			
+        			// JSON으로 변환
+                    String json = JsonUtil.toJson(res).replaceAll("\"password\"\\s*:\\s*\"[^\"]*\",?", "");
+                    System.out.println("변환된 json: "+json);
+        			
+                    // 응답 헤더 설정
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+
+                 // 응답 전송
+                    byte[] responseBytes = json.getBytes("UTF-8");
+                    exchange.sendResponseHeaders(200, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();
+        		}catch(Exception e) {//dao, service에서 던진 예외들 여기서 처리 
+        			// 예외 발생 시: 에러 응답
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+
+                    // 에러 메시지 설정
+                    String errorMessage = "{\"message\":\"" + e.getMessage() + "\"}";  // 예외 메시지 ex. throw new Exception("") 여기서 설정한 메세지
+                    byte[] responseBytes = errorMessage.getBytes("UTF-8");
+                    System.out.println("login error response"+errorMessage);	
+                    // 상태 코드 설정 (500 Internal Server Error 등)
+                    exchange.sendResponseHeaders(500, responseBytes.length);  // 500 Internal Server Error
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();
+        		}
+        	}
         });
 
         httpServer.createContext("/chat", exchange -> {
