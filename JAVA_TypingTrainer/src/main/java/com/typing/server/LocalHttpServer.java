@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /*
@@ -188,7 +189,56 @@ public class LocalHttpServer {
                     // 에러 메시지 설정
                     String errorMessage = "{\"message\":\"" + e.getMessage() + "\"}";  // 예외 메시지 ex. throw new Exception("") 여기서 설정한 메세지
                     byte[] responseBytes = errorMessage.getBytes("UTF-8");
-                    System.out.println("login error response"+errorMessage);	
+                    System.out.println("nickname error response"+errorMessage);	
+                    // 상태 코드 설정 (500 Internal Server Error 등)(추가 예외 설정은 작업 마지막에 진행 예정) 
+                    exchange.sendResponseHeaders(500, responseBytes.length);  // 500 Internal Server Error
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();	
+                }
+        	} 
+        });
+        
+     // 회원 아이디 중복 확인
+        httpServer.createContext("/uid", exchange -> {
+        	// CORSFilter : 
+        	if (CORSFilter.handlePreflight(exchange)) {
+                return; // 프리플라이트 처리 완료
+            }
+
+        	if ("POST".equals(exchange.getRequestMethod())) {
+
+        		// CORS 헤더 적용
+                CORSFilter.applyCORS(exchange);
+                
+                // requestBody 데이터 처리
+                InputStream inputStream = exchange.getRequestBody();
+                byte[] bytes = inputStream.readAllBytes();
+                String body = new String(bytes,StandardCharsets.UTF_8);
+
+                try {	
+                	// getStringValueByKey 이용해 json -> key가 uid인 string 값 추출 
+                    String uid = JsonUtil.getStringValueByKey(body, "uid");
+                	boolean result = userController.checkUid(uid);
+                	String successMessage = result
+                							? "{\"message\":\"사용 가능한 아이디입니다.\"}" : "{\"message\":\"이미 사용 중인 아이디입니다.\"}";
+                	int statusCode = result ? 200: 409;
+                	// 응답 헤더 설정
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                 
+
+                    // 응답 전송
+                    byte[] responseBytes = successMessage.getBytes("UTF-8");
+                    exchange.sendResponseHeaders(statusCode, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();
+                }catch(Exception e) {
+                	// 예외 발생 시: 에러 응답
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+
+                    // 에러 메시지 설정
+                    String errorMessage = "{\"message\":\"" + e.getMessage() + "\"}";  // 예외 메시지 ex. throw new Exception("") 여기서 설정한 메세지
+                    byte[] responseBytes = errorMessage.getBytes("UTF-8");
+                    System.out.println("uid error response"+errorMessage);	
                     // 상태 코드 설정 (500 Internal Server Error 등)(추가 예외 설정은 작업 마지막에 진행 예정) 
                     exchange.sendResponseHeaders(500, responseBytes.length);  // 500 Internal Server Error
                     exchange.getResponseBody().write(responseBytes);

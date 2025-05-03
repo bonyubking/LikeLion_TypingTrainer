@@ -13,7 +13,10 @@ public class UserController {
 	public UserDto login(UserDto dto) {// 로그인 
 		return userService.login(dto);
 	}
-	public boolean checkNickname(String nickname) {
+	public boolean checkNickname(String nickname) {// 닉네임 중복 확인 
 		return userService.checkNickname(nickname);
+	}
+	public boolean checkUid(String uid) { // 아이디 중복 확인
+		return userService.findByUid(uid) == null ? true:false;
 	}
 }
