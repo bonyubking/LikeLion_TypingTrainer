@@ -1,12 +1,127 @@
+.title_container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
 .title {
-  text-align: start;
+  font-size: 2.5rem;
+  color: #333;
   margin-bottom: 0.5rem;
-  font-size: 2rem;
-  color:var(--text-primary);
 }
 
 .subtitle {
-  text-align: start;
-  color: var(--text-secondary);
-  margin-bottom: 3rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.menu_container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.menu {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.menu_desc {
+  margin-bottom: 2rem;
+}
+
+.menu_desc h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.menu_desc p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.start_button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.start_button:hover {
+  background-color: #0056b3;
+}
+
+.main_container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav_content {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.nav_content a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.nav_content a:hover {
+  text-decoration: underline;
+}
+
+.main_content {
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info_section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.info_section h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.info_section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.info_section li {
+  padding: 0.5rem 0;
+  color: #666;
+  font-size: 1.1rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.info_section li:before {
+  content: "•";
+  color: #007bff;
+  position: absolute;
+  left: 0;
 }
