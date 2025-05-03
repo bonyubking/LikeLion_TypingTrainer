@@ -20,6 +20,8 @@ import java.util.List;
  * 		   -> if("GET" 또는 "POST".equals(exchange~~~){applyCors 함수 실행}
  * httpServer.createContext("/chat", exchange -> {} 부분 참고해주세요.
  * */
+/* 예외 종류에 따른 상태코드 설정은 마지막에 작업 예정
+ * */
 public class LocalHttpServer {
 	private int port;
 	private final ChatController chatController = new ChatController();
@@ -44,6 +46,7 @@ public class LocalHttpServer {
             // 응답 반환
         });
 
+        // 회원가입 
         httpServer.createContext("/signup", exchange -> {
         	
         	// 프리플라이트 처리 완료
@@ -88,6 +91,7 @@ public class LocalHttpServer {
         	}
         });
         
+        // 로그
         httpServer.createContext("/login", exchange -> {
         	// 프리플라이트 처리 완료
         	if (CORSFilter.handlePreflight(exchange)) {
@@ -109,8 +113,8 @@ public class LocalHttpServer {
         		try {
         			UserDto res = userController.login(req);
         			
-        			// JSON으로 변환
-                    String json = JsonUtil.toJson(res).replaceAll("\"password\"\\s*:\\s*\"[^\"]*\",?", "");
+        			// JSON으로 변환(password, uid 제거) 
+                    String json = JsonUtil.toJson(res).replaceAll("\"(password|uId)\"\\s*:\\s*\"[^\"]*\",?", "");
                     System.out.println("변환된 json: "+json);
         			
                     // 응답 헤더 설정
@@ -129,7 +133,7 @@ public class LocalHttpServer {
                     String errorMessage = "{\"message\":\"" + e.getMessage() + "\"}";  // 예외 메시지 ex. throw new Exception("") 여기서 설정한 메세지
                     byte[] responseBytes = errorMessage.getBytes("UTF-8");
                     System.out.println("login error response"+errorMessage);	
-                    // 상태 코드 설정 (500 Internal Server Error 등)
+                    // 상태 코드 설정 (500 Internal Server Error 등)(추가 예외 설정은 작업 마지막에 진행 예정) 
                     exchange.sendResponseHeaders(500, responseBytes.length);  // 500 Internal Server Error
                     exchange.getResponseBody().write(responseBytes);
                     exchange.close();

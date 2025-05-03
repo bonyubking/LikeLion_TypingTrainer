@@ -27,9 +27,9 @@ public class UserDaoImpl implements UserDao {
 			 throw new RuntimeException("회원 DB 저장 중 오류 발생"+e);
 		}
 	}
-
+	
 	@Override
-	public UserDto findByUid(String uid) {
+	public UserDto findByUid(String uid) {  
 		Connection connection = DBUtil.sharedConnection();
 		ResultSet rs = null;
 		UserDto user = null;
@@ -39,11 +39,13 @@ public class UserDaoImpl implements UserDao {
 			
 			rs = ps.executeQuery();
 			if(rs.next()) {
+				Long userId = rs.getLong("user_id");
 				String uId = rs.getString("uid");
 				String password = rs.getString("password");
 				String nickname = rs.getString("nickname");
 				
 				user = new UserDto(uId,password,nickname);
+				user.setUserId(userId);
 			}
 			rs.close();
 			connection.close();
@@ -78,5 +80,4 @@ public class UserDaoImpl implements UserDao {
 			throw new RuntimeException("회원 닉네임 이용한 DB 조회 중 오류 발생"+e);
 		}
 	}
-
 }
