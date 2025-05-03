@@ -11,6 +11,7 @@ import com.typing.util.JsonUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.net.URLDecoder;
 import java.util.List;
 
 /*
@@ -91,7 +92,7 @@ public class LocalHttpServer {
         	}
         });
         
-        // 로그
+        // 로그인
         httpServer.createContext("/login", exchange -> {
         	// 프리플라이트 처리 완료
         	if (CORSFilter.handlePreflight(exchange)) {
@@ -139,6 +140,61 @@ public class LocalHttpServer {
                     exchange.close();
         		}
         	}
+        });
+        
+        // 닉네임 중복 확인
+        httpServer.createContext("/nickname", exchange -> {
+        	// CORSFilter : 
+        	if (CORSFilter.handlePreflight(exchange)) {
+                return; // 프리플라이트 처리 완료
+            }
+
+        	if ("GET".equals(exchange.getRequestMethod())) {
+
+        		// CORS 헤더 적용
+                CORSFilter.applyCORS(exchange);
+                
+                // 사용자가 입력한 닉네임을 쿼리 파라미터 이용해서 읽음 ex. /nickname?nickname=abc
+                String query = exchange.getRequestURI().getQuery();
+                String nickname = null;
+                
+                if (query != null) {
+                    for (String param : query.split("&")) {
+                        String[] keyValue = param.split("=");
+                        if (keyValue.length == 2 && keyValue[0].equals("nickname")) {
+                            nickname = URLDecoder.decode(keyValue[1], "UTF-8");
+                            break;
+                        }
+                    }
+                }
+
+                try {	
+                	boolean result = userController.checkNickname(nickname);
+                	String successMessage = result
+                							? "{\"message\":\"사용 가능한 닉네임입니다.\"}" : "{\"message\":\"이미 사용 중인 닉네임입니다.\"}";
+                	int statusCode = result ? 200: 409;
+                	// 응답 헤더 설정
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+
+                    // 응답 전송
+                    byte[] responseBytes = successMessage.getBytes("UTF-8");
+                    exchange.sendResponseHeaders(statusCode, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();
+                }catch(Exception e) {
+                	// 예외 발생 시: 에러 응답
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+
+                    // 에러 메시지 설정
+                    String errorMessage = "{\"message\":\"" + e.getMessage() + "\"}";  // 예외 메시지 ex. throw new Exception("") 여기서 설정한 메세지
+                    byte[] responseBytes = errorMessage.getBytes("UTF-8");
+                    System.out.println("login error response"+errorMessage);	
+                    // 상태 코드 설정 (500 Internal Server Error 등)(추가 예외 설정은 작업 마지막에 진행 예정) 
+                    exchange.sendResponseHeaders(500, responseBytes.length);  // 500 Internal Server Error
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();	
+                }
+        	} 
         });
 
         httpServer.createContext("/chat", exchange -> {

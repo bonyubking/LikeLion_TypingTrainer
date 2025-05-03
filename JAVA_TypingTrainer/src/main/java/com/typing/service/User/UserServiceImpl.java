@@ -32,6 +32,6 @@ public class UserServiceImpl implements UserService{
 	}
 	@Override
 	public boolean checkNickname(String nickname) {// 닉네임 중복 확인
-		return userDao.checkNickname(nickname) == null ? true:false;
+		return userDao.checkNickname(nickname);
 	}
 }
