@@ -9,7 +9,7 @@ CREATE TABLE Users (
 );
 
 -- 2. 게임 기록 테이블
-CREATE TABLE Game_records (
+CREATE TABLE Typing_records (
     record_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     duration TIME,
@@ -17,9 +17,18 @@ CREATE TABLE Game_records (
     typing_speed INT,
     accuracy DECIMAL(5,2),
     played_at DATETIME,
-	content_type ENUM('song', 'sentence', 'word'),
+	content_type ENUM('sentence', 'word'),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE TABLE Song_records (
+    record_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    duration TIME,
+    correct_count INT,
+    played_at DATETIME,
     genre VARCHAR(50),
-    game_type ENUM('song', 'typing'),
+    hint_time INT,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
