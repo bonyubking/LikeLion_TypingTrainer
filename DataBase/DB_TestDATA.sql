@@ -6,11 +6,11 @@ INSERT INTO users (uid, password, nickname) VALUES
 
 -- 1) Typing_records 에 테스트 데이터 3개
 INSERT INTO Typing_records
-  (user_id, duration, correct_count, typing_speed, accuracy, played_at, content_type)
+  (user_id, duration, correct_count, typing_speed, accuracy, played_at, content_type, difficulty, language)
 VALUES
-  (1, '00:01:00',  60, 200, 95.50, '2025-05-05 10:00:00', 'sentence'),
-  (2, '00:02:00',  120, 180, 90.00, '2025-05-05 11:00:00', 'word'),
-  (3, '00:05:00',  300, 250, 97.00, '2025-05-05 12:00:00', 'sentence');
+  (1, '00:01:00',  60, 200, 95.50, '2025-05-05 10:00:00', 'sentence','상','영'),
+  (2, '00:02:00',  120, 180, 90.00, '2025-05-05 11:00:00', 'word','중','한'),
+  (3, '00:05:00',  300, 250, 97.00, '2025-05-05 12:00:00', 'sentence','하','영');
 
 -- 2) Song_records 에 테스트 데이터 3개
 INSERT INTO Song_records

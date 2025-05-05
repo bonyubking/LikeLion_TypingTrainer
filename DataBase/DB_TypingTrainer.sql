@@ -18,7 +18,9 @@ CREATE TABLE Typing_records (
     accuracy DECIMAL(5,2),
     played_at DATETIME,
 	content_type ENUM('sentence', 'word'),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+	difficulty ENUM('상','중','하'),
+    language ENUM('한', '영'),
+	FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE Song_records (
