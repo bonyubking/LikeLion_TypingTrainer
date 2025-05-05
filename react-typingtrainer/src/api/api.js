@@ -95,6 +95,25 @@ export const createPost = async ({ userId, title, content }) => {
   };
   
 
+export const createComment = async ({ userId, content, postId }) => {
+    const url = `${SERVER_URL}/comment?postId=${postId}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({userId, content, postId}),
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+
+export const fetchCommentsbyId = async (postId) => {
+    const url = `${SERVER_URL}/comment?postId=${postId}`;
+    const res = await fetch(url, {
+      method: 'GET',
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+
 
 // 사용자 로그인
 /* 호출한 페이지에서 사용하는 방법

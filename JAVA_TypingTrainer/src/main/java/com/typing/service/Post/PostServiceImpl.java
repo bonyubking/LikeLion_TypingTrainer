@@ -15,7 +15,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<PostDTO> getPostsByTime() {
 		
-		List<PostDTO> posts = postDAO.getPostsByTime(); // 인스턴스 메서드 호출
+		List<PostDTO> posts = postDAO.getPostsByTime(); 
         
 		return posts;
 	}

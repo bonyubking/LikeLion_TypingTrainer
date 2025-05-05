@@ -2,8 +2,10 @@ package com.typing.server;
 
 import com.sun.net.httpserver.HttpServer;
 import com.typing.controller.ChatController;
+import com.typing.controller.CommentController;
 import com.typing.controller.PostController;
 import com.typing.model.dto.ChatMessageDto;
+import com.typing.model.dto.CommentDTO;
 import com.typing.model.dto.PostDTO;
 import com.typing.util.CORSFilter;
 import com.typing.util.JsonUtil;
@@ -181,6 +183,57 @@ public class LocalHttpServer {
                 exchange.close();
             }
         });
+        
+
+		httpServer.createContext("/comment", exchange -> {
+		    // 1) 프리플라이트 처리
+		    if (CORSFilter.handlePreflight(exchange)) return;
+		
+		    // 2) GET /comment?postId=123 → 해당 게시글 댓글 조회
+		    if ("GET".equals(exchange.getRequestMethod())) {
+		        CORSFilter.applyCORS(exchange);
+		
+		        // 쿼리 파라미터 파싱 (간단히)
+		        String query = exchange.getRequestURI().getQuery(); // e.g. "postId=1"
+		        int postId = Integer.parseInt(query.split("=")[1]);
+		
+		        // 댓글 조회
+		        List<CommentDTO> comments = new CommentController().selectCommentsBypostId(postId);
+		
+		        String json = JsonUtil.toJson(comments);
+		        byte[] respBytes = json.getBytes(StandardCharsets.UTF_8);
+		
+		        exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+		        exchange.sendResponseHeaders(200, respBytes.length);
+		        exchange.getResponseBody().write(respBytes);
+		        exchange.close();
+		
+		    // 3) POST /comment → 댓글 생성
+		    } else if ("POST".equals(exchange.getRequestMethod())) {
+		        CORSFilter.applyCORS(exchange);
+		
+		        // 요청 바디에서 DTO 역직렬화
+		        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+		        CommentDTO dto = JsonUtil.fromJson(body, CommentDTO.class);
+		
+		        // 댓글 삽입
+		        int result = new CommentController().createComment(dto);
+		        String res = result > 0
+		            ? "{\"status\":\"success\"}"
+		            : "{\"status\":\"error\"}";
+		
+		        byte[] respBytes = res.getBytes(StandardCharsets.UTF_8);
+		        exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+		        exchange.sendResponseHeaders(200, respBytes.length);
+		        exchange.getResponseBody().write(respBytes);
+		        exchange.close();
+		
+		    } else {
+		        // 지원하지 않는 메서드
+		        exchange.sendResponseHeaders(405, -1);
+		        exchange.close();
+		    }
+		});
         //httpServer 시작
         httpServer.start();
     }
