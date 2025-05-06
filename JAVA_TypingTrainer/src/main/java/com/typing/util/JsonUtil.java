@@ -1,5 +1,6 @@
 package com.typing.util;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /*
  * 서버, 클라이언트간 데이터 전송 포맷을 설정 
@@ -7,7 +8,9 @@ import com.google.gson.Gson;
  * JSON -> String : String json = JsonUtil.toJson(history);
  * */
 public class JsonUtil {
-	private static final Gson gson = new Gson();
+	private static final Gson gson = new GsonBuilder()
+			.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")  // ISO 8601 with milliseconds and timezone
+		    .create();
 
     public static <T> T fromJson(String json, Class<T> clazz) {
         return gson.fromJson(json, clazz);

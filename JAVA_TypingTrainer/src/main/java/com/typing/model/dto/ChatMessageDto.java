@@ -9,6 +9,12 @@ public class ChatMessageDto {
     private Long userId;
     private String nickname;
 
+    public ChatMessageDto(String content, Date createdAt, Long userId, String nickname) {
+        this.content = content;
+        this.createdAt = createdAt;
+        this.userId = userId;
+        this.nickname = nickname;
+    }
     public ChatMessageDto(String content, Date createdAt, Long userId) {
         this.content = content;
         this.createdAt = createdAt;
@@ -20,6 +26,5 @@ public class ChatMessageDto {
     public String getContent() { return content; }
     public Date getCreatedAt() { return createdAt; }
     public Long getUserId() { return userId; }
-    public void setNickname(String nickname) {this.nickname = nickname;}
     public String getNickname() {return nickname;}
 }

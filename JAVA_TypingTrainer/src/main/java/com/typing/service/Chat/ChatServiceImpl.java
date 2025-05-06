@@ -15,12 +15,10 @@ public class ChatServiceImpl implements ChatService {
 	public ChatMessageDto sendMessage(ChatMessageDto dto) {
 		Chat chat = new Chat(dto.getContent(),dto.getCreatedAt(),dto.getUserId());
 		return chatDao.save(chat);
-		
 	}
 
 	@Override
 	public List<ChatMessageDto> getChatHistory() {
 		return chatDao.findTop30ByOrderByCreatedAtDesc();
 	}
-
 }

@@ -1,10 +1,14 @@
 package com.typing.dao.Chat;
 
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,18 +24,16 @@ public class ChatDaoImpl implements ChatDao {
 	public ChatMessageDto save(Chat chat) {
 		Connection connection = threadLocalConnection.get();
 		try (PreparedStatement ps = connection.prepareStatement(insertSql,Statement.RETURN_GENERATED_KEYS)) {
-			java.sql.Date sqlDate = new java.sql.Date(chat.getCreatedAt().getTime());
-            ps.setString(1, chat.getContent());
-            ps.setDate(2, sqlDate);
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp(chat.getCreatedAt().getTime());            
+			ps.setString(1, chat.getContent());
+            ps.setTimestamp(2, sqlDate);
             ps.setLong(3, chat.getUserId());
             ps.executeUpdate();
-            System.out.println("정상 저장 완료");
             ChatMessageDto dto = new ChatMessageDto(
                     chat.getContent(),
                     chat.getCreatedAt(),
                     chat.getUserId()
                 ); // chatId가 포함된 객체 리턴
-            dto.setNickname("홍길동"); // 닉네임데이터 저장 로직 수정 예정
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 Long generatedId = rs.getLong(1);
@@ -45,7 +47,6 @@ public class ChatDaoImpl implements ChatDao {
         	e.printStackTrace();
         	return null;
         }
-		
 	}
 
 	@Override
@@ -53,28 +54,29 @@ public class ChatDaoImpl implements ChatDao {
 		List<ChatMessageDto> chats = new ArrayList<>();
 		Connection connection = DBUtil.sharedConnection();
 		try(
-			Statement stmt = connection.createStatement();
-	        ResultSet rs = stmt.executeQuery(selectAllSql)){
+			PreparedStatement ps = connection.prepareStatement(selectAllSql);
+	        ResultSet rs = ps.executeQuery();
+			){
 			while (rs.next()) {
                 Long chatId = rs.getLong("chat_id");
                 String content = rs.getString("content");
                 Long userId = rs.getLong("user_id");          
-                java.util.Date utilDate = new java.util.Date(rs.getDate("created_at").getTime());
+                java.util.Date utilDate = new java.util.Date(rs.getTimestamp("created_at").getTime());
                 Date createdAt = utilDate;
+                String nickname = rs.getString("nickname");
                 Chat chat = new Chat(content, createdAt, userId);
                 chat.setChatId(chatId);
                 ChatMessageDto dto = new ChatMessageDto(
                         chat.getContent(),
                         chat.getCreatedAt(),
-                        chat.getUserId()
+                        chat.getUserId(),
+                        nickname
                     );
-                dto.setNickname("홍길동"); // 닉네임데이터 저장 로직 수정 예정
                 chats.add(dto);
             }
 		}catch(SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("채팅 기록 조회 중 오류가 발생했습니다.");
 		}
-		System.out.println(chats);
 		return chats;
 	}
 
