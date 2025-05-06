@@ -17,6 +17,7 @@
 
 /* 카드 영역 */
 .card_row {
+  min-width: 1440px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 2rem;
@@ -73,6 +74,7 @@
 
 /* 네비게이션 */
 .nav {
+  min-width: 1440px;
   display: flex;
   border-bottom: 2px solid #e3e6ea;
   margin-bottom: 0;
@@ -99,6 +101,7 @@
 
 /* 메인 컨텐츠(채팅/로그인) */
 .main_content {
+  min-width: 1440px;
   background: #fff;
   /* border-radius: 0 0 12px 12px; */
   min-height: 600px;

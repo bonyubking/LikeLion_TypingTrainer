@@ -11,53 +11,70 @@ const ChatPage = () => {
   const ws = useRef(null); // WebSocket 연결을 위한 useRef
   const [preMessages, setprevMessages] = useState([]);
   const [activeTab, setActiveTab] = useState("chat");
-  // useEffect(() => {
-  //   // 초기 채팅 데이터 로드
-  //   const loadChats = async () => {
-  //     try {
-  //     } catch (error) {}
-  //   };
 
-  //   loadChats();
+  useEffect(() => {
+    sessionStorage.setItem('nickname', '홍길동');
+    // 초기 채팅 데이터 로드
+    const loadChats = async () => { 
+      try {
+        const response = await getChats();
+        console.log(response);
+        setMessages(response);
+      } catch (error) { 
+        console.error('채팅 데이터를 불러오는데 실패했습니다:', error);
+      }
+    }
 
-  //   // WebSocket 서버와 연결 (서버 주소는 localhost:8081로 설정)
-  //   ws.current = new WebSocket("ws://localhost:8081");
+    loadChats();
+    // WebSocket 서버와 연결
+    ws.current = new WebSocket("ws://localhost:8081");
 
-  //   // 서버로부터 메시지를 받았을 때 처리
-  //   ws.current.onmessage = (event) => {
-  //     const receivedMsg = JSON.parse(event.data);
+    // 서버로부터 메시지를 받았을 때 처리
+    ws.current.onmessage = (event) => {
+      const receivedMsg = JSON.parse(event.data);
 
-  //     // 메시지를 메시지 리스트에 추가
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       {
-  //         chatId: receivedMsg.chatId,
-  //         userId: receivedMsg.userId,
-  //         content: receivedMsg.content,
-  //         createdAt: new Date(receivedMsg.createdAt).toLocaleString(), // 날짜 포맷 변환
-  //         nickname: receivedMsg.nickname,
-  //       },
-  //     ]);
-  //   };
+      // 메시지를 메시지 리스트에 추가
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          id: receivedMsg.chatId,
+          userType: receivedMsg.userId === sessionStorage.getItem('nickname') ? 'me' : 'other',
+          content: receivedMsg.content,
+          date: new Date(receivedMsg.createdAt).toLocaleString(),
+          nickname: receivedMsg.nickname,
+        },
+      ]);
+    };
 
-  //   // WebSocket 연결이 성공했을 때
-  //   ws.current.onopen = () => {
-  //     console.log("WebSocket 연결 성공");
-  //   };
+    // WebSocket 연결이 성공했을 때
+    ws.current.onopen = () => {
+      console.log("WebSocket 연결 성공");
+    };
 
-  //   // WebSocket 연결이 종료됐을 때
-  //   ws.current.onclose = () => {
-  //     console.log("WebSocket 연결 종료");
-  //   };
-  // }, []);
-  // 컴포넌트가 언마운트되면 WebSocket 연결을 종료
-  // return () => {
-  //   if (ws.current) {
-  //     ws.current.close();
-  //   }
-  // };
+    // WebSocket 연결이 종료됐을 때
+    ws.current.onclose = () => {
+      console.log("WebSocket 연결 종료");
+    };
+
+    // 컴포넌트가 언마운트되면 WebSocket 연결을 종료
+    return () => {
+      if (ws.current) {
+        ws.current.close();
+      }
+    };
+  }, []);
+
   // 메시지 전송 함수
-  // const sendMessage = () => {};
+  const sendMessage = (content) => {
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const message = {
+        content,
+        userId: localStorage.getItem('userId'),
+        nickname: localStorage.getItem('nickname'),
+      };
+      ws.current.send(JSON.stringify(message));
+    }
+  };
 
   return (
     <div className={common.container}>
@@ -121,7 +138,7 @@ const ChatPage = () => {
 
       {/* 메인 컨텐츠 */}
       <div className={styles.main_content}>
-        {activeTab === "chat" ? <ChatForm /> : <LoginForm />}
+        {activeTab === "chat" ? <ChatForm messages={messages} onSendMessage={sendMessage} /> : <LoginForm />}
       </div>
     </div>
   );
