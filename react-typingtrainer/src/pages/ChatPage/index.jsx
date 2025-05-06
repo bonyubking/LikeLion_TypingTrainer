@@ -9,16 +9,23 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const ws = useRef(null); // WebSocket 연결을 위한 useRef
-  const [preMessages, setprevMessages] = useState([]);
   const [activeTab, setActiveTab] = useState("chat");
-
+  const [nickname, setNickname] = useState('');
+  const nicknameRef = useRef('');
   useEffect(() => {
+    nicknameRef.current = sessionStorage.getItem('nickname');
+    console.log(nicknameRef.current);
+  }, [nickname]);
+  useEffect(() => {
+    /* 로그인 연동 후 다시 수정*/
     sessionStorage.setItem('nickname', '홍길동');
+    sessionStorage.setItem('userId', 1);
+    setNickname(sessionStorage.getItem('nickname'));
+
     // 초기 채팅 데이터 로드
     const loadChats = async () => { 
       try {
         const response = await getChats();
-        console.log(response);
         setMessages(response);
       } catch (error) { 
         console.error('채팅 데이터를 불러오는데 실패했습니다:', error);
@@ -32,18 +39,20 @@ const ChatPage = () => {
     // 서버로부터 메시지를 받았을 때 처리
     ws.current.onmessage = (event) => {
       const receivedMsg = JSON.parse(event.data);
+      const newMessage = {
+        id: receivedMsg.chatId,
+        content: receivedMsg.content,
+        createdAt: new Date(receivedMsg.createdAt).toISOString(),
+        nickname: nicknameRef.current,
+      };
 
       // 메시지를 메시지 리스트에 추가
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          id: receivedMsg.chatId,
-          userType: receivedMsg.userId === sessionStorage.getItem('nickname') ? 'me' : 'other',
-          content: receivedMsg.content,
-          date: new Date(receivedMsg.createdAt).toLocaleString(),
-          nickname: receivedMsg.nickname,
-        },
-      ]);
+      setMessages((prevMessages) => {
+        const newMessages = [...prevMessages, newMessage];
+        return newMessages.length > 30
+          ? newMessages.slice(newMessages.length - 30)
+          : newMessages;
+      });
     };
 
     // WebSocket 연결이 성공했을 때
@@ -69,9 +78,11 @@ const ChatPage = () => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       const message = {
         content,
-        userId: localStorage.getItem('userId'),
-        nickname: localStorage.getItem('nickname'),
+        createdAt: new Date().toISOString(),  // UTC로 변환된 시간을 보내되, KST 기준으로 조정됨.
+        userId: sessionStorage.getItem('userId'),
+        nickname: nicknameRef.current
       };
+      console.log(message);
       ws.current.send(JSON.stringify(message));
     }
   };

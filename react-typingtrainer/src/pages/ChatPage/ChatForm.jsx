@@ -8,16 +8,6 @@ const ChatForm = ({ messages, onSendMessage }) => {
 
   const handleSend = () => {
     if (!input.trim()) return;
-
-    // // 메시지를 즉시 화면에 표시
-    // const newMessage = {
-    //   content: input,
-    //   createdAt: new Date().toLocaleString(),
-    //   nickname: sessionStorage.getItem('nickname')
-    // };
-    // setMessages(prev => [...prev, newMessage]);
-
-    // 부모 컴포넌트의 sendMessage 함수 호출
     onSendMessage(input);
     setInput("");
   };
@@ -44,8 +34,7 @@ const ChatForm = ({ messages, onSendMessage }) => {
             >
               {msg.nickname !== sessionStorage.getItem("nickname") && (
                 <div className={styles.nickname}>{msg.nickname}</div>
-              )}
-              
+              )}         
               {msg.nickname === sessionStorage.getItem("nickname")&& (
                 <div className={styles.nickname}>{msg.nickname}</div>
               )}
@@ -57,7 +46,7 @@ const ChatForm = ({ messages, onSendMessage }) => {
                     : styles.date_left
                 }`}
               >
-                {new Date(msg.createdAt).toLocaleString()}
+                {new Date(msg.createdAt).toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' })}
               </div>
             </div>
           ))}
@@ -70,7 +59,12 @@ const ChatForm = ({ messages, onSendMessage }) => {
           placeholder="채팅을 입력해 주세요"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") { 
+              e.preventDefault();
+              handleSend();
+            }
+          }}
         />
         <FaPaperPlane className={styles.send_icon} onClick={handleSend} />
       </div>
