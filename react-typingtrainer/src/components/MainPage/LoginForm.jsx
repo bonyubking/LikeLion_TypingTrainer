@@ -4,11 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../api/api";
 import people from "../../assets/img/people_blue.png";
 
-const LoginForm = () => {
+const LoginForm = ({ isLoggedIn, setIsLoggedIn }) => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('isLoggedIn') === 'true');
   const [userNickname, setUserNickname] = useState(sessionStorage.getItem('nickname') || "");
   const navigate = useNavigate();
 

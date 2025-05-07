@@ -26,5 +26,6 @@ public class ChatMessageDto {
     public String getContent() { return content; }
     public Date getCreatedAt() { return createdAt; }
     public Long getUserId() { return userId; }
+    public void setNickname(String nickname) {this.nickname=nickname;}
     public String getNickname() {return nickname;}
 }
