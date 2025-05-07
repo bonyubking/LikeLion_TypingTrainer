@@ -1,0 +1,76 @@
+.page {
+    max-width: 1440px;
+    min-height: 1440px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .heading {
+    margin-bottom: 24px;
+    font-size: 2rem;
+    color: #122432;
+    text-align: center;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formGroup {
+    margin-bottom: 20px;
+  }
+  
+  .formGroup label {
+    margin-left: 30px;
+    text-align: left;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .input{
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 50px;
+  }
+  .textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 800px;
+  }
+  
+  .input:focus,
+  .textarea:focus {
+    outline: none;
+    border-color: #557087;
+  }
+  
+  .submitBtn {
+    align-self: flex-end;
+    padding: 10px 24px;
+    font-size: 1rem;
+    background-color: #557087;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .submitBtn:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+  

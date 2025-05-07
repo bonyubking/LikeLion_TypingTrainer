@@ -9,9 +9,14 @@ import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import ChatPage from './pages/ChatPage';
 import HomePage from './pages/HomePage';
+import PostPage from './pages/PostPage';
+import PostDetailPage from './pages/PostPage/PostDetailPage';
+import PostWritePage from './pages/PostPage/PostWritePage';
+import TypingRecordPage from './pages/TypingRecordPage';
 // import SignIn from './pages/SignIn';
 // import SignUp from './pages/SignUp';
 // 필요한 페이지 import...
+
 
 export default function AppRoutes() {
   return (
@@ -22,6 +27,11 @@ export default function AppRoutes() {
       {/* <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} /> */}
       {/* 다른 Route도 이 아래에 계속 추가 */}
+      <Route path="/post" element={<PostPage />} />
+      <Route path="/post/:postId" element={<PostDetailPage />} />
+      <Route path="/post/write" element={<PostWritePage />} />
+      <Route path="/typing-record" element={<TypingRecordPage />} />
+      <Route path="/song-record" element={<TypingRecordPage />} />
     </Routes>
   );
 }
