@@ -5,6 +5,9 @@ import LoginForm from "../../components/MainPage/LoginForm";
 import ChatForm from "../../components/MainPage/ChatForm";
 import { useNavigate } from "react-router-dom";
 import { getChats } from "../../api/api";
+import gameController from "../../assets/img/controller.png";
+import disk from "../../assets/img/disk.png";
+import menu from "../../assets/img/menu.png";
 
 const MainPage = () => {
   const [messages, setMessages] = useState([]);
@@ -110,14 +113,14 @@ const MainPage = () => {
       {/* 카드 컨테이너 */}
       <div className={styles.cards_container}>
         <div className={styles.card}>
-          <img src="" alt="게임 컨트롤러" className={styles.card_icon} />
+          <img src={gameController} alt="게임 컨트롤러" className={styles.card_icon} />
           <h3>게임 시작</h3>
           <p>타자 연습 게임을 시작하고 흥미한 성과를 거두세요</p>
           <button>Start Game</button>
         </div>
 
         <div className={styles.card}>
-          <img src="" alt="디스크" className={styles.card_icon} />
+          <img src={ disk} alt="디스크" className={styles.card_icon} />
           <h3>게임 기록</h3>
           <p>타자 연습 결과를 기록하고 공유해보세요</p>
           <button onClick={() => navigate("/typing-record")}>
@@ -126,7 +129,7 @@ const MainPage = () => {
         </div>
 
         <div className={styles.card}>
-          <img src="" alt="메뉴" className={styles.card_icon} />
+          <img src={ menu} alt="메뉴" className={styles.card_icon} />
           <h3>게시판</h3>
           <p>다양한 유저와 다양한 에기를 나눠보세요</p>
           <button onClick={() => navigate("/post")}>Start Talking</button>

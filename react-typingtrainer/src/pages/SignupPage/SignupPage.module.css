@@ -87,13 +87,12 @@
 
   .form_card h3 {
     color: #666;
-    margin-bottom: 0.5rem;
     font-size: 1.1rem;
+    margin-bottom: 20px;
   }
   
   .form_card h2 {
     font-size: 1.8rem;
-    margin-bottom: 0.5rem;
     color: #333;
   }
   
@@ -175,9 +174,6 @@
     border: 1px solid #ddd;
     border-radius: 0.5rem;
     width: 90%;
-  }
-  .toggle_password{
-    padding-right: 0.75rem;
   }
 
   .id_nickname_input{
