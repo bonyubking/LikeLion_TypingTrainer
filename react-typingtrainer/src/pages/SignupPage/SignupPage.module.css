@@ -205,3 +205,19 @@
     font-size: 0.8rem;
     text-align: center;
   }
+
+.verified_input {
+  background-color: #f0f0f0;
+  border: 1px solid #4CAF50;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.disabled_button {
+  background-color: #cccccc !important;
+  cursor: not-allowed !important;
+}
+
+.disabled_button:hover {
+  background-color: #cccccc !important;
+}
