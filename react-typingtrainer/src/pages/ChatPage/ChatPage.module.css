@@ -1,0 +1,110 @@
+/* 타이틀 영역 */
+.title_container {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+}
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 0.2rem;
+}
+.subtitle {
+  font-size: 1rem;
+  color: #7a7a7a;
+}
+
+/* 카드 영역 */
+.card_row {
+  min-width: 1440px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.card {
+  background: #E0E8F0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  min-width: 340px;
+  min-height: 410px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s;
+  justify-content: center;
+}
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card_icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+}
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+.card p {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+.card_button {
+  background: #fff;
+  color: #557087;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-size: 14px;
+  font-weight: bolder;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 142px;
+  height: 48px;
+  margin-top: 60px;
+}
+.card_button:hover {
+  background: #0056b3;
+}
+
+/* 네비게이션 */
+.nav {
+  min-width: 1440px;
+  display: flex;
+  border-bottom: 2px solid #e3e6ea;
+  margin-bottom: 0;
+  margin-top: 2rem;
+}
+.nav_item {
+  flex: 1;
+  text-align: start;
+  padding: 1rem 0 1rem 20px;
+  font-size: 28px;
+  font-weight: bolder;
+  color: #7a7a7a;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-bottom 0.2s;
+}
+.nav_item:hover {
+  color: #007bff;
+}
+.active {
+  color: #007bff;
+  border-bottom: 2.5px solid #007bff;
+}
+
+/* 메인 컨텐츠(채팅/로그인) */
+.main_content {
+  min-width: 1440px;
+  background: #fff;
+  /* border-radius: 0 0 12px 12px; */
+  min-height: 600px;
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+}

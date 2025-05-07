@@ -1,0 +1,121 @@
+/* src/pages/PostPage/post.module.css */
+
+/* 1) 최상단 컨테이너 */
+.container {
+    padding: 20px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  
+  /* 2) 헤더 */
+  .header {
+    text-align: center;
+    margin-bottom: 120px;
+  }
+  .headerTitle {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 700;
+    color: #122432;
+    font-size: 48px;
+    line-height: 63px;
+  }
+  .headerDesc {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 400;
+    color: #556f86;
+    font-size: 20px;
+    margin-top: 8px;
+    line-height: 38px;
+  }
+  
+  /* 3) 리스트 박스 (배경, 패딩, 둥근 모서리) */
+  .listBox {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background-color: #e0e8f0;
+    border-radius: 10px;
+    padding: 52px 94px;
+    margin-bottom: 32px;
+  }
+  
+  /* 헤더 스타일 */
+  .listHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #556f86;
+    margin-bottom: 12px;
+  }
+  
+  .listHeader .itemText {
+    color: #556f86;
+    font-weight: 700;
+  }
+  
+  .listHeader .itemMeta {
+    display: flex;
+    gap: 24px;
+    color: #556f86;
+    font-weight: 700;
+  }
+  
+  .listHeader .itemMeta span {
+    min-width: 60px;
+    text-align: center;
+  }
+  
+  /* 4) 리스트 아이템 */
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+  }
+
+  .leftContent {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .itemIcon {
+    width: 84px;
+    height: 48px;
+    background-image: url('../../assets/Shape.svg');
+    background-size: cover;
+    margin-right: 48px;
+  }
+  .itemText {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 500;
+    color: #122432;
+    font-size: 20px;
+  }
+  
+  .itemMeta {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+    color: #777777;
+  }
+
+  .itemMeta span {
+    min-width: 60px;
+    text-align: center;
+  }
+  
+  /* 5) 버튼 */
+  .createButton {
+    padding: 12px 24px;
+    background-color: #556f86;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+  }
