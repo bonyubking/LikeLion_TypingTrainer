@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchPostById, fetchCommentsbyId, createComment } from '../../api/api';
 import styles from './postdetail.module.css';
 
 function PostDetailPage() {
+  
+  const didLoadRef = useRef(false);
   const userId = 1;
   const { postId } = useParams();
   const navigate = useNavigate();
@@ -38,7 +40,13 @@ function PostDetailPage() {
     }
   };
 
+  
+
   useEffect(() => {
+    
+    if (didLoadRef.current) return;   // 이미 로드한 적 있으면 아무것도 안 함
+    didLoadRef.current = true;
+    
     const loadPost = async () => {
       try {
         const data = await fetchPostById(postId);

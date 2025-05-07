@@ -543,6 +543,9 @@ public class LocalHttpServer {
 		
 		        // 댓글 삽입
 		        int result = new CommentController().createComment(dto);
+		        if (result > 0) {
+		            new CommentController().increaseCommentCount(dto.getPostId());
+		        }
 		        String res = result > 0
 		            ? "{\"status\":\"success\"}"
 		            : "{\"status\":\"error\"}";

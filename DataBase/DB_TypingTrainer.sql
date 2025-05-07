@@ -69,8 +69,6 @@ CREATE TABLE Comments (
     post_id INT NOT NULL,
     content TEXT,
     created_at DATETIME,
-    view_count INT DEFAULT 0,
-    comment_count INT DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
 	FOREIGN KEY (post_id) REFERENCES Posts(post_id)
 );
@@ -82,6 +80,8 @@ CREATE TABLE Posts (
     title VARCHAR(100),
     content TEXT,
     created_at DATETIME,
+	view_count INT DEFAULT 0,
+    comment_count INT DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
     );
 

@@ -37,6 +37,20 @@ export default function PostPage() {
 
       {/* 리스트 박스 */}
       <div className={styles.listBox}>
+        {/* 헤더 추가 */}
+        <div className={styles.listHeader}>
+          <div className={styles.leftContent}>
+            <div className={styles.itemIcon} />
+            <div className={styles.itemText}>제목</div>
+          </div>
+          <div className={styles.itemMeta}>
+            <span>작성자</span>
+            <span>작성일</span>
+            <span>댓글</span>
+            <span>조회</span>
+          </div>
+        </div>
+
         {posts.map(post => (
           <div
             key={post.postId}
@@ -52,9 +66,9 @@ export default function PostPage() {
             {/* 오른쪽: 메타 정보 */}
             <div className={styles.itemMeta}>
               <span>{post.uid}</span>
-              <span>
-                {post.createdAt}
-              </span>
+              <span>{post.createdAt}</span>
+              <span>{post.commentCount}</span>
+              <span>{post.viewCount}</span>
             </div>
           </div>
         ))}
