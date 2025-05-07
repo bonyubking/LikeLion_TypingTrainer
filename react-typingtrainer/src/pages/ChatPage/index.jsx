@@ -3,7 +3,6 @@ import { getChats } from "../../api/api";
 import common from "../../styles/common.module.css";
 import styles from "./ChatPage.module.css";
 import ChatForm from "./ChatForm";
-import LoginForm from "./LoginForm";
 // ChatPage 컴포넌트로 변경
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
@@ -149,7 +148,7 @@ const ChatPage = () => {
 
       {/* 메인 컨텐츠 */}
       <div className={styles.main_content}>
-        {activeTab === "chat" ? <ChatForm messages={messages} onSendMessage={sendMessage} /> : <LoginForm />}
+      <ChatForm messages={messages} onSendMessage={sendMessage} />
       </div>
     </div>
   );

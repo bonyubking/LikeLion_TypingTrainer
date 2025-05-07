@@ -128,7 +128,7 @@
   .form_group:nth-of-type(3) input,
   .form_group:nth-of-type(4) input {
     border: none;
-    padding: 0;
+    padding: 0.75rem;
   }
   
   .form_group input:focus {
@@ -174,8 +174,10 @@
     align-items: center;
     border: 1px solid #ddd;
     border-radius: 0.5rem;
-    padding: 0.75rem;
     width: 90%;
+  }
+  .toggle_password{
+    padding-right: 0.75rem;
   }
 
   .id_nickname_input{

@@ -107,7 +107,7 @@ export const signup = async (email, nickname, password) => {
 export const login = async (email, password) => {
   const request_url = `${SERVER_URL}/login`;
   const body = {
-    email: email,
+    uId: email,
     password: password,
   }
   const response = await fetch(request_url, {

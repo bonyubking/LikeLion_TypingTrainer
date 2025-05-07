@@ -143,7 +143,7 @@ const SignupPage = () => {
                   onChange={handleInputChange}
                   placeholder="Enter your Password"
                 />
-                <span onClick={() => setShowPassword(!showPassword)}>
+                <span className={styles.toggle_password} onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? "👁️" : "👁️‍🗨️"}
                 </span>
               </div>
@@ -160,6 +160,7 @@ const SignupPage = () => {
                   placeholder="Confirm your Password"
                 />
                 <span
+                  className={styles.toggle_password}
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
