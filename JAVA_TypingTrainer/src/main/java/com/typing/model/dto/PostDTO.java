@@ -10,15 +10,19 @@ public class PostDTO {
     private String title;
     private String content;
     private Date createdAt;  
+    private int viewCount;
+    private int commentCount;
     
     public PostDTO() {}
 
-    public PostDTO(int postId, int userId, String title, String content, Date createdAt) {
+    public PostDTO(int postId, int userId, String title, String content, Date createdAt, int viewCount, int commentCount) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
+        this.viewCount = viewCount;
+        this.commentCount = commentCount;
     }
     
     public String getUid() {
@@ -36,7 +40,23 @@ public class PostDTO {
         this.postId = postId;
     }
 
-    public int getUserId() {
+    public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public int getUserId() {
         return userId;
     }
 

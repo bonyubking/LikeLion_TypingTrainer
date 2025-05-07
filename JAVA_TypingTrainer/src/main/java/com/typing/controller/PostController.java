@@ -23,5 +23,10 @@ public class PostController {
 		
 		return postService.createPost(postDTO);
 	}
+	
+	public void increaseViewCount(int postId) {
+		
+		postService.increaseViewCount(postId);
+	}
 
 }

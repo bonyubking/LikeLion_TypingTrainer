@@ -31,6 +31,8 @@ public class PostDAOImpl implements PostDAO {
 	            postDTO.setTitle(rs.getString("title"));
 	            postDTO.setContent(rs.getString("content"));
 	            postDTO.setCreatedAt(rs.getDate("created_at"));
+                postDTO.setViewCount(rs.getInt("view_count"));
+                postDTO.setCommentCount(rs.getInt("comment_count"));
 	            postList.add(postDTO);
 	        }
 	    } catch (SQLException e) {
@@ -54,7 +56,9 @@ public class PostDAOImpl implements PostDAO {
 	                post.setUid(      rs.getString("uid")    );    
 	                post.setTitle(    rs.getString("title")  );
 	                post.setContent(  rs.getString("content"));
-	                post.setCreatedAt(rs.getDate("created_at"));	            
+	                post.setCreatedAt(rs.getDate("created_at"));
+	                post.setViewCount(rs.getInt("view_count"));
+	                post.setCommentCount(rs.getInt("comment_count"));
 	                }
 	        }
 	    } catch (SQLException e) {
@@ -89,6 +93,48 @@ public class PostDAOImpl implements PostDAO {
 	        e.printStackTrace();
 	    }
 	    return result;
+	}
+
+	@Override
+	public void increaseViewCount(int postId) {
+	    Connection conn = sharedConnection();
+	    try {
+
+	        try (PreparedStatement pstmt = conn.prepareStatement(increaseView)) {
+	            pstmt.setInt(1, postId);
+	            pstmt.executeUpdate();
+	        }
+	        // 직접 커밋
+	        conn.commit();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+	            conn.rollback();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	}
+
+	@Override
+	public void incraeaseCommentCount(int postId) {
+	    Connection conn = sharedConnection();
+	    try {
+
+	        try (PreparedStatement pstmt = conn.prepareStatement(increaseComment)) {
+	            pstmt.setInt(1, postId);
+	            pstmt.executeUpdate();
+	        }
+	        // 직접 커밋
+	        conn.commit();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+	            conn.rollback();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
 	}
 
 
