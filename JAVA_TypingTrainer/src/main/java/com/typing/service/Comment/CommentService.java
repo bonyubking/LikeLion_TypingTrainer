@@ -8,5 +8,5 @@ public interface CommentService {
 	
 	List<CommentDTO> selectCommentsByPostId(int postId);
     int createComment(CommentDTO commentDTO);
-
+    void increaseCommentCount(int postId);
 }

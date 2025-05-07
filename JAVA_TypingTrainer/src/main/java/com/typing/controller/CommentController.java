@@ -20,5 +20,9 @@ public class CommentController {
 		
     	return CommentService.createComment(commentDTO);
     }
-
+    
+    public void increaseCommentCount(int postid) {
+    	
+    	CommentService.increaseCommentCount(postid);
+    }
 }

@@ -9,5 +9,5 @@ public interface PostService {
 	List<PostDTO> getPostsByTime();
 	PostDTO getPostById(int postId);
 	int createPost(PostDTO postDTO);
-
+	void increaseViewCount(int postId);
 }

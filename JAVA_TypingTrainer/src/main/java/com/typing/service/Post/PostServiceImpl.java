@@ -23,6 +23,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public PostDTO getPostById(int postId) {
 		
+		postDAO.increaseViewCount(postId);
 		PostDTO post = postDAO.getPostById(postId);
 		
 		return post;
@@ -35,5 +36,11 @@ public class PostServiceImpl implements PostService {
         
     	return result;
     }
+
+	@Override
+	public void increaseViewCount(int postId) {
+		
+		postDAO.increaseViewCount(postId);
+	}
 
 }

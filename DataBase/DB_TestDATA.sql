@@ -28,10 +28,10 @@ VALUES
   (3, '00:05:00', 300, '2025-05-05 12:20:00', 'KKIDS', 45);
 
 -- Posts
-INSERT INTO Posts (user_id, title, content, created_at) VALUES 
-(1, '첫 게시글입니다', '안녕하세요. 타자 연습 앱 재미있네요!', NOW()),
-(2, '질문 있어요', '게임 기록은 어디서 확인하나요?', NOW()),
-(3, '버그 제보', '단어 모드에서 오타가 발생합니다.', NOW());
+INSERT INTO Posts (user_id, title, content, created_at, view_count, comment_count) VALUES 
+(1, '첫 게시글입니다', '안녕하세요. 타자 연습 앱 재미있네요!', NOW(), 0 , 0),
+(2, '질문 있어요', '게임 기록은 어디서 확인하나요?', NOW()  ,0 ,0),
+(3, '버그 제보', '단어 모드에서 오타가 발생합니다.', NOW(),0 ,0);
 
 -- Comments
 INSERT INTO Comments (user_id, post_id, content, created_at) VALUES 
