@@ -2,6 +2,11 @@ package com.typing.server;
 
 import com.sun.net.httpserver.HttpServer;
 import com.typing.controller.ChatController;
+import com.typing.controller.CommentController;
+import com.typing.controller.PostController;
+import com.typing.model.dto.ChatMessageDto;
+import com.typing.model.dto.CommentDTO;
+import com.typing.model.dto.PostDTO;
 import com.typing.controller.SongRecordController;
 import com.typing.controller.TypingRecordController;
 import com.typing.model.dto.ChatMessageDto;
@@ -31,6 +36,7 @@ import java.util.Map;
 public class LocalHttpServer {
 	private int port;
 	private final ChatController chatController = new ChatController();
+	private final PostController postController = new PostController();
 	
 	public LocalHttpServer(int port) {
         this.port = port;
@@ -88,6 +94,75 @@ public class LocalHttpServer {
             }
         });
         
+        // HTTP 요청을 처리할 핸들러 설정
+        httpServer.createContext("/post", exchange -> {
+            // CORS 필터 처리
+            if (CORSFilter.handlePreflight(exchange)) {
+                return; // 프리플라이트 처리 완료
+            }
+
+            if ("GET".equals(exchange.getRequestMethod())) {
+                // CORS 헤더 적용
+                CORSFilter.applyCORS(exchange);
+                
+                // 게시글 목록을 시간순으로 가져오기
+                List<PostDTO> postList = postController.getPostsByTime();
+                
+                // JSON으로 변환
+                String jsonResponse = JsonUtil.toJson(postList);
+                
+                // 응답 헤더 설정
+                exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                byte[] responseBytes = jsonResponse.getBytes("UTF-8");
+                exchange.sendResponseHeaders(200, responseBytes.length);
+                exchange.getResponseBody().write(responseBytes);
+                exchange.getResponseBody().close();
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.close();
+            }
+        });
+
+        httpServer.createContext("/post/create", exchange -> {
+            // CORS 필터 처리
+            if (CORSFilter.handlePreflight(exchange)) {
+                return;
+            }
+
+            if ("POST".equals(exchange.getRequestMethod())) {
+                // CORS 헤더 적용
+                CORSFilter.applyCORS(exchange);
+                
+                // 요청 바디에서 게시글 DTO 추출
+                try {
+
+                	String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+                	PostDTO postDTO = JsonUtil.fromJson(requestBody, PostDTO.class);
+
+
+                    int result = postController.createPost(postDTO);
+                    String responseMessage = result > 0 ? "{\"status\":\"success\"}" : "{\"status\":\"error\"}";
+                    byte[] responseBytes = responseMessage.getBytes("UTF-8");
+
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                    exchange.sendResponseHeaders(200, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    String error = "{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}";
+                    byte[] errorBytes = error.getBytes("UTF-8");
+                    exchange.sendResponseHeaders(500, errorBytes.length);
+                    exchange.getResponseBody().write(errorBytes);
+                } finally {
+                    exchange.getResponseBody().close();
+                }
+            }
+        });
+
+        httpServer.createContext("/post/", exchange -> {
+            // CORS 필터 처리
+            if (CORSFilter.handlePreflight(exchange)) {
+                return;
 
         httpServer.createContext("/typing-records", exchange -> {
 
@@ -139,6 +214,83 @@ public class LocalHttpServer {
             if ("GET".equals(exchange.getRequestMethod())) {
                 // CORS 헤더 적용
                 CORSFilter.applyCORS(exchange);
+
+                // URL에서 게시글 ID 추출
+                String path = exchange.getRequestURI().getPath();
+                int postId = Integer.parseInt(path.split("/")[2]); // "/post/{id}" 형태에서 id 추출
+
+                // 게시글 ID로 게시글 조회
+                PostDTO post = postController.getPostById(postId);
+                
+                if (post != null) {
+                    String jsonResponse = JsonUtil.toJson(post);
+                    byte[] responseBytes = jsonResponse.getBytes("UTF-8");
+
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                    exchange.sendResponseHeaders(200, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.getResponseBody().close(); // ← 이것도 필수
+                } else {
+                    // 게시글이 없으면 404 오류 응답
+                    exchange.sendResponseHeaders(404, -1); // Not Found
+                }
+                exchange.close();
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.close();
+            }
+        });
+        
+
+		httpServer.createContext("/comment", exchange -> {
+		    // 1) 프리플라이트 처리
+		    if (CORSFilter.handlePreflight(exchange)) return;
+		
+		    // 2) GET /comment?postId=123 → 해당 게시글 댓글 조회
+		    if ("GET".equals(exchange.getRequestMethod())) {
+		        CORSFilter.applyCORS(exchange);
+		
+		        // 쿼리 파라미터 파싱 (간단히)
+		        String query = exchange.getRequestURI().getQuery(); // e.g. "postId=1"
+		        int postId = Integer.parseInt(query.split("=")[1]);
+		
+		        // 댓글 조회
+		        List<CommentDTO> comments = new CommentController().selectCommentsBypostId(postId);
+		
+		        String json = JsonUtil.toJson(comments);
+		        byte[] respBytes = json.getBytes(StandardCharsets.UTF_8);
+		
+		        exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+		        exchange.sendResponseHeaders(200, respBytes.length);
+		        exchange.getResponseBody().write(respBytes);
+		        exchange.close();
+		
+		    // 3) POST /comment → 댓글 생성
+		    } else if ("POST".equals(exchange.getRequestMethod())) {
+		        CORSFilter.applyCORS(exchange);
+		
+		        // 요청 바디에서 DTO 역직렬화
+		        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+		        CommentDTO dto = JsonUtil.fromJson(body, CommentDTO.class);
+		
+		        // 댓글 삽입
+		        int result = new CommentController().createComment(dto);
+		        String res = result > 0
+		            ? "{\"status\":\"success\"}"
+		            : "{\"status\":\"error\"}";
+		
+		        byte[] respBytes = res.getBytes(StandardCharsets.UTF_8);
+		        exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+		        exchange.sendResponseHeaders(200, respBytes.length);
+		        exchange.getResponseBody().write(respBytes);
+		        exchange.close();
+		
+		    } else {
+		        // 지원하지 않는 메서드
+		        exchange.sendResponseHeaders(405, -1);
+		        exchange.close();
+		    }
+		});
  
 	            Map<String,String> qs = QueryString.parse(exchange.getRequestURI().getQuery());
 	            
@@ -178,7 +330,6 @@ public class LocalHttpServer {
             exchange.close();
         }
         });
-
 
         //httpServer 시작
         httpServer.start();

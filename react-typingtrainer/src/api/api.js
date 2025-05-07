@@ -64,6 +64,57 @@ export const getChats = async () => {
 }
 
 
+export const fetchPosts = async () => {
+    const url = `${SERVER_URL}/post`;
+    const res = await fetch(url, {
+      method: 'GET',
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+  
+  /** 게시물 상세 조회 */
+  export const fetchPostById = async (postId) => {
+    const url = `${SERVER_URL}/post/${postId}`;
+    const res = await fetch(url, {
+      method: 'GET',
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+
+  /** 게시물 생성 */
+export const createPost = async ({ userId, title, content }) => {
+    const url = `${SERVER_URL}/post/create`;
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({userId, title, content }),
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+  
+
+export const createComment = async ({ userId, content, postId }) => {
+    const url = `${SERVER_URL}/comment?postId=${postId}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({userId, content, postId}),
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+
+export const fetchCommentsbyId = async (postId) => {
+    const url = `${SERVER_URL}/comment?postId=${postId}`;
+    const res = await fetch(url, {
+      method: 'GET',
+      ...REQUEST_OPTIONS,
+    });
+    return handleResponse(res);
+  };
+
+
 export async function fetchTypingRecords(queryString = '') {
     const qs = queryString ? `?${queryString}` : '';
     const url = `${SERVER_URL}/typing-records${qs}`;
