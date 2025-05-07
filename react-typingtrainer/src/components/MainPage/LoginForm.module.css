@@ -33,7 +33,8 @@
 
 .form_card_header h3{
   margin-bottom: 20px;
-  color: #888;
+  color: #666;
+    font-size: 1.1rem;
 }
 .form_card_header h2{
   margin: 0;
@@ -41,7 +42,7 @@
   font-weight: bold;
 }
 .form_card_header p{
-  color: #888;
+  color: #666;
   margin-bottom: 1.5rem;
 }
 
