@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import styles from "./MainPage.module.css";
 import common from "../../styles/common.module.css";
 import LoginForm from "../../components/MainPage/LoginForm";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
   const [activeTab, setActiveTab] = useState('로그인');
+  const navigate = useNavigate();
   return (
     <div className={common.container}>
       <div className={styles.title_container}>
@@ -29,14 +31,17 @@ const MainPage = () => {
           <img src="" alt="디스크" className={styles.card_icon} />
           <h3>게임 기록</h3>
           <p>타자 연습 결과를 기록하고 공유해보세요</p>
-          <button>Start Recording</button>
+          <button onClick={() => navigate('/typing-record')}>
+            Start Recording</button>
         </div>
 
         <div className={styles.card}>
           <img src="" alt="메뉴" className={styles.card_icon} />
           <h3>게시판</h3>
           <p>다양한 유저와 다양한 에기를 나눠보세요</p>
-          <button>Start Talking</button>
+          <button onClick={() => navigate('/post')}
+            >Start Talking</button>
+          
         </div>
       </div>
 
