@@ -115,6 +115,46 @@ export const fetchCommentsbyId = async (postId) => {
   };
 
 
+export async function fetchTypingRecords(queryString = '') {
+    const qs = queryString ? `?${queryString}` : '';
+    const url = `${SERVER_URL}/typing-records${qs}`;
+  
+    const response = await fetch(url, {
+        method: 'GET',
+        ...REQUEST_OPTIONS
+    });
+
+    const data = await handleResponse(response);
+    
+    // 배열이 아닌 경우를 대비해 안전하게 처리
+    if (!Array.isArray(data)) {
+        console.warn('서버 응답이 배열이 아닙니다:', data);
+        return [];
+    }
+    
+    return data;
+}
+
+export async function fetchSongRecords(queryString = '') {
+    
+    const qs = queryString ? `?${queryString}` : '';
+    const url = `${SERVER_URL}/song-records${qs}`;
+
+    const response = await fetch(url, {
+        method: 'GET',
+        ...REQUEST_OPTIONS
+    });
+
+    const data = await handleResponse(response);
+
+    if (!Array.isArray(data)) {
+        console.warn('서버 응답이 배열이 아닙니다:', data);
+        return [];
+    }
+
+    
+    return data;
+}
 // 사용자 로그인
 /* 호출한 페이지에서 사용하는 방법
 try{

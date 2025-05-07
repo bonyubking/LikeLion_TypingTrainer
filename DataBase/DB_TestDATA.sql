@@ -4,11 +4,28 @@ INSERT INTO users (uid, password, nickname) VALUES
 ('user02', 'pass5678', '김영희'),
 ('user03', 'pass9999', '이철수');
 
--- Game_records
-INSERT INTO Game_records (user_id, duration, correct_count, typing_speed, accuracy, played_at, game_type, content_type) VALUES 
-(1, '00:01:30', 45, 300, 95.5, NOW(), 'typing', 'word'),
-(2, '00:02:10', 50, 280, 90.0, NOW(), 'typing', 'sentence'),
-(1, '00:01:00', 40, 320, 98.0, NOW(), 'song', 'song');
+-- 1) Typing_records 에 테스트 데이터 3개
+INSERT INTO Typing_records
+  (user_id, duration, correct_count, typing_speed, accuracy, played_at, content_type, difficulty, language)
+VALUES
+  (1, '00:01:00',  60, 200, 95.50, '2025-05-05 10:00:00', 'sentence','상','영'),
+  (2, '00:02:00',  120, 180, 90.00, '2025-05-05 11:00:00', 'word','중','한'),
+  (3, '00:05:00',  300, 250, 97.00, '2025-05-05 12:00:00', 'sentence','하','영'),
+    (2, '00:02:00',  120, 180, 90.00, '2025-05-05 11:00:00', 'word','중','한'),
+      (2, '00:02:00',  120, 180, 90.00, '2025-05-05 11:00:00', 'word','상','한'),
+        (2, '00:02:00',  120, 180, 90.00, '2025-05-05 11:00:00', 'word','상','한'),
+          (2, '00:02:00',  120, 180, 90.00, '2025-05-05 11:00:00', 'word','중','한'),
+            (2, '00:02:00',  120, 180, 90.00, '2025-05-05 11:00:00', 'word','하','영'),
+(3, '00:05:00',  300, 250, 97.00, '2025-05-05 12:00:00', 'sentence','하','영');
+
+
+-- 2) Song_records 에 테스트 데이터 3개
+INSERT INTO Song_records
+  (user_id, duration, correct_count, played_at, genre, hint_time)
+VALUES
+  (1, '00:01:00', 60, '2025-05-05 10:30:00', 'POP', 15),
+  (2, '00:02:00', 120, '2025-05-05 11:15:00', 'KPOP', 30),
+  (3, '00:05:00', 300, '2025-05-05 12:20:00', 'KKIDS', 45);
 
 -- Posts
 INSERT INTO Posts (user_id, title, content, created_at) VALUES 

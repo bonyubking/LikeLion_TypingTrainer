@@ -12,6 +12,7 @@ import HomePage from './pages/HomePage';
 import PostPage from './pages/PostPage';
 import PostDetailPage from './pages/PostPage/PostDetailPage';
 import PostWritePage from './pages/PostPage/PostWritePage';
+import TypingRecordPage from './pages/TypingRecordPage';
 // import SignIn from './pages/SignIn';
 // import SignUp from './pages/SignUp';
 // 필요한 페이지 import...
@@ -29,6 +30,8 @@ export default function AppRoutes() {
       <Route path="/post" element={<PostPage />} />
       <Route path="/post/:postId" element={<PostDetailPage />} />
       <Route path="/post/write" element={<PostWritePage />} />
+      <Route path="/typing-record" element={<TypingRecordPage />} />
+      <Route path="/song-record" element={<TypingRecordPage />} />
     </Routes>
   );
 }
