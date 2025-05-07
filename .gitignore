@@ -149,4 +149,6 @@ resources/
 
 **/common/
 /**/db.properties
-/module-info.class
+/module-info.class/DataBase/
+/WorkPapers/
+/README.md
