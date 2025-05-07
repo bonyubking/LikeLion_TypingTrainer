@@ -2,13 +2,24 @@ package com.typing.server;
 
 import com.sun.net.httpserver.HttpServer;
 import com.typing.controller.ChatController;
+import com.typing.controller.SongRecordController;
+import com.typing.controller.TypingRecordController;
 import com.typing.model.dto.ChatMessageDto;
+import com.typing.model.dto.SongFilter;
+import com.typing.model.dto.SongRecordDTO;
+import com.typing.model.dto.TypingFilter;
+import com.typing.model.dto.TypingRecordDTO;
 import com.typing.util.CORSFilter;
 import com.typing.util.JsonUtil;
 
+
+import com.typing.util.QueryString;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 /*
  * api는 httpServer.createContext() 이용해 controller의 메소드와 연결 
@@ -76,6 +87,99 @@ public class LocalHttpServer {
                 exchange.close();
             }
         });
+        
+
+        httpServer.createContext("/typing-records", exchange -> {
+
+            if (CORSFilter.handlePreflight(exchange)) {
+                return; // 프리플라이트 처리 완료
+            }
+
+            if ("GET".equals(exchange.getRequestMethod())) {
+                // CORS 헤더 적용
+                CORSFilter.applyCORS(exchange);
+ 
+	            Map<String,String> qs = QueryString.parse(exchange.getRequestURI().getQuery());
+	            
+	            TypingFilter filter = new TypingFilter();
+	            
+	            if (qs.containsKey("userId")) 
+	                filter.setUserId(Integer.parseInt(qs.get("userId")));
+	            filter.setDifficulty(qs.get("difficulty"));
+	            filter.setLanguage(qs.get("language"));
+	            filter.setContentType(qs.get("content_type"));
+
+	            	
+	            System.out.println("GET /typing-records?"+exchange.getRequestURI().getQuery());
+	            System.out.println("Filter → " + filter);
+
+	            List<TypingRecordDTO> list = 
+	                new TypingRecordController().getByFilter(filter);
+	            
+	            System.out.println("DAO 반환 개수 = " + list.size());
+	
+	            String json = JsonUtil.toJson(list);
+	            exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+	            byte[] responseBytes = json.getBytes("UTF-8");
+	            exchange.sendResponseHeaders(200, responseBytes.length);
+	            exchange.getResponseBody().write(responseBytes);
+	            exchange.getResponseBody().close();
+        } else {
+            exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            exchange.close();
+        }
+        });
+        
+        httpServer.createContext("/song-records", exchange -> {
+
+            if (CORSFilter.handlePreflight(exchange)) {
+                return; // 프리플라이트 처리 완료
+            }
+
+            if ("GET".equals(exchange.getRequestMethod())) {
+                // CORS 헤더 적용
+                CORSFilter.applyCORS(exchange);
+ 
+	            Map<String,String> qs = QueryString.parse(exchange.getRequestURI().getQuery());
+	            
+	            SongFilter filter = new SongFilter();
+	            
+	            if (qs.containsKey("userId")) 
+	                filter.setUserId(Integer.parseInt(qs.get("userId")));
+	            filter.setGenre(qs.get("genre"));
+	            
+	            if (qs.containsKey("hint_time") && !qs.get("hint_time").isEmpty()) {
+	                try {
+	                    filter.setHintTime(Integer.parseInt(qs.get("hint_time")));
+	                } catch (NumberFormatException e) {
+	                    // 잘못된 형식이면 기본값(또는 무시) 처리
+	                    filter.setHintTime(null);
+	                }
+	            }
+
+
+	            	
+	            System.out.println("GET /song-records?"+exchange.getRequestURI().getQuery());
+	            System.out.println("Filter → " + filter);
+
+	            List<SongRecordDTO> list = 
+	                new SongRecordController().getByFilter(filter);
+	            
+	            System.out.println("DAO 반환 개수 = " + list.size());
+	
+	            String json = JsonUtil.toJson(list);
+	            exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+	            byte[] responseBytes = json.getBytes("UTF-8");
+	            exchange.sendResponseHeaders(200, responseBytes.length);
+	            exchange.getResponseBody().write(responseBytes);
+	            exchange.getResponseBody().close();
+        } else {
+            exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            exchange.close();
+        }
+        });
+
+
         //httpServer 시작
         httpServer.start();
     }
