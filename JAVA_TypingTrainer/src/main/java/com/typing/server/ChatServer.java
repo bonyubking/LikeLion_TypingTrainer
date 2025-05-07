@@ -33,7 +33,7 @@ public class ChatServer extends WebSocketServer {
     	System.out.println("Received message: " + message);
     	
     	// JSON -> ChatMessageDto로 변환
-    	ChatMessageDto dto = parseJsonToDto(message);
+    	ChatMessageDto dto = JsonUtil.fromJson(message, ChatMessageDto.class);
     	
     	// 메세지 저장
     	String response = JsonUtil.toJson(chatController.sendMessage(dto));

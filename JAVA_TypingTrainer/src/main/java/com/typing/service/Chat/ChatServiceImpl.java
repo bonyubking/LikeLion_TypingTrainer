@@ -13,8 +13,10 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public ChatMessageDto sendMessage(ChatMessageDto dto) {
-		Chat chat = new Chat(dto.getContent(),dto.getCreatedAt(),dto.getUserId());
-		return chatDao.save(chat);
+		Chat newChat = new Chat(dto.getContent(), dto.getCreatedAt(), dto.getUserId());
+		ChatMessageDto savedDto = chatDao.save(newChat);
+		savedDto.setNickname(dto.getNickname());
+		return savedDto;
 	}
 
 	@Override
