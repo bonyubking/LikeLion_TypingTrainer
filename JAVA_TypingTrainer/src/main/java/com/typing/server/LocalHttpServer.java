@@ -367,6 +367,39 @@ public class LocalHttpServer {
             // CORS 필터 처리
             if (CORSFilter.handlePreflight(exchange)) {
                 return;
+            }
+                
+                if ("GET".equals(exchange.getRequestMethod())) {
+                    // CORS 헤더 적용
+                    CORSFilter.applyCORS(exchange);
+
+                    // URL에서 게시글 ID 추출
+                    String path = exchange.getRequestURI().getPath();
+                    int postId = Integer.parseInt(path.split("/")[2]); // "/post/{id}" 형태에서 id 추출
+
+                    // 게시글 ID로 게시글 조회
+                    PostDTO post = postController.getPostById(postId);
+                    
+                    if (post != null) {
+                        String jsonResponse = JsonUtil.toJson(post);
+                        byte[] responseBytes = jsonResponse.getBytes("UTF-8");
+
+                        exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                        exchange.sendResponseHeaders(200, responseBytes.length);
+                        exchange.getResponseBody().write(responseBytes);
+                        exchange.getResponseBody().close(); // ← 이것도 필수
+                    } else {
+                        // 게시글이 없으면 404 오류 응답
+                        exchange.sendResponseHeaders(404, -1); // Not Found
+                    }
+                    exchange.close();
+                } else {
+                    exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                    exchange.close();
+                }
+                
+                
+        });
 
         httpServer.createContext("/typing-records", exchange -> {
 
@@ -410,40 +443,53 @@ public class LocalHttpServer {
         });
         
         httpServer.createContext("/song-records", exchange -> {
-
+        	
+        	
+        	
             if (CORSFilter.handlePreflight(exchange)) {
                 return; // 프리플라이트 처리 완료
             }
-
+            
             if ("GET".equals(exchange.getRequestMethod())) {
                 // CORS 헤더 적용
                 CORSFilter.applyCORS(exchange);
 
-                // URL에서 게시글 ID 추출
-                String path = exchange.getRequestURI().getPath();
-                int postId = Integer.parseInt(path.split("/")[2]); // "/post/{id}" 형태에서 id 추출
-
-                // 게시글 ID로 게시글 조회
-                PostDTO post = postController.getPostById(postId);
-                
-                if (post != null) {
-                    String jsonResponse = JsonUtil.toJson(post);
-                    byte[] responseBytes = jsonResponse.getBytes("UTF-8");
-
-                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
-                    exchange.sendResponseHeaders(200, responseBytes.length);
-                    exchange.getResponseBody().write(responseBytes);
-                    exchange.getResponseBody().close(); // ← 이것도 필수
-                } else {
-                    // 게시글이 없으면 404 오류 응답
-                    exchange.sendResponseHeaders(404, -1); // Not Found
+            Map<String,String> qs = QueryString.parse(exchange.getRequestURI().getQuery());
+            
+            SongFilter filter = new SongFilter();
+            
+            if (qs.containsKey("userId")) 
+                filter.setUserId(Integer.parseInt(qs.get("userId")));
+            filter.setGenre(qs.get("genre"));
+            
+            if (qs.containsKey("hint_time") && !qs.get("hint_time").isEmpty()) {
+                try {
+                    filter.setHintTime(Integer.parseInt(qs.get("hint_time")));
+                } catch (NumberFormatException e) {
+                    // 잘못된 형식이면 기본값(또는 무시) 처리
+                    filter.setHintTime(null);
                 }
-                exchange.close();
-            } else {
-                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
-                exchange.close();
             }
-        });
+            
+            System.out.println("GET /song-records?"+exchange.getRequestURI().getQuery());
+            System.out.println("Filter → " + filter);
+
+            List<SongRecordDTO> list = 
+                new SongRecordController().getByFilter(filter);
+            
+            System.out.println("DAO 반환 개수 = " + list.size());
+
+            String json = JsonUtil.toJson(list);
+            exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+            byte[] responseBytes = json.getBytes("UTF-8");
+            exchange.sendResponseHeaders(200, responseBytes.length);
+            exchange.getResponseBody().write(responseBytes);
+            exchange.getResponseBody().close();
+    } else {
+        exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+        exchange.close();
+    }
+    });
         
 
 		httpServer.createContext("/comment", exchange -> {
@@ -496,44 +542,7 @@ public class LocalHttpServer {
 		    }
 		});
  
-	            Map<String,String> qs = QueryString.parse(exchange.getRequestURI().getQuery());
-	            
-	            SongFilter filter = new SongFilter();
-	            
-	            if (qs.containsKey("userId")) 
-	                filter.setUserId(Integer.parseInt(qs.get("userId")));
-	            filter.setGenre(qs.get("genre"));
-	            
-	            if (qs.containsKey("hint_time") && !qs.get("hint_time").isEmpty()) {
-	                try {
-	                    filter.setHintTime(Integer.parseInt(qs.get("hint_time")));
-	                } catch (NumberFormatException e) {
-	                    // 잘못된 형식이면 기본값(또는 무시) 처리
-	                    filter.setHintTime(null);
-	                }
-	            }
 
-
-	            	
-	            System.out.println("GET /song-records?"+exchange.getRequestURI().getQuery());
-	            System.out.println("Filter → " + filter);
-
-	            List<SongRecordDTO> list = 
-	                new SongRecordController().getByFilter(filter);
-	            
-	            System.out.println("DAO 반환 개수 = " + list.size());
-	
-	            String json = JsonUtil.toJson(list);
-	            exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
-	            byte[] responseBytes = json.getBytes("UTF-8");
-	            exchange.sendResponseHeaders(200, responseBytes.length);
-	            exchange.getResponseBody().write(responseBytes);
-	            exchange.getResponseBody().close();
-        } else {
-            exchange.sendResponseHeaders(405, -1); // Method Not Allowed
-            exchange.close();
-        }
-        });
 
         //httpServer 시작
         httpServer.start();
