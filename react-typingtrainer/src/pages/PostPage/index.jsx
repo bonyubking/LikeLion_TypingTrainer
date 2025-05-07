@@ -6,6 +6,7 @@ import styles                           from './post.module.css';
 import PostWritePage from './PostWritePage';
 
 export default function PostPage() {
+  
   const navigate = useNavigate();
   const [posts, setPosts]     = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +46,10 @@ export default function PostPage() {
           </div>
           <div className={styles.itemMeta}>
             <span>작성자</span>
-            <span>작성일</span>
+            <div className={styles.dateColumn}>
+              <span>작성 시간</span>
+
+            </div>
             <span>댓글</span>
             <span>조회</span>
           </div>
@@ -66,7 +70,10 @@ export default function PostPage() {
             {/* 오른쪽: 메타 정보 */}
             <div className={styles.itemMeta}>
               <span>{post.uid}</span>
-              <span>{post.createdAt}</span>
+              <div className={styles.dateColumn}>
+                <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                <span>{new Date(post.createdAt).toLocaleTimeString()}</span>
+              </div>
               <span>{post.commentCount}</span>
               <span>{post.viewCount}</span>
             </div>

@@ -48,7 +48,8 @@ async function handleResponse(response) {
         error.status = errorResponse.status;
         throw error;
     }
-    return response.json();
+  
+  return response.json();
 }
 
 // 최근 채팅 30건 조회
@@ -63,6 +64,59 @@ export const getChats = async () => {
     return handleResponse(response); 
 }
 
+/** 닉네임 중복 확인 */
+export const checkNickname = async (nickname) => { 
+  console.log("nickname:", nickname);
+  console.log("SERVER_URL:", SERVER_URL);
+  const request_url = `${SERVER_URL}/nickname?nickname=${nickname}`;
+  const response = await fetch(request_url, {
+    method: 'GET',
+    ...REQUEST_OPTIONS,
+  });
+  return handleResponse(response);
+}
+
+/** 아이디 중복 확인 */
+export const checkEmail = async (uid) => { 
+  const request_url = `${SERVER_URL}/uid`;
+  const response = await fetch(request_url, {
+    method: 'POST',
+    body: JSON.stringify({uid}),
+    ...REQUEST_OPTIONS,
+  });
+  return handleResponse(response);
+}
+
+/** 회원가입 */
+export const signup = async (email, nickname, password) => {
+  const request_url = `${SERVER_URL}/signup`;
+  const body = {
+    uId: email,
+    nickname: nickname,
+    password: password,
+  }
+  const response = await fetch(request_url, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    ...REQUEST_OPTIONS,
+  });
+  return response;
+}
+
+/** 로그인 */
+export const login = async (email, password) => {
+  const request_url = `${SERVER_URL}/login`;
+  const body = {
+    uId: email,
+    password: password,
+  }
+  const response = await fetch(request_url, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    ...REQUEST_OPTIONS,
+  });
+  return handleResponse(response);
+}
 
 export const fetchPosts = async () => {
     const url = `${SERVER_URL}/post`;

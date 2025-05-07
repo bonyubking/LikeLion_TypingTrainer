@@ -31,26 +31,28 @@ export default function TypingRecordPage() {
         setLoading(true);
         const qs = new URLSearchParams();
         if (scope === 'mine') qs.set('userId', userId);
+        
+        // 공통 필터
+        if (duration) qs.set('duration', duration);
+        
         if (gameType === 'typing') {
           if (difficulty) qs.set('difficulty', difficulty);
           if (language)    qs.set('language', language);
           if (contentType) qs.set('content_type', contentType);
-          if (duration) qs.set('duration', duration);
         } else {
           if (genre) qs.set('genre', genre);
           if (hintTime) qs.set('hint_time', hintTime);
-          if (duration) qs.set('duration', duration);
         }
         qs.set('page', page);
 
-        console.log('API 요청 URL:', qs.toString()); // 디
+        console.log('API 요청 URL:', qs.toString());
 
         const data = gameType === 'song' 
             ? await fetchSongRecords(qs.toString())
             : await fetchTypingRecords(qs.toString());
 
         setRecords(data);
-        setTotalPages(Math.ceil(data.length / itemsPerPage)); // 페이지당 10개씩 표시한다고 가정
+        setTotalPages(Math.ceil(data.length / itemsPerPage));
         setError(null);
     } catch (err) {
         console.error('기록 로드 실패:', err);
