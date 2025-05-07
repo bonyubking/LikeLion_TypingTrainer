@@ -7,7 +7,7 @@ path = "/" -> http://localhost:3000/chat 임
 import { Routes, Route } from 'react-router-dom';
 
 import MainPage from './pages/MainPage';
-import ChatPage from './pages/ChatPage';
+// import ChatPage from './pages/ChatPage';
 import HomePage from './pages/HomePage';
 import PostPage from './pages/PostPage';
 import PostDetailPage from './pages/PostPage/PostDetailPage';
@@ -22,7 +22,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
-      <Route path="/chat" element={<ChatPage />} />
+      {/* <Route path="/chat" element={<ChatPage />} /> */}
       <Route path="/home" element={<HomePage />} />
       <Route path="/signup" element={<SignupPage />} />
 
