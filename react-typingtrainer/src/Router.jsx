@@ -14,7 +14,7 @@ import PostDetailPage from './pages/PostPage/PostDetailPage';
 import PostWritePage from './pages/PostPage/PostWritePage';
 import TypingRecordPage from './pages/TypingRecordPage';
 // import SignIn from './pages/SignIn';
-// import SignUp from './pages/SignUp';
+import SignupPage from './pages/SignupPage';
 // 필요한 페이지 import...
 
 
@@ -24,6 +24,8 @@ export default function AppRoutes() {
       <Route path="/" element={<MainPage />} />
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/signup" element={<SignupPage />} />
+
       {/* <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} /> */}
       {/* 다른 Route도 이 아래에 계속 추가 */}
