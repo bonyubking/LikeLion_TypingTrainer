@@ -107,6 +107,28 @@
     text-align: center;
   }
   
+  .dateColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 80px;
+  }
+
+  .dateColumn span {
+    min-width: auto;
+  }
+  
+  /* 헤더의 날짜 컬럼 스타일 */
+  .listHeader .dateColumn {
+    color: #556f86;
+    font-weight: 700;
+  }
+
+  .listHeader .dateColumn span {
+    min-width: auto;
+  }
+  
   /* 5) 버튼 */
   .createButton {
     padding: 12px 24px;

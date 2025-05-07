@@ -481,7 +481,7 @@ public class LocalHttpServer {
             
             if (qs.containsKey("duration") && !qs.get("duration").isEmpty()) {
                 try {
-                    filter.setHintTime(Integer.parseInt(qs.get("duration")));
+                    filter.setDuration(Integer.parseInt(qs.get("duration")));
                 } catch (NumberFormatException e) {
                     filter.setDuration(null);
                 }
