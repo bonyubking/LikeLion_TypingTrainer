@@ -111,7 +111,8 @@ function PostDetailPage() {
                 {comment.content}
               </p>
               <div className={styles.commentMeta}>
-                {comment.createdAt}
+                <span>{new Date(comment.createdAt).toLocaleDateString()}</span>
+                <span>{new Date(comment.createdAt).toLocaleTimeString()}</span>
               </div>
             </div>
           </div>
