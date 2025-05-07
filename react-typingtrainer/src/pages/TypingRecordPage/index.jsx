@@ -134,7 +134,7 @@ const getCurrentPageData = () => {
                 <option value="">장르</option>
                 <option value="KPOP">한국가요</option>
                 <option value="POP">미국가요</option>
-                <option value="KKID">한국동요</option>
+                <option value="KKIDS">한국동요</option>
             </select>
             <select value={hintTime} onChange={e=>setHintTime(e.target.value)}>
                 <option value="">힌트 시간</option>
