@@ -37,6 +37,7 @@ public class ChatServer extends WebSocketServer {
     	
     	// 메세지 저장
     	String response = JsonUtil.toJson(chatController.sendMessage(dto));
+    	System.out.println(response);
     	// 전체 사용자에게 브로드캐스트
     	for (WebSocket client : getConnections()) {
             client.send(response);
