@@ -10,7 +10,7 @@ public interface SongRecordDAO {
 	
 	String getbyfilterSql = 
 		    "SELECT r.record_id, r.user_id, u.uid as Uid, "
-		    		  + "r.duration, r.correct_count, "
+		    		  + "MINUTE(r.duration) AS duration, r.correct_count, "
 		    		  + "r.played_at, r.genre, r.hint_time "
 		    		  + "FROM song_records AS r "
 		    		  + "JOIN users AS u ON r.user_id = u.user_id "

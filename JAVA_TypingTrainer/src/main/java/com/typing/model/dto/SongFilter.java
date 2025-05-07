@@ -5,12 +5,14 @@ public class SongFilter {
 	private Integer userId;
 	private String genre;
 	private Integer hintTime;
+	private Integer duration;
 	
-	public SongFilter(Integer userId, String genre, Integer hintTime) {
+	public SongFilter(Integer userId, String genre, Integer hintTime, Integer duration) {
 
 		this.userId = userId;
 		this.genre = genre;
 		this.hintTime = hintTime;
+		this.duration = duration;
 	}
 	
 	public Integer getUserId() {
@@ -31,6 +33,14 @@ public class SongFilter {
 
 	public Integer getHintTime() {
 		return hintTime;
+	}
+
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
 	}
 
 	public void setHintTime(Integer hintTime) {

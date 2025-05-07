@@ -420,6 +420,15 @@ public class LocalHttpServer {
 	            filter.setDifficulty(qs.get("difficulty"));
 	            filter.setLanguage(qs.get("language"));
 	            filter.setContentType(qs.get("content_type"));
+	            
+	            if (qs.containsKey("duration") && !qs.get("duration").isEmpty()) {
+	                try {
+	                    filter.setDuration(Integer.parseInt(qs.get("duration")));
+	                } catch (NumberFormatException e) {
+	                    filter.setDuration(null);
+	                }
+	            }
+
 
 	            	
 	            System.out.println("GET /typing-records?"+exchange.getRequestURI().getQuery());
@@ -466,10 +475,19 @@ public class LocalHttpServer {
                 try {
                     filter.setHintTime(Integer.parseInt(qs.get("hint_time")));
                 } catch (NumberFormatException e) {
-                    // 잘못된 형식이면 기본값(또는 무시) 처리
-                    filter.setHintTime(null);
+                    filter.setDuration(null);
                 }
             }
+            
+            if (qs.containsKey("duration") && !qs.get("duration").isEmpty()) {
+                try {
+                    filter.setHintTime(Integer.parseInt(qs.get("duration")));
+                } catch (NumberFormatException e) {
+                    filter.setDuration(null);
+                }
+            }
+
+
             
             System.out.println("GET /song-records?"+exchange.getRequestURI().getQuery());
             System.out.println("Filter → " + filter);

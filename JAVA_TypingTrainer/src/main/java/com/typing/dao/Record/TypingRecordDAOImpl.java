@@ -43,6 +43,11 @@ public class TypingRecordDAOImpl implements TypingRecordDAO {
 	        params.add(filter.getLanguage());
 	    }
 	    
+	    if (filter.getDuration() != null ) {
+	        sql.append(" AND MINUTE(duration) = ?");
+	        params.add(filter.getDuration());
+	    }
+	    
 	    sql.append(" ORDER BY correct_count DESC");
 	    
 
@@ -59,7 +64,7 @@ public class TypingRecordDAOImpl implements TypingRecordDAO {
                     dto.setRecordId(rs.getInt("record_id"));
                     dto.setUserId(rs.getInt("user_id"));
                     dto.setUid(rs.getString("Uid"));
-                    dto.setDuration(rs.getTime("duration").toLocalTime().toString());   
+                    dto.setDuration(rs.getInt("duration")); 
                     dto.setCorrectCount(rs.getInt("correct_count"));
                     dto.setTypingSpeed(rs.getInt("typing_speed"));
                     dto.setAccuracy(rs.getBigDecimal("accuracy"));

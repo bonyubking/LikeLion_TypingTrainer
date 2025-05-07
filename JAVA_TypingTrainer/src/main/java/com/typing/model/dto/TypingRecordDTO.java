@@ -8,7 +8,7 @@ public class TypingRecordDTO {
 	private int recordId;
 	private int userId;
 	private String Uid;
-	private String duration;
+	private int duration;
 	private int correctCount;
 	private int typingSpeed;
 	private BigDecimal accuracy;
@@ -18,7 +18,7 @@ public class TypingRecordDTO {
 	
 	
 	
-	public TypingRecordDTO(int recordId, int userId, String Uid, String duration, int correctCount, int typingSpeed,
+	public TypingRecordDTO(int recordId, int userId, String Uid, int duration, int correctCount, int typingSpeed,
 			BigDecimal accuracy, String playedAt, String contentType, String difficulty, String language) {
 
 		this.recordId = recordId;
@@ -66,11 +66,11 @@ public class TypingRecordDTO {
 		this.userId = userId;
 	}
 
-	public String getDuration() {
+	public int getDuration() {
 		return duration;
 	}
 
-	public void setDuration(String duration) {
+	public void setDuration(int duration) {
 		this.duration = duration;
 	}
 

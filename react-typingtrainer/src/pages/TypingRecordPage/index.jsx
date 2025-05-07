@@ -12,6 +12,7 @@ export default function TypingRecordPage() {
   const [difficulty, setDifficulty] = useState('');
   const [language, setLanguage] = useState('');
   const [contentType, setContentType] = useState('');
+  const [duration, setDuration] = useState('');
 
   // 데이터 + 페이징
   const [records, setRecords] = useState([]);
@@ -24,14 +25,6 @@ export default function TypingRecordPage() {
   const [genre, setGenre] = useState(''); // 장르 필터
   const [hintTime, setHintTime] = useState(''); // 힌트 시간 필터
 
-  const formatDuration = (duration) => {
-
-    const [hours, minutes]= duration.split(':').map(Number);
-    const totalMinutes = minutes;
-    
-    return `${totalMinutes}분`;
-};
-
 
   const load = async () => {
     try {
@@ -42,11 +35,15 @@ export default function TypingRecordPage() {
           if (difficulty) qs.set('difficulty', difficulty);
           if (language)    qs.set('language', language);
           if (contentType) qs.set('content_type', contentType);
+          if (duration) qs.set('duration', duration);
         } else {
           if (genre) qs.set('genre', genre);
           if (hintTime) qs.set('hint_time', hintTime);
+          if (duration) qs.set('duration', duration);
         }
         qs.set('page', page);
+
+        console.log('API 요청 URL:', qs.toString()); // 디
 
         const data = gameType === 'song' 
             ? await fetchSongRecords(qs.toString())
@@ -72,7 +69,7 @@ const getCurrentPageData = () => {
 
   useEffect(() => { 
     load(); 
-}, [scope, gameType, difficulty, language, contentType, genre, hintTime, page]);
+}, [scope, gameType, difficulty, language, duration, contentType, genre, hintTime, page]);
 
 
   return (
@@ -123,6 +120,13 @@ const getCurrentPageData = () => {
                 <option value="sentence">문장</option>
                 <option value="word">단어</option>
             </select>
+            <select value={duration} onChange={e=>setDuration(e.target.value)}>
+              <option value="">제한 시간</option>
+              <option value="1">1분</option>
+              <option value="2">2분</option>
+              <option value="5">5분</option>
+              <option value="10">10분</option>
+            </select>
         </>
     ) : (
         <>
@@ -139,6 +143,13 @@ const getCurrentPageData = () => {
                 <option value="45">45초</option>
                 <option value="60">60초</option>
             </select>
+            <select value={duration} onChange={e=>setDuration(e.target.value)}>
+              <option value="">제한 시간</option>
+              <option value="1">1분</option>
+              <option value="2">2분</option>
+              <option value="5">5분</option>
+              <option value="10">10분</option>
+            </select>
         </>
     )}
 </div>
@@ -152,7 +163,7 @@ const getCurrentPageData = () => {
                     <th>난이도</th>
                     <th>언어</th>
                     <th>문장/단어</th>
-                    <th>시간</th>
+                    <th>제한 시간</th>
                     <th>정확도(%)</th>
                     <th>타자속도</th>
                     <th>정답 수</th>
@@ -160,7 +171,7 @@ const getCurrentPageData = () => {
             ) : (
                 <>  
                     <th>장르</th>
-                    <th>시간</th>
+                    <th>제한 시간</th>
                     <th>힌트 간격</th>
                     <th>정답 수</th>
                 </>
@@ -177,7 +188,7 @@ const getCurrentPageData = () => {
                 <td>{r.difficulty}</td>
                 <td>{r.language}</td>
                 <td>{r.contentType === 'sentence' ? '문장' : '단어'}</td>
-                <td>{formatDuration(r.duration)}</td>
+                <td>{r.duration}분</td>
                 <td>{r.accuracy}%</td>
                 <td>{r.typingSpeed}타</td>
                 <td>{r.correctCount}개</td>
@@ -185,7 +196,7 @@ const getCurrentPageData = () => {
                 ) : (
                   <>
                     <td>{r.genre}</td>
-                    <td>{formatDuration(r.duration)}</td>
+                    <td>{r.duration}분</td>
                     <td>{r.hintTime}초</td>
                     <td>{r.correctCount}개</td>
                   </>

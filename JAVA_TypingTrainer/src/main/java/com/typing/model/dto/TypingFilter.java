@@ -6,6 +6,7 @@ public class TypingFilter {
 	private String contentType;
 	private String difficulty;
 	private String language;
+	private Integer duration;
 	
 	public TypingFilter() {
 		
@@ -32,16 +33,27 @@ public class TypingFilter {
 	public String getLanguage() {
 		return language;
 	}
+	
 	public void setLanguage(String language) {
 		this.language = language;
 	}
 	
-	public TypingFilter(Integer userId, String contentType, String difficulty, String language) {
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+
+
+	public TypingFilter(Integer userId, String contentType, String difficulty, String language, Integer duration) {
 
 		this.userId = userId;
 		this.contentType = contentType;
 		this.difficulty = difficulty;
 		this.language = language;
+		this.duration = duration;
 	}
 	
 	

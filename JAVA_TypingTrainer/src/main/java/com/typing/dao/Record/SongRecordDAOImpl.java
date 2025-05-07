@@ -41,6 +41,11 @@ public class SongRecordDAOImpl implements SongRecordDAO {
 	        params.add(filter.getHintTime());
 	    }
 	    
+	    if (filter.getDuration() != null) {
+	        sql.append(" AND MINUTE(duration) = ?");
+	        params.add(filter.getDuration());
+	    }
+	    
 	    sql.append(" ORDER BY correct_count DESC");
 	    
 
@@ -57,7 +62,7 @@ public class SongRecordDAOImpl implements SongRecordDAO {
                     dto.setRecordId(rs.getInt("record_id"));
                     dto.setUserId(rs.getInt("user_id"));
                     dto.setUid(rs.getString("Uid")); 
-                    dto.setDuration(rs.getTime("duration").toLocalTime().toString());   
+                    dto.setDuration(rs.getInt("duration"));  
                     dto.setCorrectCount(rs.getInt("correct_count"));
                     dto.setPlayedAt(rs.getTimestamp("played_at").toLocalDateTime().toString());
                     dto.setGenre(rs.getString("genre"));

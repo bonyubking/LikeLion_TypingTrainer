@@ -5,17 +5,17 @@ public class SongRecordDTO {
 	private int recordId;
 	private int userId;
 	private String Uid;
-	private String duration;
+	private int duration;
 	private int correctCount;
 	private String playedAt;
 	private String genre;
 	private int hintTime;
 	
-	public String getDuration() {
+	public int getDuration() {
 		return duration;
 	}
 
-	public void setDuration(String duration) {
+	public void setDuration(int duration) {
 		this.duration = duration;
 	}
 	public int getRecordId() {
@@ -74,7 +74,7 @@ public class SongRecordDTO {
 		this.hintTime = hintTime;
 	}
 
-	public SongRecordDTO(int recordId, int userId, String uid, String duration, int correctCount, String playedAt, String genre,
+	public SongRecordDTO(int recordId, int userId, String uid, int duration, int correctCount, String playedAt, String genre,
 			int hintTime) {
 		
 		this.recordId = recordId;
