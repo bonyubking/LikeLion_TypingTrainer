@@ -95,8 +95,7 @@ public class SongGameServer extends WebSocketServer {
             nextQ.addProperty("lyrics", song.getLyrics());
             conn.send(nextQ.toString());
         } else {
-            conn.send("{\"type\":\"end\"}");
-            gameService.endGame();
+            System.out.println("Maybe something got errors. Song values is null.");
         }
     }
 

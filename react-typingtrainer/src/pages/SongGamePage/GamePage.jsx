@@ -7,37 +7,43 @@ const GamePlayPage = () => {
   const [hint1, setHint1] = useState("");
   const [hint2, setHint2] = useState("");
   const [answer, setAnswer] = useState("");
-  const [timeLeft, setTimeLeft] = useState(60);
   const [correctCount, setCorrectCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [socket, setSocket] = useState(null);
 
-  const timerRef = useRef(null);
+  const [globalTime, setGlobalTime] = useState(0);
+  const [problemTime, setProblemTime] = useState(60);
+  const [hintTimer, setHintTimer] = useState(0);
+
+  const intervalRef = useRef();
 
   useEffect(() => {
     const savedSettings = JSON.parse(sessionStorage.getItem("songGameSettings"));
+    setSettings(savedSettings);
+
     if (!savedSettings) {
       alert("게임 설정이 없습니다. 처음 화면으로 돌아갑니다.");
       window.location.href = "/song-game";
       return;
     }
-    setSettings(savedSettings);
 
-    const ws = new WebSocket("ws://localhost:8082");
+    const ws = new WebSocket("ws://localhost:8082/game/song");
     setSocket(ws);
 
     ws.onopen = () => {
-      const userId = sessionStorage.getItem("userId");
-      const payload = {
-        type: "startGame",
-        data: {
-          userId: parseInt(userId) || 0,
-          genres: savedSettings.genres,
-          hintInterval: parseInt(savedSettings.hintInterval),
-          playtime: parseInt(savedSettings.playtime),
-        },
-      };
-      ws.send(JSON.stringify(payload));
+      ws.send(
+        JSON.stringify({
+          type: "startGame",
+          data: {
+            userId: sessionStorage.getItem("userId") || 0,
+            genres: savedSettings.genres,
+            hintInterval: parseInt(savedSettings.hintInterval),
+            playtime: parseInt(savedSettings.playtime),
+          },
+        })
+      );
+      setGlobalTime(savedSettings.playtime);
+      setHintTimer(savedSettings.hintInterval);
     };
 
     ws.onmessage = (event) => {
@@ -48,9 +54,8 @@ const GamePlayPage = () => {
           setAnswer("");
           setHint1("");
           setHint2("");
-          setTimeLeft(60);
+          setProblemTime(60);
           setTotalCount((prev) => prev + 1);
-          startTimer();
           break;
         case "hint":
           if (!hint1) setHint1(message.data);
@@ -70,7 +75,6 @@ const GamePlayPage = () => {
           break;
         case "end":
           alert("게임이 종료되었습니다.");
-          clearInterval(timerRef.current);
           ws.close();
           break;
         default:
@@ -88,25 +92,45 @@ const GamePlayPage = () => {
 
     return () => {
       ws.close();
-      clearInterval(timerRef.current);
+      clearInterval(intervalRef.current);
     };
   }, []);
 
   useEffect(() => {
-    if (timeLeft === 0) {
-      handleSkip();
-    }
-  }, [timeLeft]);
+    if (!socket || !settings) return;
 
-  const startTimer = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+    intervalRef.current = setInterval(() => {
+      setGlobalTime((prev) => {
+        if (prev <= 1) {
+          socket.send(JSON.stringify({ type: "end" }));
+          clearInterval(intervalRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+
+      setProblemTime((prev) => {
+        if (prev <= 1) {
+          socket.send(JSON.stringify({ type: "skip" }));
+          return 60;
+        }
+        return prev - 1;
+      });
+
+      setHintTimer((prev) => {
+        if (prev <= 1) {
+          socket.send(JSON.stringify({ type: "hint" }));
+          return settings.hintInterval;
+        }
+        return prev - 1;
+      });
     }, 1000);
-  };
+
+    return () => clearInterval(intervalRef.current);
+  }, [socket, settings]);
 
   const handleSubmit = () => {
-    if (socket?.readyState === WebSocket.OPEN && answer.trim()) {
+    if (socket && answer.trim()) {
       socket.send(
         JSON.stringify({
           type: "answer",
@@ -117,12 +141,8 @@ const GamePlayPage = () => {
   };
 
   const handleSkip = () => {
-    if (socket?.readyState === WebSocket.OPEN) {
-      socket.send(
-        JSON.stringify({
-          type: "skip",
-        })
-      );
+    if (socket) {
+      socket.send(JSON.stringify({ type: "skip" }));
     }
   };
 
@@ -131,11 +151,9 @@ const GamePlayPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.stats}>
-        <div>남은 시간(플레이타임): {settings.playtime || 0}초</div>
+        <div>남은 시간: {globalTime}s</div>
         <div>맞춘 문제 수: {correctCount}개</div>
-        <div>
-          문제 수: {correctCount}/{totalCount}
-        </div>
+        <div>문제 수: {correctCount}/{totalCount}</div>
       </div>
 
       <div className={styles.questionBox}>{lyrics}</div>
@@ -151,7 +169,7 @@ const GamePlayPage = () => {
         </div>
       </div>
 
-      <div className={styles.timer}>문제 타이머: {timeLeft}s</div>
+      <div className={styles.timer}>문제 타이머: {problemTime}s</div>
 
       <div className={styles.inputSection}>
         <div className={styles.inputGroup}>
