@@ -8,22 +8,17 @@ import { getChats } from "../../api/api";
 import gameController from "../../assets/img/controller.png";
 import disk from "../../assets/img/disk.png";
 import menu from "../../assets/img/menu.png";
+import logo from "../../assets/img/logo.png";
+import { useUser } from "../../contexts/UserContext";
 
 const MainPage = () => {
   const [messages, setMessages] = useState([]);
   const ws = useRef(null); // WebSocket 연결을 위한 useRef
   const [activeTab, setActiveTab] = useState("로그인");
-  const [nickname, setNickname] = useState(
-    sessionStorage.getItem("nickname") || ""
-  );
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    sessionStorage.getItem("isLoggedIn") === "true"
-  );
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  const { isLoggedIn, nickname, userId } = useUser();
   useEffect(() => {
-    setNickname(sessionStorage.getItem("nickname"));
-    setIsLoggedIn(sessionStorage.getItem("isLoggedIn") === "true");
     const CHAT_SERVER_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
     // 초기 채팅 데이터 로드
@@ -89,8 +84,8 @@ const MainPage = () => {
       const message = {
         content,
         createdAt: new Date().toISOString(), // UTC로 변환된 시간을 보내되, KST 기준으로 조정됨.
-        userId: sessionStorage.getItem("userId"),
-        nickname: sessionStorage.getItem("nickname"),
+        userId: userId,
+        nickname: nickname,
       };
       console.log(message);
       ws.current.send(JSON.stringify(message));
@@ -100,7 +95,7 @@ const MainPage = () => {
   return (
     <div className={common.container}>
       <div className={styles.title_container}>
-        <h1 className={styles.title}>타자 연습</h1>
+        <img src={logo} alt="타자톡톡" className={styles.logo} />
         <p className={styles.subtitle}>
           Start Practicing typing and write it down
         </p>
@@ -157,10 +152,9 @@ const MainPage = () => {
           <ChatForm
             messages={messages}
             onSendMessage={sendMessage}
-            isLoggedIn={isLoggedIn}
           />
         ) : (
-          <LoginForm isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          <LoginForm />
         )}
       </div>
     </div>
