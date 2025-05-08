@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { IoChevronBack } from 'react-icons/io5';
 import { IoVolumeHigh, IoVolumeMute } from 'react-icons/io5';
 import TypeTalkTalk from '../assets/mp3/TypeTalkTalk.mp3';
+import { useUser } from '../contexts/UserContext';
 import './Header.css';
 
 const Header = () => {
   const navigate = useNavigate();
+  const { nickname } = useUser();
   const [volume, setVolume] = useState(0.5);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -92,6 +94,7 @@ const Header = () => {
           <IoChevronBack size={24} />
         </button>
         <div className="audio-controls">
+          {nickname && <span className="nickname"><strong>{nickname}</strong>님</span>}
           <button 
             className="volume-button"
             onClick={toggleVolumeSlider}

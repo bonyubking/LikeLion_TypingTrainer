@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./ChatForm.module.css";
 import { FaPlus, FaPaperPlane } from "react-icons/fa";
+import { useUser } from "../../contexts/UserContext";
 
-const ChatForm = ({ messages, onSendMessage, isLoggedIn }) => {
+// 채팅 폼 컴포넌트
+const ChatForm = ({ messages, onSendMessage }) => {
   // const [messages, setMessages] = useState(initialMessages || []);
   const [input, setInput] = useState("");
   const chatAreaRef = useRef(null);
   const lastMessageRef = useRef(null);
-
+  const { isLoggedIn, nickname } = useUser();
   // 메시지가 추가될 때마다 스크롤을 맨 아래로 이동
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -37,21 +39,21 @@ const ChatForm = ({ messages, onSendMessage, isLoggedIn }) => {
               key={idx}
               ref={idx === messages.length - 1 ? lastMessageRef : null}
               className={`${styles.message_row} ${
-                msg.nickname === sessionStorage.getItem("nickname")
+                msg.nickname === nickname
                   ? styles.me
                   : styles.other
               }`}
             >
-              {msg.nickname !== sessionStorage.getItem("nickname") && (
+              {msg.nickname !== nickname && (
                 <div className={styles.nickname}>{msg.nickname}</div>
               )}         
-              {msg.nickname === sessionStorage.getItem("nickname")&& (
+              {msg.nickname === nickname && (
                 <div className={styles.nickname}>{msg.nickname}</div>
               )}
               <div className={styles.bubble}>{msg.content}</div>
               <div
                 className={`${styles.date} ${
-                  msg.nickname === sessionStorage.getItem("nickname")
+                  msg.nickname === nickname
                     ? styles.date_right
                     : styles.date_left
                 }`}

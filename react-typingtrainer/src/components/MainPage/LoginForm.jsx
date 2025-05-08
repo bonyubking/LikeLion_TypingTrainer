@@ -3,31 +3,29 @@ import styles from "./LoginForm.module.css";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/api";
 import people from "../../assets/img/people_blue.png";
+import { useUser } from "../../contexts/UserContext";
 
-const LoginForm = ({ isLoggedIn, setIsLoggedIn }) => {
+// 로그인 폼 컴포넌트
+const LoginForm = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [userNickname, setUserNickname] = useState(sessionStorage.getItem('nickname') || "");
   const navigate = useNavigate();
-
+  const {userLogin, userLogout, isLoggedIn, nickname} = useUser();
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 로그인 버튼 클릭 시 실행되는 함수
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const response = await login(form.email, form.password);
       // sessionStorage에 사용자 정보 저장
-      sessionStorage.setItem('nickname', response.nickname);
-      sessionStorage.setItem('userId', response.userId);
-      sessionStorage.setItem('isLoggedIn', true);
-      
-      setUserNickname(response.nickname);
-      setIsLoggedIn(true);
+      userLogin(response.nickname, response.userId, true);
       alert("로그인 성공!");
     } catch (error) {
       alert(error.message || "로그인 실패");
@@ -37,9 +35,7 @@ const LoginForm = ({ isLoggedIn, setIsLoggedIn }) => {
   };
 
   const handleLogout = () => {
-    sessionStorage.clear();
-    setIsLoggedIn(false);
-    setUserNickname("");
+    userLogout();
     setForm({ email: "", password: "" });
     alert("로그아웃 되었습니다.");
     navigate("/");
@@ -58,7 +54,7 @@ const LoginForm = ({ isLoggedIn, setIsLoggedIn }) => {
         <div className={styles.form_card}>
           <div className={styles.welcome_message}>
             <div className={styles.welcome_date}>{formattedDate}</div>
-            <h2>반갑습니다. {userNickname}님!</h2>
+            <h2>반갑습니다. {nickname}님!</h2>
             <p className={styles.welcome_sub}>
               오늘도 즐거운 타자연습 되세요!<br />
               기록을 남기고, 실력을 키워보세요 🎯
