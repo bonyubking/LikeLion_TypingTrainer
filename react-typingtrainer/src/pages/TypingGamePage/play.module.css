@@ -1,21 +1,17 @@
-.container {
-    padding: 2rem;
-    text-align: center;
-}
-
-
 .stats {
     margin: 2rem 0;
     display: flex;
     justify-content: space-around;
     font-weight: 500;
     font-size: 1rem;
+    padding-top: 20px;
 }
 
 .questionBox {
     background-color: #d7e3ee;
-    padding: 3rem;
+    padding: 6rem;
     margin: 1rem auto;
+
     border-radius: 12px;
     width: 80%;
 }
@@ -42,8 +38,8 @@
 }
 
 .inputField {
-    width: 300px;
-    padding: 0.6rem;
+    width: 60vh;
+    padding: 1rem;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 6px;

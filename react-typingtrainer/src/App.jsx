@@ -1,13 +1,16 @@
-import { BrowserRouter } from 'react-router-dom';
 
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import AppRoutes from './Router';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import HeaderRouterWrapper from './HeaderRouterWrapper';
+
 
 function App() {
   return (
     <BrowserRouter>
       <div className="app-container">
-        <Header />
+        <HeaderRouterWrapper />
         <main className="main-content">
           <div className="content-wrapper">
             <AppRoutes />
