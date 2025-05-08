@@ -28,14 +28,27 @@ public class SongGameServiceImpl implements SongGameService {
         this.usedSongIds.clear();
         this.correctCount = 0;
         this.currentHintIndex = 0;
+        this.userId = setting.getUserId();  // 여기 추가
+    }
 
-        // this.userId = setting.getUserId();
+    @Override
+    public void endGame() {
+        SongRecordDTO record = new SongRecordDTO();
+        record.setUserId(userId);
+        record.setCorrectCount(correctCount);
+        record.setGenre(String.join(",", setting.getGenre()));
+        record.setHintTime(setting.getHintTime());
+        record.setDuration(setting.getPlaytime());
 
-        System.out.println("=== start game ===");
+        songDao.saveRecord(record);
     }
 
     @Override
     public SongDto nextQuestion() {
+    	System.out.println("세팅값: " + setting.getHintTime() + " / " + setting.getPlaytime());
+        System.out.println("장르: " + setting.getGenre());
+        System.out.println("제외곡 ID: " + setting.getExcludedSongIds());
+    	
         setting.setExcludedSongIds(usedSongIds);
         List<SongDto> songs = songDao.getRandomSongsByGenre(setting);
 
@@ -85,23 +98,5 @@ public class SongGameServiceImpl implements SongGameService {
         }
 
         return null;
-    }
-
-    @Override
-    public void endGame() {
-        System.out.println("게임 종료");
-        System.out.println("총 정답 수: " + correctCount);
-
-        SongRecordDTO record = new SongRecordDTO();
-        //record.setUserId(setting.getUserId());
-        record.setCorrectCount(correctCount);
-        record.setGenre(String.join(",", setting.getGenre()));
-        record.setHintTime(setting.getHintTime());
-        record.setDuration(setting.getPlaytime());
-        
-        songDao.saveRecord(record);
-        System.out.println("Game record saved");
-        
-        // To-Do : UserId 예외 처리 및 실제 기능 추가 구현
     }
 }

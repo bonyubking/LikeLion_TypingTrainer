@@ -7,6 +7,7 @@ import com.typing.server.*;
  * 각각 다른 포트, 다른 스레드에서 실행됨
  * HttpServer -> 8080 
  * WebSocketServer -> 8081
+ * SongGame WebSocketServer -> 8082
  * 
  * 각 서버는 Main 함수 종료때 같이 종료됨 
  * */
@@ -37,10 +38,22 @@ public class Main {
                 e.printStackTrace();
             }
         });
+        
+     // SongGame WebSocket 서버
+        Thread songGameWsThread = new Thread(() -> {
+            try {
+                SongGameServer songGameServer = new SongGameServer(8082);
+                songGameServer.start();
+                System.out.println("SongGame WebSocket 서버 시작: ws://localhost:8082/game/song");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
-        // 두 서버를 각각 다른 스레드에서 실행
+        // 세 서버를 각각 다른 스레드에서 실행
         httpServerThread.start();
         wsServerThread.start();
+        songGameWsThread.start();
         
         // Websocket 서버 종료를 위한 shutdown hook 설정
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
