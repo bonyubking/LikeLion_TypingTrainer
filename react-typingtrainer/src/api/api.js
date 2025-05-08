@@ -41,8 +41,8 @@ const REQUEST_OPTIONS = {
 };
 
 // 응답 핸들링 함수
-async function handleResponse(response) { 
-    if (!response.ok) { 
+async function handleResponse(response) {
+    if (!response.ok) {
         const errorResponse = await response.json();
         const error = new Error(errorResponse.message || '서버 요청 실패');
         error.status = errorResponse.status;
@@ -56,12 +56,12 @@ async function handleResponse(response) {
 export const getChats = async () => {
     const request_url = `${SERVER_URL}/chat`; // api url 
 
-        const response = await fetch(request_url, {
-            method: 'GET',
-            ...REQUEST_OPTIONS,
-        });
+    const response = await fetch(request_url, {
+        method: 'GET',
+        ...REQUEST_OPTIONS,
+    });
 
-    return handleResponse(response); 
+    return handleResponse(response);
 }
 
 /** 닉네임 중복 확인 */
@@ -236,3 +236,4 @@ export const userLogin = async (id, password) => {
     return handleResponse(response); 
 }
 */
+

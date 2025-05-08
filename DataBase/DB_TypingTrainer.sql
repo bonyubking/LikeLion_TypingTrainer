@@ -22,6 +22,20 @@ CREATE TABLE Typing_records (
 	difficulty ENUM('상','중','하'),
     language ENUM('한', '영'),
 	FOREIGN KEY (user_id) REFERENCES Users(user_id)
+<<<<<<< HEAD
+=======
+);
+
+CREATE TABLE Song_records (
+    record_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    duration TIME,
+    correct_count INT,
+    played_at DATETIME,
+    genre VARCHAR(50),
+    hint_time INT,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+>>>>>>> feat-Typing
 );
 
 CREATE TABLE Song_records (

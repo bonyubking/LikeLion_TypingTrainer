@@ -9,7 +9,7 @@ import Children from '../assets/mp3/동요.mp3';
 import { useUser } from '../contexts/UserContext';
 import './Header.css';
 
-const Header = () => {
+const Header = ({ title, subtitle }) => {
   const navigate = useNavigate();
   const { nickname } = useUser();
   const [volume, setVolume] = useState(0.5);
@@ -103,7 +103,7 @@ const Header = () => {
       const selectedMusic = musicOptions.find(option => option.label === newMusic);
       audioRef.current.src = selectedMusic.file;
       audioRef.current.load();
-      
+
       // loadeddata 이벤트를 기다렸다가 재생
       audioRef.current.addEventListener('loadeddata', () => {
         if (volume > 0) {
@@ -126,14 +126,15 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="header-content">
+      <div className="header-left">
         <button className="back-button" onClick={handleBack}>
           <IoChevronBack size={24} />
         </button>
+
         <div className="audio-controls">
           {nickname && <span className="nickname"><strong>{nickname}</strong>님</span>}
-          <select 
-            value={currentMusic} 
+          <select
+            value={currentMusic}
             onChange={handleMusicChange}
             className="music-select"
           >
@@ -143,7 +144,7 @@ const Header = () => {
               </option>
             ))}
           </select>
-          <button 
+          <button
             className="volume-button"
             onClick={toggleVolumeSlider}
           >
@@ -168,6 +169,18 @@ const Header = () => {
             </div>
           )}
         </div>
+
+      </div>
+
+      <div className="header-center">
+        {title && <h2 className="header-title">{title}</h2>}
+        {subtitle && <p className="header-subtitle">{subtitle}</p>}
+      </div>
+
+      <div className="header-right">
+        <button className="notification-button">
+          <IoNotificationsOutline size={24} />
+        </button>
       </div>
     </header>
   );

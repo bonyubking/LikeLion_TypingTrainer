@@ -15,6 +15,41 @@
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: relative;
+  background-color: #ffffff;
+}
+
+.header-center {
+  flex: 1;
+  text-align: center;
+}
+
+.header-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header-subtitle {
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  color: #555;
+}
+
+.header-left {
+  width: 60px;
+}
+
+.header-right {
+  width: 60px;
+  display: flex;
+  justify-content: flex-end;
+
 }
 
 .back-button,
@@ -143,10 +178,11 @@
   .header {
     padding: 0.5rem;
   }
-  
+
   .header-content {
     padding: 0 0.5rem;
   }
+
 
   .music-select {
     font-size: 0.8rem;
@@ -154,7 +190,7 @@
   }
 }
 
-.nickname{
+.nickname {
   min-height: 100%;
   line-height: 45px;
 
