@@ -27,7 +27,8 @@ public class PostDAOImpl implements PostDAO {
 	            PostDTO postDTO = new PostDTO();
 	            postDTO.setPostId(rs.getInt("post_id"));
 	            postDTO.setUserId(rs.getInt("user_id"));
-	            postDTO.setUid(rs.getString("uid"));          
+	            postDTO.setUid(rs.getString("uid"));   
+	            postDTO.setNickname(rs.getString("nickname"));
 	            postDTO.setTitle(rs.getString("title"));
 	            postDTO.setContent(rs.getString("content"));
 	            postDTO.setCreatedAt(rs.getDate("created_at"));
@@ -53,7 +54,8 @@ public class PostDAOImpl implements PostDAO {
 	                post = new PostDTO();
 	                post.setPostId(   rs.getInt("post_id")   );
 	                post.setUserId(   rs.getInt("user_id")   );
-	                post.setUid(      rs.getString("uid")    );    
+	                post.setUid(      rs.getString("uid")    ); 
+	                post.setNickname(rs.getString("nickname"));
 	                post.setTitle(    rs.getString("title")  );
 	                post.setContent(  rs.getString("content"));
 	                post.setCreatedAt(rs.getDate("created_at"));

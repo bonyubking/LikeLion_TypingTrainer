@@ -28,6 +28,7 @@ public class CommentDAOImpl implements CommentDAO {
                     dto.setCommentId(rs.getInt("comment_id"));
                     dto.setUserId(rs.getInt("user_id"));
                     dto.setUid(rs.getString("uid"));
+                    dto.setNickname(rs.getString("nickname"));
                     dto.setPostId(rs.getInt("post_id"));
                     dto.setContent(rs.getString("content"));
                     dto.setCreatedAt(rs.getDate("created_at"));

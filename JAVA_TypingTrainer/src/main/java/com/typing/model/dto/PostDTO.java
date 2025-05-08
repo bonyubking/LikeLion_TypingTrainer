@@ -6,19 +6,23 @@ import java.sql.Date;
 public class PostDTO {
     private int postId;
     private int userId;
-    private String uid;  
+    private String uid;
+    private String nickname;
     private String title;
     private String content;
     private Date createdAt;  
-    private int viewCount;
+
+
+	private int viewCount;
     private int commentCount;
     
     public PostDTO() {}
 
-    public PostDTO(int postId, int userId, String title, String content, Date createdAt, int viewCount, int commentCount) {
+    public PostDTO(int postId, int userId, String title, String nickname, String content, Date createdAt, int viewCount, int commentCount) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
+        this.nickname = nickname;
         this.content = content;
         this.createdAt = createdAt;
         this.viewCount = viewCount;
@@ -87,5 +91,13 @@ public class PostDTO {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+    
+    public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 }
 

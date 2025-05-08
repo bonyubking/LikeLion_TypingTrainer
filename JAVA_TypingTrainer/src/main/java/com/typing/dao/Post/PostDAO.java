@@ -10,14 +10,14 @@ public interface PostDAO {
 	String insert = "INSERT INTO posts(user_id, title, content, created_at, view_count, comment_count) VALUES (?,?,?,NOW(),0,0)";
 	String selectAll =  "SELECT "
 			  + "p.post_id, p.user_id, p.title, p.content, p.created_at,"
-			  + "p.view_count, p.comment_count, u.uid "
+			  + "p.view_count, p.comment_count, u.uid, u.nickname "
 			  + "FROM posts p "
 			  + "JOIN users u ON p.user_id = u.user_id "
 			  + "ORDER BY p.created_at DESC";
 	
 	String selectById = "SELECT "
 			  + "p.post_id, p.user_id, p.title, p.content, p.created_at, "
-			  + "u.uid , p.view_count, p.comment_count "
+			  + "u.uid , u.nickname, p.view_count, p.comment_count "
 			  + "FROM posts p "
 			  + "JOIN users u ON p.user_id = u.user_id "
 			  + "WHERE p.post_id = ? ";

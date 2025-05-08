@@ -6,19 +6,29 @@ public class CommentDTO {
     
 	private int commentId;
     private int userId;
-    private String uid;     // Users 테이블에서 가져온 닉네임 혹은 uid
+    private String uid;
+    private String nickname;// Users 테이블에서 가져온 닉네임 혹은 uid
     private int postId;
     private String content;
     private Date createdAt;
 	
-    public CommentDTO(int commentId, int userId, String uid, int postId, String content, Date createdAt) {
+    public CommentDTO(int commentId, int userId, String uid, String nickname, int postId, String content, Date createdAt) {
 		
     	this.commentId = commentId;
 		this.userId = userId;
 		this.uid = uid;
+		this.nickname = nickname;
 		this.postId = postId;
 		this.content = content;
 		this.createdAt = createdAt;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public CommentDTO() {

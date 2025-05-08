@@ -102,7 +102,7 @@ function PostDetailPage() {
           <div key={comment.commentId} className={styles.commentRow}>
             {/* 왼쪽 네모: USER ID */}
             <div className={styles.avatarBox}>
-              {comment.uid}
+              {comment.nickname}
             </div>
 
             {/* 오른쪽 댓글 박스 */}
@@ -112,7 +112,6 @@ function PostDetailPage() {
               </p>
               <div className={styles.commentMeta}>
                 <span>{new Date(comment.createdAt).toLocaleDateString()}</span>
-                <span>{new Date(comment.createdAt).toLocaleTimeString()}</span>
               </div>
             </div>
           </div>
