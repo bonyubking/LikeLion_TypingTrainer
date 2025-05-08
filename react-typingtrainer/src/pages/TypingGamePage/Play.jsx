@@ -6,6 +6,7 @@ import CorrectModal from '../../components/TypingGame/CorrectModal';
 import WrongModal from '../../components/TypingGame/WrongModal';
 import common from '../../styles/common.module.css';
 import styles from './play.module.css';
+import { fetchRandomProblem } from '../../api/gameApi';
 
 function splitHangul(char) {
     const HANGUL_START = 0xac00;
@@ -80,6 +81,7 @@ export default function TypingPlay() {
         loadQuestion();
     }, []);
 
+
     useEffect(() => {
         const minutes = elapsedTime / 60;
         const newSpeed = minutes > 0 ? Math.floor(totalTypedUnits / minutes) : 0;
@@ -91,10 +93,10 @@ export default function TypingPlay() {
         : Math.round((correctCount / (correctCount + wrongCount)) * 100);
 
     const loadQuestion = async () => {
-        const res = await fetch(`/api/problems/random?lang=${language}&diff=${difficulty}&type=${type}`);
-        const data = await res.json();
+        const data = await fetchRandomProblem(language, difficulty, type);
         setQuestion(data.content);
     };
+
 
     function handleSubmit() {
         const typedUnits = countTypingUnits(userInput, language);

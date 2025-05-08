@@ -1,8 +1,19 @@
 import axios from 'axios';
 const SERVER_URL = process.env.REACT_APP_HTTP_URL;
 
-export const fetchRandomProblem = (language, difficulty, type) =>
-    axios.get('/api/problems/random', { params: { language, difficulty, type } });
+export async function fetchRandomProblem(language, difficulty, type) {
+    try {
+        const res = await fetch(`/api/problem/random?lang=${language}&diff=${difficulty}&type=${type}`);
+        const data = await res.json();
+        console.log("🔵 서버 응답:", data);
+        if (!res.ok) throw new Error('문제 로딩 실패');
+        return data;
+    } catch (err) {
+        console.error("❌ 문제 로딩 실패:", err);
+        return { content: '문제를 불러올 수 없습니다.' };
+    }
+}
+
 
 
 /**

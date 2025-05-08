@@ -11,14 +11,28 @@ export default function TypingIntro() {
     const [mode, setMode] = useState('');
     const [showModal, setShowModal] = useState(false);
 
-    const handleStart = async () => {
+    const timeMap = {
+        '1분': 60,
+        '2분': 120,
+        '5분': 300,
+        '10분': 600
+    };
+
+    const handleStart = () => {
         if (!level || !time || !mode) {
             setShowModal(true);
             return;
         }
 
-        // 필요 시 서버에 요청할 수 있음
-        navigate('/typing/play', { state: { level, time, mode } });
+        navigate('/typing/play', {
+            state: {
+                userId: 'testUser',
+                difficulty: level,
+                type: mode.split('/')[1],
+                language: mode.split('/')[0],
+                totalTime: timeMap[time],
+            },
+        });
     };
 
     return (
@@ -55,6 +69,7 @@ export default function TypingIntro() {
                             <option>한국어/문장</option>
                             <option>영어/단어</option>
                             <option>영어/문장</option>
+                            <option>밈(Meme)</option>
                         </select>
                     </div>
                 </div>

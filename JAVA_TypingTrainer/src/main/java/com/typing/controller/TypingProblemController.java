@@ -1,11 +1,9 @@
 package com.typing.controller;
 
-import com.google.gson.Gson;
 import com.typing.dao.Typing.TypingProblemDaoImpl;
 import com.typing.model.entity.TypingProblem;
 import com.typing.util.HttpUtil;
-import com.typing.controller.TypingProblemController;
-
+import com.typing.util.JsonUtil;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -26,13 +24,13 @@ public class TypingProblemController {
             TypingProblem problem = problemDao.findRandomProblem(language, difficulty, type);
 
             if (problem != null) {
-                HttpUtil.sendJsonResponse(out, new Gson().toJson(problem), HttpURLConnection.HTTP_OK);
+                HttpUtil.sendJsonResponse(out, JsonUtil.toJson(problem), HttpURLConnection.HTTP_OK);
             } else {
-                HttpUtil.sendJsonResponse(out, "{\"error\": \"문제를 찾을 수 없습니다.\"}", HttpURLConnection.HTTP_NOT_FOUND);
+                HttpUtil.sendJsonResponse(out, JsonUtil.toJson(Map.of("error", "문제를 찾을 수 없습니다.")), HttpURLConnection.HTTP_NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            HttpUtil.sendJsonResponse(out, "{\"error\": \"서버 오류 발생\"}", HttpURLConnection.HTTP_INTERNAL_ERROR);
+            HttpUtil.sendJsonResponse(out, JsonUtil.toJson(Map.of("error", "서버 오류 발생")), HttpURLConnection.HTTP_INTERNAL_ERROR);
         }
     }
 

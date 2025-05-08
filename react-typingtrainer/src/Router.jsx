@@ -11,6 +11,7 @@ import ChatPage from './pages/ChatPage';
 import HomePage from './pages/HomePage';
 import Mode from './pages/TypingGamePage/mode';
 import TypingGamePage from './pages/TypingGamePage/Play';
+import PlayWrapper from './pages/TypingGamePage/PlayWrapper';
 // import SignIn from './pages/SignIn';
 // import SignUp from './pages/SignUp';
 // 필요한 페이지 import...
@@ -25,7 +26,7 @@ export default function AppRoutes() {
       <Route path="/signup" element={<SignUp />} /> */}
       {/* 다른 Route도 이 아래에 계속 추가 */}
       <Route path="/typing/mode" element={<Mode />} />
-      <Route path="/typing/play" element={<TypingGamePage />} />
+      <Route path="/typing/play" element={<PlayWrapper />} />
     </Routes>
   );
 }
