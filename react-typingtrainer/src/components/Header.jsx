@@ -7,8 +7,7 @@ import Trot from '../assets/mp3/트로트.mp3';
 import Hiphop from '../assets/mp3/힙합.mp3';
 import Children from '../assets/mp3/동요.mp3';
 import { useUser } from '../contexts/UserContext';
-import './Header.css';
-
+import styles from './Header.module.css';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -114,17 +113,17 @@ const Header = () => {
   };
 
   return (
-    <header className="header">
-      <div className="header-content">
-        <button className="back-button" onClick={handleBack}>
+    <header className={styles.header}>
+      <div className={styles.header_content}>
+        <button className={styles.back_button} onClick={handleBack}>
           <IoChevronBack size={24} />
         </button>
-        <div className="audio-controls">
-          {nickname && <span className="nickname"><strong>{nickname}</strong>님</span>}
+        <div className={styles.audio_controls}>
+          {nickname && <span className={styles.nickname}><strong>{nickname}</strong>님</span>}
           <select 
             value={currentMusic} 
             onChange={handleMusicChange}
-            className="music-select"
+            className={styles.music_select}
           >
             {musicOptions.map(option => (
               <option key={option.label} value={option.label}>
@@ -133,7 +132,7 @@ const Header = () => {
             ))}
           </select>
           <button 
-            className="volume-button"
+            className={styles.volume_button}
             onClick={toggleVolumeSlider}
           >
             {volume === 0 ? (
@@ -143,7 +142,7 @@ const Header = () => {
             )}
           </button>
           {showVolumeSlider && (
-            <div className="volume-slider-container">
+            <div className={styles.volume_slider_container}>
               <input
                 ref={sliderRef}
                 type="range"
@@ -152,7 +151,7 @@ const Header = () => {
                 step="0.1"
                 value={volume}
                 onChange={handleVolumeChange}
-                className="volume-slider"
+                className={styles.volume_slider}
               />
             </div>
           )}

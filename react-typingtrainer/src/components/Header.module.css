@@ -9,7 +9,7 @@
   width: 100%;
 }
 
-.header-content {
+.header_content { 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,9 +17,9 @@
   margin: 0 auto;
 }
 
-.back-button,
-.notification-button,
-.volume-button {
+.back_button, 
+.notification_button,
+.volume_button {
   background: none;
   border: none;
   cursor: pointer;
@@ -31,17 +31,17 @@
   transition: color 0.3s ease;
 }
 
-.back-button:hover,
-.notification-button:hover,
-.volume-button:hover {
+.back_button:hover,
+.notification_button:hover,
+.volume_button:hover {
   color: #666;
 }
 
-.notification-button.active {
+.notification_button.active {
   color: #007bff;
 }
 
-.audio-controls {
+.audio_controls {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -53,7 +53,7 @@
   color: #333;
 }
 
-.music-select {
+.music_select {
   padding: 6px 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -64,17 +64,17 @@
   transition: border-color 0.3s ease;
 }
 
-.music-select:hover {
+.music_select:hover {
   border-color: #007bff;
 }
 
-.music-select:focus {
+.music_select:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
-.volume-slider-container {
+.volume_slider_container {
   position: absolute;
   top: 100%;
   right: 0;
@@ -85,7 +85,7 @@
   margin-top: 8px;
 }
 
-.volume-slider {
+.volume_slider {
   -webkit-appearance: none;
   width: 100px;
   height: 4px;
@@ -96,21 +96,21 @@
 }
 
 /* 슬라이더의 채워진 부분을 위한 가상 요소 */
-.volume-slider::-webkit-slider-runnable-track {
+.volume_slider::-webkit-slider-runnable-track {
   width: 100%;
   height: 4px;
   background: linear-gradient(to right, #007bff 0%, #007bff var(--volume-level, 50%), #ddd var(--volume-level, 50%), #ddd 100%);
   border-radius: 2px;
 }
 
-.volume-slider::-moz-range-track {
+.volume_slider::-moz-range-track {
   width: 100%;
   height: 4px;
   background: linear-gradient(to right, #007bff 0%, #007bff var(--volume-level, 50%), #ddd var(--volume-level, 50%), #ddd 100%);
   border-radius: 2px;
 }
 
-.volume-slider::-webkit-slider-thumb {
+.volume_slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
@@ -122,11 +122,11 @@
   margin-top: -6px; /* 슬라이더 중앙에 위치하도록 조정 */
 }
 
-.volume-slider::-webkit-slider-thumb:hover {
+.volume_slider::-webkit-slider-thumb:hover {
   background: #0056b3;
 }
 
-.volume-slider::-moz-range-thumb {
+.volume_slider::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -136,7 +136,7 @@
   border: none;
 }
 
-.volume-slider::-moz-range-thumb:hover {
+.volume_slider::-moz-range-thumb:hover {
   background: #0056b3;
 }
 
@@ -146,18 +146,13 @@
     padding: 0.5rem;
   }
   
-  .header-content {
+  .header_content {
     padding: 0 0.5rem;
   }
 
-  .music-select {
+  .music_select {
     font-size: 0.8rem;
     padding: 4px 8px;
   }
 } 
 
-.nickname{
-  min-height: 100%;
-  line-height: 45px;
-
-}

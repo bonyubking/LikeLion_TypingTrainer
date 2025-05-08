@@ -63,7 +63,7 @@ export default function TypingIntro() {
 
                     <div className={styles.card}>
                         <h2>언어 / 문제 형식</h2>
-                        <select onChange={(e) => setMode(e.target.value)} defaultValue="">
+                        <select className={styles.modeSelect} onChange={(e) => setMode(e.target.value)} defaultValue="">
                             <option value="" disabled>언어/형식</option>
                             <option>한국어/단어</option>
                             <option>한국어/문장</option>
