@@ -36,6 +36,15 @@ const LoginForm = ({ isLoggedIn, setIsLoggedIn }) => {
     }
   };
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    setIsLoggedIn(false);
+    setUserNickname("");
+    setForm({ email: "", password: "" });
+    alert("로그아웃 되었습니다.");
+    navigate("/");
+  };
+
   if (isLoggedIn) {
     const today = new Date();
     const formattedDate = today.toLocaleDateString('ko-KR', {
@@ -54,7 +63,11 @@ const LoginForm = ({ isLoggedIn, setIsLoggedIn }) => {
               오늘도 즐거운 타자연습 되세요!<br />
               기록을 남기고, 실력을 키워보세요 🎯
             </p>
+            <div className={styles.logout}>
+            <p className={styles.logout_text} onClick={handleLogout}>로그아웃</p>
+          </div> 
           </div>
+
         </div>
         <div className={styles.login_form_illustration}>
           <img src={people} alt="사람들 일러스트" />

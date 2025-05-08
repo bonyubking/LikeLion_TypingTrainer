@@ -20,11 +20,7 @@ const MainPage = () => {
     sessionStorage.getItem("isLoggedIn") === "true"
   );
   const navigate = useNavigate();
-  const nicknameRef = useRef("");
-  useEffect(() => {
-    nicknameRef.current = sessionStorage.getItem("nickname");
-    console.log(nicknameRef.current);
-  }, [nickname]);
+
   useEffect(() => {
     setNickname(sessionStorage.getItem("nickname"));
     setIsLoggedIn(sessionStorage.getItem("isLoggedIn") === "true");
