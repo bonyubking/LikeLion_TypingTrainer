@@ -4,7 +4,7 @@ import com.typing.dao.Song.SongDao;
 import com.typing.dao.Song.SongDaoImpl;
 import com.typing.model.dto.SongDto;
 import com.typing.model.dto.SongGameSetting;
-//import com.typing.model.dto.SongRecordDTO;
+import com.typing.model.dto.SongRecordDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,8 @@ public class SongGameServiceImpl implements SongGameService {
     private SongDto currentSong;
     private int currentHintIndex = 0;
     private int correctCount = 0;
+    
+    private int userId;
 
     @Override
     public void startGame(SongGameSetting setting) {
@@ -26,6 +28,9 @@ public class SongGameServiceImpl implements SongGameService {
         this.usedSongIds.clear();
         this.correctCount = 0;
         this.currentHintIndex = 0;
+
+        // this.userId = setting.getUserId();
+
         System.out.println("=== start game ===");
     }
 
@@ -43,8 +48,8 @@ public class SongGameServiceImpl implements SongGameService {
         usedSongIds.add(currentSong.getId());
         currentHintIndex = 0;
 
-        System.out.println("출제 가사: " + currentSong.getLyrics());
-        return currentSong;
+        System.out.println("출제 가사: " + currentSong.getLyrics());  // 콘솔 로그용
+        return currentSong;  // 곡 객체 반환
     }
 
     @Override
@@ -73,10 +78,10 @@ public class SongGameServiceImpl implements SongGameService {
 
         if (currentHintIndex == 0) {
             currentHintIndex++;
-            return "가수 힌트: " + currentSong.getSinger();
+            return currentSong.getSinger();  // 1번
         } else if (currentHintIndex == 1) {
             currentHintIndex++;
-            return "초성 힌트: " + currentSong.getInitial();
+            return currentSong.getInitial();  // 2번
         }
 
         return null;
@@ -84,6 +89,19 @@ public class SongGameServiceImpl implements SongGameService {
 
     @Override
     public void endGame() {
-    	//To-Do::게임 결과 데이터 파싱 및 전달
+        System.out.println("게임 종료");
+        System.out.println("총 정답 수: " + correctCount);
+
+        SongRecordDTO record = new SongRecordDTO();
+        //record.setUserId(setting.getUserId());
+        record.setCorrectCount(correctCount);
+        record.setGenre(String.join(",", setting.getGenre()));
+        record.setHintTime(setting.getHintTime());
+        record.setDuration(setting.getPlaytime());
+        
+        songDao.saveRecord(record);
+        System.out.println("Game record saved");
+        
+        // To-Do : UserId 예외 처리 및 실제 기능 추가 구현
     }
 }

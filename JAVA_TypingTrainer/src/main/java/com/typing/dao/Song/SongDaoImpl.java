@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.typing.model.dto.SongDto;
 import com.typing.model.dto.SongGameSetting;
+import com.typing.model.dto.SongRecordDTO;
 import com.typing.util.DBUtil;
 
 public class SongDaoImpl implements SongDao {
@@ -65,4 +66,32 @@ public class SongDaoImpl implements SongDao {
 
 	    return result;
 	}
+	
+	@Override
+	public void saveRecord(SongRecordDTO record) {
+	    String sql = "INSERT INTO Song_records (user_id, duration, correct_count, played_at, genre, hint_time) "
+	               + "VALUES (?, SEC_TO_TIME(?), ?, ?, ?, ?)";
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setInt(1, record.getUserId());
+	        stmt.setInt(2, record.getDuration());
+	        stmt.setInt(3, record.getCorrectCount());
+	        stmt.setString(4, record.getPlayedAt());
+	        stmt.setString(5, record.getGenre());
+	        stmt.setInt(6, record.getHintTime());
+
+	        int result = stmt.executeUpdate();
+	        if (result > 0) {
+	            System.out.println("Game Record Saved");
+	        } else {
+	            System.out.println("Game Record Unsaved : maybe got some error");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 }
