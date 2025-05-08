@@ -1,4 +1,5 @@
 import { BrowserRouter, useLocation } from 'react-router-dom';
+import { UserProvider } from './contexts/UserContext';
 
 import Header from './components/Header';
 import AppRoutes from './Router';
@@ -10,7 +11,7 @@ function AppContent() {
 
   return (
     <div className="app-container">
-      {!isSignupPage && <Header />}
+      <Header />
       <main className="main-content">
         <div className="content-wrapper">
           <AppRoutes />
@@ -22,9 +23,11 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 
