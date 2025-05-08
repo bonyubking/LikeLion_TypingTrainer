@@ -3,23 +3,22 @@ package com.typing.server;
 import com.sun.net.httpserver.HttpServer;
 import com.typing.server.TypingProblemServer;
 import com.typing.controller.ChatController;
-import com.typing.controller.UserController;
-import com.typing.model.dto.ChatMessageDto;
-import com.typing.model.dto.UserDto;
 import com.typing.controller.CommentController;
 import com.typing.controller.PostController;
+import com.typing.controller.SongRecordController;
+import com.typing.controller.TypingRecordController;
+import com.typing.controller.UserController;
 import com.typing.model.dto.ChatMessageDto;
 import com.typing.model.dto.CommentDTO;
 import com.typing.model.dto.PostDTO;
-import com.typing.controller.SongRecordController;
-import com.typing.controller.TypingRecordController;
-import com.typing.model.dto.ChatMessageDto;
 import com.typing.model.dto.SongFilter;
 import com.typing.model.dto.SongRecordDTO;
 import com.typing.model.dto.TypingFilter;
 import com.typing.model.dto.TypingRecordDTO;
+import com.typing.model.dto.UserDto;
 import com.typing.util.CORSFilter;
 import com.typing.util.JsonUtil;
+<<<<<<< Updated upstream
 
 
 
@@ -27,6 +26,9 @@ import com.typing.util.QueryString;
 
 
 
+=======
+import com.typing.util.QueryString;
+>>>>>>> Stashed changes
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
@@ -73,6 +75,7 @@ public class LocalHttpServer {
             // 응답 반환
         });
 <<<<<<< HEAD
+
 
         // 회원가입 
         httpServer.createContext("/signup", exchange -> {
@@ -573,6 +576,55 @@ public class LocalHttpServer {
 		        exchange.close();
 		    }
 		});
+<<<<<<< Updated upstream
+=======
+		
+		// 타자게임 문제 불러오기 API
+        httpServer.createContext("/api/problem/random", exchange -> {
+            if (CORSFilter.handlePreflight(exchange)) return;
+
+            if ("GET".equals(exchange.getRequestMethod())) {
+                CORSFilter.applyCORS(exchange);
+
+                String query = exchange.getRequestURI().getQuery();
+                String language = null, difficulty = null, type = null;
+
+                for (String param : query.split("&")) {
+                    String[] pair = param.split("=");
+                    if (pair.length == 2) {
+                        switch (pair[0]) {
+                            case "lang" -> language = java.net.URLDecoder.decode(pair[1], "UTF-8");
+                            case "diff" -> difficulty = java.net.URLDecoder.decode(pair[1], "UTF-8");
+                            case "type" -> type = java.net.URLDecoder.decode(pair[1], "UTF-8");
+                        }
+                    }
+                }
+
+                try {
+                    TypingProblemServer problemServer = new TypingProblemServer();  // 정상 선언
+                    String json = problemServer.getProblemJson(language, difficulty, type);
+                    System.out.println("🟢 최종 JSON 응답 → " + json);
+                    byte[] responseBytes = json.getBytes(StandardCharsets.UTF_8);
+
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                    exchange.sendResponseHeaders(200, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                } catch (Exception e) {
+                    String error = "{\"message\":\"" + e.getMessage() + "\"}";
+                    byte[] errorBytes = error.getBytes(StandardCharsets.UTF_8);
+
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                    exchange.sendResponseHeaders(500, errorBytes.length);
+                    exchange.getResponseBody().write(errorBytes);
+                } finally {
+                    exchange.getResponseBody().close();
+                }
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.close();
+            }
+        });
+>>>>>>> Stashed changes
 
  
 		// 타자게임 문제 불러오기 API
