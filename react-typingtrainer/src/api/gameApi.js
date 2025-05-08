@@ -3,7 +3,7 @@ const SERVER_URL = process.env.REACT_APP_HTTP_URL;
 
 export async function fetchRandomProblem(language, difficulty, type) {
     try {
-        const res = await fetch(`/api/problem/random?lang=${language}&diff=${difficulty}&type=${type}`);
+        const res = await fetch(`${SERVER_URL}/api/problem/random?lang=${language}&diff=${difficulty}&type=${type}`);
         const data = await res.json();
         console.log("🔵 서버 응답:", data);
         if (!res.ok) throw new Error('문제 로딩 실패');
