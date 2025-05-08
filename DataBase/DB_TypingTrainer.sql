@@ -1,5 +1,6 @@
 CREATE SCHEMA typingtrainer;
 USE typingtrainer;
+DROP TABLE GAME_RECORDS;
 
 CREATE TABLE Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,

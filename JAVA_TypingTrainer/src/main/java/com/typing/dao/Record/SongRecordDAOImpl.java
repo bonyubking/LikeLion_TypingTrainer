@@ -62,6 +62,7 @@ public class SongRecordDAOImpl implements SongRecordDAO {
                     dto.setRecordId(rs.getInt("record_id"));
                     dto.setUserId(rs.getInt("user_id"));
                     dto.setUid(rs.getString("Uid")); 
+                    dto.setNickname(rs.getString("nickname"));
                     dto.setDuration(rs.getInt("duration"));  
                     dto.setCorrectCount(rs.getInt("correct_count"));
                     dto.setPlayedAt(rs.getTimestamp("played_at").toLocalDateTime().toString());

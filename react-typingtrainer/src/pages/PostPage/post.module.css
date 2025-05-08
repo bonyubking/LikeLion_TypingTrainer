@@ -4,32 +4,35 @@
 .container {
     padding: 20px;
     max-width: 1440px;
+    min-width: 320px;
     margin: 0 auto;
-  }
+    width: 100%;
+    box-sizing: border-box;
+}
   
-  /* 2) 헤더 */
-  .header {
+/* 2) 헤더 */
+.header {
     text-align: center;
     margin-bottom: 120px;
-  }
-  .headerTitle {
+}
+.headerTitle {
     font-family: "Titillium Web", sans-serif;
     font-weight: 700;
     color: #122432;
-    font-size: 48px;
-    line-height: 63px;
-  }
-  .headerDesc {
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.3;
+}
+.headerDesc {
     font-family: "Titillium Web", sans-serif;
     font-weight: 400;
     color: #556f86;
-    font-size: 20px;
+    font-size: clamp(16px, 2.5vw, 20px);
     margin-top: 8px;
-    line-height: 38px;
-  }
+    line-height: 1.5;
+}
   
-  /* 3) 리스트 박스 (배경, 패딩, 둥근 모서리) */
-  .listBox {
+/* 3) 리스트 박스 (배경, 패딩, 둥근 모서리) */
+.listBox {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -37,101 +40,136 @@
     border-radius: 10px;
     padding: 52px 94px;
     margin-bottom: 32px;
-  }
+    min-height: 1200px; /* 10개 게시물을 위한 최소 높이 */
+}
   
-  /* 헤더 스타일 */
-  .listHeader {
+/* 스크롤바 스타일링 */
+.listBox::-webkit-scrollbar {
+    width: 8px;
+}
+
+.listBox::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.listBox::-webkit-scrollbar-thumb {
+    background: #556f86;
+    border-radius: 4px;
+}
+
+.listBox::-webkit-scrollbar-thumb:hover {
+    background: #445566;
+}
+  
+/* 헤더 스타일 */
+.listHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-bottom: 12px;
     border-bottom: 2px solid #556f86;
     margin-bottom: 12px;
-  }
+    position: sticky;
+    top: 0;
+    background-color: #e0e8f0;
+    z-index: 1;
+    padding-top: 12px;
+}
   
-  .listHeader .itemText {
+.listHeader .itemText {
     color: #556f86;
     font-weight: 700;
-  }
+}
   
-  .listHeader .itemMeta {
+.listHeader .itemMeta {
     display: flex;
-    gap: 24px;
+    gap: clamp(12px, 2vw, 24px);
     color: #556f86;
     font-weight: 700;
-  }
+    flex-wrap: wrap;
+}
   
-  .listHeader .itemMeta span {
+.listHeader .itemMeta span {
     min-width: 60px;
     text-align: center;
-  }
+}
   
-  /* 4) 리스트 아이템 */
-  .item {
+/* 4) 리스트 아이템 */
+.item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 0;
-  }
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #e0e8f0;
+}
 
-  .leftContent {
+.leftContent {
     display: flex;
     align-items: center;
-    gap: 16px;
-  }
+    gap: clamp(8px, 2vw, 16px);
+    flex: 1;
+    min-width: 200px;
+}
 
-  .itemIcon {
-    width: 84px;
-    height: 48px;
+.itemIcon {
+    width: clamp(60px, 10vw, 84px);
+    height: clamp(40px, 6vw, 48px);
     background-image: url('../../assets/Shape.svg');
     background-size: cover;
-    margin-right: 48px;
-  }
-  .itemText {
+    margin-right: clamp(20px, 3vw, 48px);
+    flex-shrink: 0;
+}
+.itemText {
     font-family: "Titillium Web", sans-serif;
     font-weight: 500;
     color: #122432;
-    font-size: 20px;
-  }
+    font-size: clamp(16px, 2.5vw, 20px);
+    word-break: break-word;
+}
   
-  .itemMeta {
+.itemMeta {
     display: flex;
     align-items: center;
-    gap: 24px;
-    font-size: 14px;
+    gap: clamp(12px, 2vw, 24px);
+    font-size: clamp(12px, 1.5vw, 14px);
     color: #777777;
-  }
+    flex-wrap: wrap;
+}
 
-  .itemMeta span {
+.itemMeta span {
     min-width: 60px;
     text-align: center;
-  }
+}
   
-  .dateColumn {
+.dateColumn {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
     min-width: 80px;
-  }
+}
 
-  .dateColumn span {
+.dateColumn span {
     min-width: auto;
-  }
+    white-space: nowrap;
+}
   
-  /* 헤더의 날짜 컬럼 스타일 */
-  .listHeader .dateColumn {
+/* 헤더의 날짜 컬럼 스타일 */
+.listHeader .dateColumn {
     color: #556f86;
     font-weight: 700;
-  }
+}
 
-  .listHeader .dateColumn span {
+.listHeader .dateColumn span {
     min-width: auto;
-  }
+}
   
-  /* 5) 버튼 */
-  .createButton {
-    padding: 12px 24px;
+/* 5) 버튼 */
+.createButton {
+    padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
     background-color: #556f86;
     color: white;
     border: none;
@@ -139,5 +177,42 @@
     cursor: pointer;
     font-family: "Titillium Web", sans-serif;
     font-weight: 700;
-    font-size: 25px;
-  }
+    font-size: clamp(18px, 3vw, 25px);
+    white-space: nowrap;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 32px 0;
+}
+
+.pageButton {
+  padding: 8px 16px;
+  border: 1px solid #556f86;
+  background-color: white;
+  color: #556f86;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.pageButton:hover:not(:disabled) {
+  background-color: #556f86;
+  color: white;
+}
+
+.pageButton.active {
+  background-color: #556f86;
+  color: white;
+}
+
+.pageButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

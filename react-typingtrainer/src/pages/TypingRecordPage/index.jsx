@@ -178,8 +178,8 @@ const getCurrentPageData = () => {
                     <th>정답 수</th>
                 </>
             )}
-            <th>ID</th>
-            <th>플레이 시간</th>
+            <th>닉네임</th>
+            <th>플레이 날짜</th>
         </tr>
     </thead>
     <tbody>
@@ -204,8 +204,8 @@ const getCurrentPageData = () => {
                   </>
                 ) 
                 }
-                <td>{r.Uid}</td>
-                <td>{new Date(r.playedAt).toLocaleString()}</td>
+                <td>{r.nickname}</td>
+                <td>{new Date(r.playedAt).toLocaleDateString()}</td>
             </tr>
         ))}
         {records.length === 0 && (

@@ -9,7 +9,7 @@ import com.typing.model.dto.SongRecordDTO;
 public interface SongRecordDAO {
 	
 	String getbyfilterSql = 
-		    "SELECT r.record_id, r.user_id, u.uid as Uid, "
+		    "SELECT r.record_id, r.user_id, u.uid as Uid, u.nickname, "
 		    		  + "MINUTE(r.duration) AS duration, r.correct_count, "
 		    		  + "r.played_at, r.genre, r.hint_time "
 		    		  + "FROM song_records AS r "
