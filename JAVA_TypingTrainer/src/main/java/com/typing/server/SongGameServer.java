@@ -10,11 +10,19 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SongGameServer extends WebSocketServer {
 
     private final SongGameService gameService = new SongGameServiceImpl();
     private final Gson gson = new Gson();
+
+    // 연결마다 힌트 타이머 관리
+    private final Map<WebSocket, Timer> hintTimers = new HashMap<>();
+    private final Map<WebSocket, Integer> hintStageMap = new HashMap<>();
 
     public SongGameServer(int port) {
         super(new InetSocketAddress(port));
@@ -35,11 +43,17 @@ public class SongGameServer extends WebSocketServer {
                 case "startGame":
                     handleStartGame(conn, json.getAsJsonObject("data"));
                     break;
+                case "hint":
+                    // 클라이언트에서는 더이상 수동 요청 없음
+                    break;
                 case "answer":
                     handleAnswer(conn, json.get("input").getAsString());
                     break;
                 case "skip":
                     handleSkip(conn);
+                    break;
+                case "end":
+                    handleEnd(conn);
                     break;
                 default:
                     conn.send("{\"type\":\"error\",\"message\":\"알 수 없는 메시지 타입입니다.\"}");
@@ -55,8 +69,8 @@ public class SongGameServer extends WebSocketServer {
         SongGameSetting setting = new SongGameSetting();
 
         try {
-            int userId = data.get("userId").getAsInt(); // 필요시 설정에 적용
-            // setting.setUserId(userId); // 필요 시 주석 해제
+            int userId = data.get("userId").getAsInt();
+            // setting.setUserId(userId);
         } catch (Exception e) {
             System.out.println("⚠️ userId 파싱 실패, 기본값 사용");
         }
@@ -70,7 +84,7 @@ public class SongGameServer extends WebSocketServer {
         }
 
         gameService.startGame(setting);
-        sendNextQuestion(conn);
+        sendNextQuestion(conn, setting.getHintTime());
     }
 
     private void handleAnswer(WebSocket conn, String input) {
@@ -78,29 +92,80 @@ public class SongGameServer extends WebSocketServer {
         conn.send("{\"type\":\"" + (correct ? "correct" : "wrong") + "\"}");
 
         if (correct) {
-            sendNextQuestion(conn);
+            stopHintTimer(conn);
+            sendNextQuestion(conn, gameService.getCurrentSetting().getHintTime());
         }
     }
 
     private void handleSkip(WebSocket conn) {
         conn.send("{\"type\":\"skipped\"}");
-        sendNextQuestion(conn);
+        stopHintTimer(conn);
+        sendNextQuestion(conn, gameService.getCurrentSetting().getHintTime());
     }
 
-    private void sendNextQuestion(WebSocket conn) {
+    private void handleEnd(WebSocket conn) {
+        stopHintTimer(conn);
+        gameService.endGame();
+        conn.send("{\"type\":\"end\"}");
+        conn.close();
+    }
+
+    private void sendNextQuestion(WebSocket conn, int hintInterval) {
         SongDto song = gameService.nextQuestion();
         if (song != null) {
             JsonObject nextQ = new JsonObject();
             nextQ.addProperty("type", "question");
             nextQ.addProperty("lyrics", song.getLyrics());
             conn.send(nextQ.toString());
+
+            startHintTimer(conn, hintInterval);
+
         } else {
-            System.out.println("Maybe something got errors. Song values is null.");
+            conn.send("{\"type\":\"end\"}");
+            conn.close();
         }
+    }
+
+    private void startHintTimer(WebSocket conn, int hintIntervalSeconds) {
+        stopHintTimer(conn); // 이전 타이머 제거
+
+        hintStageMap.put(conn, 0);
+        Timer timer = new Timer();
+        hintTimers.put(conn, timer);
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                int stage = hintStageMap.getOrDefault(conn, 0);
+                if (stage >= 2) {
+                    timer.cancel();
+                    return;
+                }
+
+                String hint = gameService.viewHint();
+                if (hint != null) {
+                    JsonObject hintMsg = new JsonObject();
+                    hintMsg.addProperty("type", "hint");
+                    hintMsg.addProperty("data", hint);
+                    conn.send(hintMsg.toString());
+
+                    hintStageMap.put(conn, stage + 1);
+                } else {
+                    timer.cancel();
+                }
+            }
+        }, hintIntervalSeconds * 1000L, hintIntervalSeconds * 1000L);
+    }
+
+    private void stopHintTimer(WebSocket conn) {
+        Timer timer = hintTimers.remove(conn);
+        if (timer != null) timer.cancel();
+        hintStageMap.remove(conn);
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+        stopHintTimer(conn);
         System.out.println("🛑 SongGame disconnected: " + conn.getRemoteSocketAddress());
     }
 

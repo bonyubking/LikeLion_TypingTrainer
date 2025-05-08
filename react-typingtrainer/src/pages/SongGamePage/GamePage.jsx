@@ -15,6 +15,10 @@ const GamePlayPage = () => {
   const [problemTime, setProblemTime] = useState(60);
   const [hintTimer, setHintTimer] = useState(0);
 
+  // ✅ hint 상태 추적을 useRef로
+  const hintCountRef = useRef(0);
+  const hintRequestedRef = useRef(false);
+
   const intervalRef = useRef();
 
   useEffect(() => {
@@ -54,12 +58,20 @@ const GamePlayPage = () => {
           setAnswer("");
           setHint1("");
           setHint2("");
+          hintCountRef.current = 0;
+          hintRequestedRef.current = false;
           setProblemTime(60);
+          setHintTimer(savedSettings.hintInterval);
           setTotalCount((prev) => prev + 1);
           break;
         case "hint":
-          if (!hint1) setHint1(message.data);
-          else setHint2(message.data);
+          if (hintCountRef.current === 0) {
+            setHint1(message.data);
+          } else if (hintCountRef.current === 1) {
+            setHint2(message.data);
+          }
+          hintCountRef.current++;
+          hintRequestedRef.current = false;
           break;
         case "correct":
           setCorrectCount((prev) => prev + 1);
@@ -100,6 +112,7 @@ const GamePlayPage = () => {
     if (!socket || !settings) return;
 
     intervalRef.current = setInterval(() => {
+      // 전체 시간 타이머
       setGlobalTime((prev) => {
         if (prev <= 1) {
           socket.send(JSON.stringify({ type: "end" }));
@@ -109,6 +122,7 @@ const GamePlayPage = () => {
         return prev - 1;
       });
 
+      // 문제 제한 타이머
       setProblemTime((prev) => {
         if (prev <= 1) {
           socket.send(JSON.stringify({ type: "skip" }));
@@ -117,9 +131,15 @@ const GamePlayPage = () => {
         return prev - 1;
       });
 
+      // 힌트 타이머
       setHintTimer((prev) => {
-        if (prev <= 1) {
+        if (
+          prev <= 1 &&
+          !hintRequestedRef.current &&
+          hintCountRef.current < 2
+        ) {
           socket.send(JSON.stringify({ type: "hint" }));
+          hintRequestedRef.current = true;
           return settings.hintInterval;
         }
         return prev - 1;
@@ -153,7 +173,9 @@ const GamePlayPage = () => {
       <div className={styles.stats}>
         <div>남은 시간: {globalTime}s</div>
         <div>맞춘 문제 수: {correctCount}개</div>
-        <div>문제 수: {correctCount}/{totalCount}</div>
+        <div>
+          문제 수: {correctCount}/{totalCount}
+        </div>
       </div>
 
       <div className={styles.questionBox}>{lyrics}</div>
@@ -161,11 +183,11 @@ const GamePlayPage = () => {
       <div className={styles.hintSection}>
         <div className={styles.hintBox}>
           <div>힌트1</div>
-          <div>{hint1 || "(없음)"}</div>
+          <div>{hint1 || "정보 힌트 대기 중!"}</div>
         </div>
         <div className={styles.hintBox}>
           <div>힌트2</div>
-          <div>{hint2 || "(없음)"}</div>
+          <div>{hint2 || "초성 힌트 대기 중!"}</div>
         </div>
       </div>
 

@@ -21,6 +21,11 @@ public class SongGameServiceImpl implements SongGameService {
     private int correctCount = 0;
     
     private int userId;
+    
+    @Override
+    public SongGameSetting getCurrentSetting() {
+        return this.setting;
+    }
 
     @Override
     public void startGame(SongGameSetting setting) {
@@ -44,11 +49,7 @@ public class SongGameServiceImpl implements SongGameService {
     }
 
     @Override
-    public SongDto nextQuestion() {
-    	System.out.println("세팅값: " + setting.getHintTime() + " / " + setting.getPlaytime());
-        System.out.println("장르: " + setting.getGenre());
-        System.out.println("제외곡 ID: " + setting.getExcludedSongIds());
-    	
+    public SongDto nextQuestion() {    	
         setting.setExcludedSongIds(usedSongIds);
         List<SongDto> songs = songDao.getRandomSongsByGenre(setting);
 
@@ -61,8 +62,7 @@ public class SongGameServiceImpl implements SongGameService {
         usedSongIds.add(currentSong.getId());
         currentHintIndex = 0;
 
-        System.out.println("출제 가사: " + currentSong.getLyrics());  // 콘솔 로그용
-        return currentSong;  // 곡 객체 반환
+        return currentSong;
     }
 
     @Override
@@ -77,12 +77,14 @@ public class SongGameServiceImpl implements SongGameService {
 
         if (isCorrect) {
             correctCount++;
-            System.out.println("정답! 현재 정답 수: " + correctCount);
-        } else {
-            System.out.println("오답!");
         }
-
+        
         return isCorrect;
+    }
+    
+    @Override
+    public int getHintIndex() {
+        return currentHintIndex;
     }
 
     @Override
