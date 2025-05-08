@@ -8,11 +8,9 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     margin: 0 auto;
-    padding-top: 150px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 80px;
+    padding: 150px 20px 80px;
     background-color: #E0E8F0;
+    box-sizing: border-box;
 }
   
 /* 2) 헤더 */
@@ -41,11 +39,12 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    /* background-color: #e0e8f0; */
     border-radius: 10px;
-    padding: 52px 94px;
+    padding: clamp(20px, 5vw, 52px) clamp(20px, 5vw, 94px);
     margin-bottom: 32px;
-    min-height: 1200px; /* 10개 게시물을 위한 최소 높이 */
+    min-height: 1200px;
+    width: 100%;
+    box-sizing: border-box;
 }
   
 /* 스크롤바 스타일링 */
@@ -72,14 +71,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 12px;
+    padding: 12px 0;
     border-bottom: 2px solid #556f86;
     margin-bottom: 12px;
     position: sticky;
     top: 0;
-    /* background-color: #e0e8f0; */
     z-index: 1;
-    padding-top: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
   
 .listHeader .itemText {
@@ -89,14 +88,14 @@
   
 .listHeader .itemMeta {
     display: flex;
-    gap: clamp(12px, 2vw, 24px);
+    gap: clamp(8px, 2vw, 24px);
     color: #556f86;
     font-weight: 700;
     flex-wrap: wrap;
 }
   
 .listHeader .itemMeta span {
-    min-width: 90px;
+    min-width: clamp(60px, 8vw, 90px);
     text-align: center;
 }
   
@@ -108,6 +107,7 @@
     padding: 12px 0;
     flex-wrap: wrap;
     gap: 10px;
+    width: 100%;
 }
 
 .leftContent {
@@ -116,24 +116,28 @@
     gap: clamp(8px, 2vw, 16px);
     flex: 1;
     min-width: 200px;
+    max-width: 100%;
 }
 
 .itemIcon {
-    width: clamp(60px, 10vw, 84px);
-    height: clamp(40px, 6vw, 48px);
+    width: clamp(40px, 8vw, 84px);
+    height: clamp(30px, 5vw, 48px);
     background-image: url('../../assets/Shape.svg');
-    background-size: cover;
-    margin-right: clamp(20px, 3vw, 48px);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: clamp(10px, 2vw, 48px);
     flex-shrink: 0;
 }
 .itemText {
     font-family: "Titillium Web", sans-serif;
     font-weight: 500;
     color: #122432;
-    font-size: clamp(16px, 2.5vw, 20px);
+    font-size: clamp(14px, 2vw, 20px);
     word-break: break-word;
     cursor: pointer;
     transition: color 0.2s ease;
+    flex: 1;
+    min-width: 0;
 }
 
 .itemText:hover {
@@ -144,14 +148,14 @@
 .itemMeta {
     display: flex;
     align-items: center;
-    gap: clamp(12px, 2vw, 24px);
+    gap: clamp(8px, 2vw, 24px);
     font-size: clamp(12px, 1.5vw, 14px);
     color: #777777;
     flex-wrap: wrap;
 }
 
 .itemMeta span {
-    min-width: 90px;
+    min-width: clamp(60px, 8vw, 90px);
     text-align: center;
     display: inline-block;
 }
@@ -183,134 +187,136 @@
 
 /* 페이지네이션 스타일 */
 .pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin: 32px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 32px 0;
+    flex-wrap: wrap;
 }
 
 .pageButton {
-  padding: 8px 16px;
-  border: 1px solid #556f86;
-  background-color: white;
-  color: #556f86;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: "Titillium Web", sans-serif;
-  font-weight: 600;
-  transition: all 0.3s ease;
+    padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 16px);
+    border: 1px solid #556f86;
+    background-color: white;
+    color: #556f86;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: clamp(12px, 1.5vw, 14px);
 }
 
 .pageButton:hover:not(:disabled) {
-  background-color: #556f86;
-  color: white;
+    background-color: #556f86;
+    color: white;
 }
 
 .pageButton.active {
-  background-color: #556f86;
-  color: white;
+    background-color: #556f86;
+    color: white;
 }
 
 .pageButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .sortable {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  user-select: none;
-  transition: color 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    transition: color 0.2s ease;
 }
 
 .sortable:hover {
-  color: #ff4444;
+    color: #ff4444;
 }
 
 .sortable.active {
-  color: #ff0000;
-  font-weight: bold;
+    color: #ff0000;
+    font-weight: bold;
 }
 
 .sortIcon {
-  font-size: 12px;
-  margin-left: 2px;
+    font-size: 12px;
+    margin-left: 2px;
 }
 
 .outerBg {
-  background: #d3dae3;
-  min-height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 40px 0;
+    background: #d3dae3;
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 0;
 }
 
 .innerBg {
-  background: #e0e8f0;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.04);
-  padding: 32px 0 0 0;
-  min-width: 900px;
-  max-width: 1100px;
-  width: 100%;
-  position: relative;
+    background: #e0e8f0;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+    padding: 32px 0 0 0;
+    min-width: 900px;
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
 }
 
 .trafficLights {
-  display: flex;
-  gap: 8px;
-  position: absolute;
-  top: 18px;
-  left: 32px;
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    top: 18px;
+    left: 32px;
 }
 
 .trafficLight {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
 }
 .trafficLight.red { background: #ff5f56; border: 1.5px solid #e0443e; }
 .trafficLight.yellow { background: #ffbd2e; border: 1.5px solid #dea123; }
 .trafficLight.green { background: #27c93f; border: 1.5px solid #13a10e; }
 
 .windowControls {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  display: flex;
-  gap: 8px;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    gap: 8px;
 }
 
 .circle {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
 }
 .red {
-  background-color: #ff5f56;
+    background-color: #ff5f56;
 }
 .yellow {
-  background-color: #ffbd2e;
+    background-color: #ffbd2e;
 }
 .green {
-  background-color: #27c93f;
+    background-color: #27c93f;
 }
 
 .detailBox {
-  position: relative;
-  width: 100%;
-  min-height: 1200px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 40px 20px 20px;
-  background-color: #D2DDE8;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  margin-bottom: 32px;
+    position: relative;
+    width: 100%;
+    min-height: 1200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 40px 20px 20px;
+    background-color: #D2DDE8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    margin-bottom: 32px;
 }

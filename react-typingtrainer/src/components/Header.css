@@ -53,6 +53,27 @@
   color: #333;
 }
 
+.music-select {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.music-select:hover {
+  border-color: #007bff;
+}
+
+.music-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
 .volume-slider-container {
   position: absolute;
   top: 100%;
@@ -127,6 +148,11 @@
   
   .header-content {
     padding: 0 0.5rem;
+  }
+
+  .music-select {
+    font-size: 0.8rem;
+    padding: 4px 8px;
   }
 } 
 
