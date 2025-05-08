@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useTimer from './useTimer';
-import { saveGameRecord } from '../../api/gameApi';
 import CorrectModal from '../../components/TypingGame/CorrectModal';
 import WrongModal from '../../components/TypingGame/WrongModal';
 import common from '../../styles/common.module.css';
 import styles from './play.module.css';
 import { fetchRandomProblem } from '../../api/gameApi';
+import ModeModal from '../../components/TypingGame/ModeModal';
 
 function splitHangul(char) {
     const HANGUL_START = 0xac00;
@@ -57,13 +57,8 @@ function countTypingUnits(text, language) {
 export default function TypingPlay() {
     const location = useLocation();
     const navigate = useNavigate();
-    const {
-        userId = 'testUser',
-        language,
-        difficulty,
-        type,
-        totalTime = 60
-    } = location.state || {};
+    const { userId = 'testUser', language, difficulty, type, totalTime } = location.state || {};
+
 
     const [question, setQuestion] = useState('');
     const [userInput, setUserInput] = useState('');
@@ -74,13 +69,27 @@ export default function TypingPlay() {
     const [showCorrectModal, setShowCorrectModal] = useState(false);
     const [showWrongModal, setShowWrongModal] = useState(false);
 
+    const handleFinish = () => {
+        setShowResultModal(true);
+    };
+
+    const [showResultModal, setShowResultModal] = useState(false);
+    const [gameStats, setGameStats] = useState({
+        userId,
+        duration: totalTime,
+        accuracy: 0,  // 정확도 계산
+        typingSpeed: 0,  // 타수 계산
+        correctCount: 0,
+        wrongCount: 0
+    });
+
+
     const [timeLeft, setTimeLeft] = useTimer(totalTime, handleFinish);
     const elapsedTime = totalTime - timeLeft;
 
     useEffect(() => {
         loadQuestion();
     }, []);
-
 
     useEffect(() => {
         const minutes = elapsedTime / 60;
@@ -96,7 +105,6 @@ export default function TypingPlay() {
         const data = await fetchRandomProblem(language, difficulty, type);
         setQuestion(data.content);
     };
-
 
     function handleSubmit() {
         const typedUnits = countTypingUnits(userInput, language);
@@ -114,17 +122,9 @@ export default function TypingPlay() {
         loadQuestion();
     }
 
-    function handleFinish() {
-        saveGameRecord({
-            userId,
-            speed,
-            accuracy,
-            problemIndex: correctCount + wrongCount,
-            totalTime,
-        });
-        alert('게임 종료!');
-        navigate('/typing/mode');
-    }
+
+
+
 
     return (
         <div className={common.container}>
@@ -156,6 +156,13 @@ export default function TypingPlay() {
 
             {showCorrectModal && <CorrectModal onClose={() => setShowCorrectModal(false)} />}
             {showWrongModal && <WrongModal onClose={() => setShowWrongModal(false)} />}
+            {showResultModal && (
+                <div className="result-modal">
+                    <h2>게임 종료</h2>
+                    <p>정확도: {accuracy}%</p>
+                    <button onClick={() => window.location.reload()}>다시 시작</button>
+                </div>
+            )}
         </div>
     );
 }

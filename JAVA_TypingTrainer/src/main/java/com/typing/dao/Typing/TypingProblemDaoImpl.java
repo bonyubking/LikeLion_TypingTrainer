@@ -33,16 +33,13 @@ public class TypingProblemDaoImpl implements TypingProblemDao {
         String langCode = language.equals("한국어") ? "한" : "영";
 
         String sql = "SELECT * FROM " + tableName + " WHERE difficulty = ? AND language = ? ORDER BY RAND() LIMIT 1";
-        System.out.println("🟡 SQL → " + sql + " | difficulty=" + difficulty + ", language=" + langCode);
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, difficulty);
             pstmt.setString(2, langCode);
 
-            System.out.println("🟡 쿼리 실행 중...");
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                System.out.println("🟢 DB 결과 → " + rs.getString("content"));
                 return new TypingProblem(
                     rs.getInt("id"),
                     rs.getString("content"),
@@ -51,11 +48,9 @@ public class TypingProblemDaoImpl implements TypingProblemDao {
                     type
                 );
             } else {
-                System.out.println("🔴 DB 결과 없음 → rs.next() == false");
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ SQL 예외 발생: " + e.getMessage());
             e.printStackTrace();
         }
         return null;

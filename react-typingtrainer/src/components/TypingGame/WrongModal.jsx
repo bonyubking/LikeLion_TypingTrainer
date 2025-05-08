@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './ModeModal.css';
+import './AnswerModal.css';
 
 export default function WrongModal({ onClose }) {
     useEffect(() => {
@@ -10,9 +10,9 @@ export default function WrongModal({ onClose }) {
     return (
         <div className="overlay">
             <div className="modal">
+                <p>❌</p>
                 <p>오답입니다</p>
-                <button onClick={onClose}>다음</button>
             </div>
-        </div>
+        </div >
     );
 }
