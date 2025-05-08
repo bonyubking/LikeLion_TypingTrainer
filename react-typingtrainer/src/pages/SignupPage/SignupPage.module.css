@@ -219,3 +219,25 @@
 .disabled_button:hover {
   background-color: #cccccc !important;
 }
+
+.login_link{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+p.login_link_text{
+  font-size: 1rem;
+  color: #007bff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.login_link_text:hover{
+  text-decoration: underline;
+}
+
+
+

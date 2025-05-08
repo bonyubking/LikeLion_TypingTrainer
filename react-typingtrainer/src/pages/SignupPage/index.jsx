@@ -77,7 +77,7 @@ const SignupPage = () => {
     );
     if (response.status === 200) { 
       alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
-      navigate("/login");
+      navigate("/");
     } else { 
       alert(response.message);
     }
@@ -188,6 +188,10 @@ const SignupPage = () => {
               회원가입
             </button>
           </form>
+          <div className={styles.login_link}>
+            <p>이미 회원이신가요?</p>
+            <p className={styles.login_link_text} onClick={() => navigate("/")}>로그인</p>
+          </div>
         </div>
       </div>
     </div>
