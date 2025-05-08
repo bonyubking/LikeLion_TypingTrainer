@@ -9,7 +9,8 @@ import Children from '../assets/mp3/동요.mp3';
 import { useUser } from '../contexts/UserContext';
 import './Header.css';
 
-const Header = ({ title, subtitle }) => {
+
+const Header = () => {
   const navigate = useNavigate();
   const { nickname } = useUser();
   const [volume, setVolume] = useState(0.5);
@@ -26,8 +27,8 @@ const Header = ({ title, subtitle }) => {
     { label: '동요', file: Children }
   ];
 
-  // 초기 오디오 설정
   useEffect(() => {
+    // 컴포넌트가 마운트될 때 오디오 객체 생성
     const selectedMusic = musicOptions.find(option => option.label === currentMusic);
     audioRef.current = new Audio(selectedMusic.file);
     audioRef.current.loop = true;
@@ -42,13 +43,6 @@ const Header = ({ title, subtitle }) => {
     audioRef.current.addEventListener('play', () => setIsPlaying(true));
     audioRef.current.addEventListener('pause', () => setIsPlaying(false));
 
-    // 초기 재생 시도
-    if (volume > 0) {
-      audioRef.current.play().catch(error => {
-        console.error('초기 오디오 재생 실패:', error);
-      });
-    }
-
     // 컴포넌트가 언마운트될 때 오디오 정리
     return () => {
       if (audioRef.current) {
@@ -56,7 +50,7 @@ const Header = ({ title, subtitle }) => {
         audioRef.current = null;
       }
     };
-  }, []);
+  }, [currentMusic]);
 
   // 볼륨 상태가 변경될 때마다 슬라이더 업데이트
   useEffect(() => {
@@ -102,16 +96,11 @@ const Header = ({ title, subtitle }) => {
       audioRef.current.pause();
       const selectedMusic = musicOptions.find(option => option.label === newMusic);
       audioRef.current.src = selectedMusic.file;
-      audioRef.current.load();
-
-      // loadeddata 이벤트를 기다렸다가 재생
-      audioRef.current.addEventListener('loadeddata', () => {
-        if (volume > 0) {
-          audioRef.current.play().catch(error => {
-            console.error('오디오 재생 실패:', error);
-          });
-        }
-      }, { once: true }); // 이벤트 리스너를 한 번만 실행
+      if (volume > 0) {
+        audioRef.current.play().catch(error => {
+          console.error('오디오 재생 실패:', error);
+        });
+      }
     }
   };
 
@@ -126,15 +115,14 @@ const Header = ({ title, subtitle }) => {
 
   return (
     <header className="header">
-      <div className="header-left">
+      <div className="header-content">
         <button className="back-button" onClick={handleBack}>
           <IoChevronBack size={24} />
         </button>
-
         <div className="audio-controls">
           {nickname && <span className="nickname"><strong>{nickname}</strong>님</span>}
-          <select
-            value={currentMusic}
+          <select 
+            value={currentMusic} 
             onChange={handleMusicChange}
             className="music-select"
           >
@@ -144,7 +132,7 @@ const Header = ({ title, subtitle }) => {
               </option>
             ))}
           </select>
-          <button
+          <button 
             className="volume-button"
             onClick={toggleVolumeSlider}
           >
@@ -169,21 +157,6 @@ const Header = ({ title, subtitle }) => {
             </div>
           )}
         </div>
-
-      </div>
-
-      <div className="header-center">
-        {title && <h2 className="header-title">{title}</h2>}
-        {subtitle && <p className="header-subtitle">{subtitle}</p>}
-      </div>
-
-      <div className="header-right">
-        <button className="notification-button">
-          <IoNotificationsOutline size={24} />
-        </button>
-
-
-
       </div>
     </header>
   );
