@@ -4,7 +4,7 @@ import styles from './TypingRecordPage.module.css';
 
 export default function TypingRecordPage() {
   
-  const userId = 1;
+  const userId = sessionStorage.getItem('userId');   // 로그인 정보
   const [scope, setScope] = useState('all');        // 'all' | 'mine'
   const [gameType, setGameType] = useState('typing'); // 'typing' | 'song'
 
