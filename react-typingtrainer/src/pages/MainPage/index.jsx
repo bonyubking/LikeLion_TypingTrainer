@@ -107,7 +107,8 @@ const MainPage = () => {
           <img src={gameController} alt="게임 컨트롤러" className={styles.card_icon} />
           <h3>게임 시작</h3>
           <p>타자 연습 게임을 시작하고 흥미한 성과를 거두세요</p>
-          <button>Start Game</button>
+          <button onClick={() => navigate("/game-start")}
+            >Start Game</button>
         </div>
 
         <div className={styles.card}>

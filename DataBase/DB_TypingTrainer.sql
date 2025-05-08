@@ -22,8 +22,7 @@ CREATE TABLE Typing_records (
 	difficulty ENUM('상','중','하'),
     language ENUM('한', '영'),
 	FOREIGN KEY (user_id) REFERENCES Users(user_id)
-<<<<<<< HEAD
-=======
+
 );
 
 CREATE TABLE Song_records (
@@ -35,7 +34,6 @@ CREATE TABLE Song_records (
     genre VARCHAR(50),
     hint_time INT,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
->>>>>>> feat-Typing
 );
 
 CREATE TABLE Song_records (
@@ -52,7 +50,7 @@ CREATE TABLE Song_records (
 
 -- 3. 노래 테이블
 CREATE TABLE Songs (
-    song_id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     lyrics TEXT,
     singer VARCHAR(50),
@@ -62,7 +60,7 @@ CREATE TABLE Songs (
 
 -- 4. 문장 테이블
 CREATE TABLE Sentences (
-    sentence_id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     content TEXT NOT NULL,
     difficulty ENUM('상', '중', '하'),
     language ENUM('한', '영')
@@ -70,7 +68,7 @@ CREATE TABLE Sentences (
 
 -- 5. 단어 테이블
 CREATE TABLE Words (
-    word_id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     content VARCHAR(100) NOT NULL,
     difficulty ENUM('상', '중', '하'),
     language ENUM('한', '영')
