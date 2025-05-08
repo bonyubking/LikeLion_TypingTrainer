@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class TypingProblemDaoImpl implements TypingProblemDao {
 
-    private final Connection conn = DBUtil.getConnection();
+    private final Connection conn = DBUtil.sharedConnection();
 
     @Override
     public TypingProblem findRandomProblem(String language, String difficulty, String type) {
