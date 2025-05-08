@@ -1,0 +1,85 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+  
+  .title {
+    margin-bottom: 8px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #222;
+  }
+  
+  .subtitle {
+    color: #888;
+    margin-bottom: 24px;
+  }
+  
+  .cardsWrapper {
+    display: flex;
+    gap: 32px;
+    margin-top: 16px;
+  }
+  
+  .card {
+    background: #f4f8fc;
+    border-radius: 12px;
+    padding: 32px 24px;
+    min-width: 240px;
+    max-width: 320px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .cardTitle {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+  }
+  
+  .cardDesc {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  
+  .startBtn {
+    margin-top: 24px;
+    padding: 12px 32px;
+    border-radius: 8px;
+    border: none;
+    background: #0057e7;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .startBtn:hover {
+    background: #003fa3;
+  }
+  
+  @media (max-width: 700px) {
+    .cardsWrapper {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .card {
+      min-width: 200px;
+      width: 90vw;
+      max-width: 400px;
+    }
+  }
