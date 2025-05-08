@@ -1,13 +1,11 @@
-import { BrowserRouter, useLocation } from 'react-router-dom';  // 한 번만 임포트
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import { UserProvider } from './contexts/UserContext';
 import Click from './assets/mp3/흘릭.mp3';
 import { useEffect } from 'react';
-import { IoNotificationsOutline } from 'react-icons/io5';
 
-import Header from './components/Header/Header';
+import Header from './components/Header';
 import AppRoutes from './Router';
-import React from 'react';
-import HeaderRouterWrapper from './HeaderRouterWrapper';
+
 
 function AppContent() {
   const location = useLocation();
@@ -42,14 +40,7 @@ function App() {
   return (
     <UserProvider>
       <BrowserRouter>
-        <div className="app-container">
-          <HeaderRouterWrapper />
-          <main className="main-content">
-            <div className="content-wrapper">
-              <AppRoutes />
-            </div>
-          </main>
-        </div>
+        <AppContent />
       </BrowserRouter>
     </UserProvider>
   );
