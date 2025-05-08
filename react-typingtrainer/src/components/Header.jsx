@@ -26,8 +26,8 @@ const Header = () => {
     { label: '동요', file: Children }
   ];
 
+  // 초기 오디오 설정
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 오디오 객체 생성
     const selectedMusic = musicOptions.find(option => option.label === currentMusic);
     audioRef.current = new Audio(selectedMusic.file);
     audioRef.current.loop = true;
@@ -42,6 +42,13 @@ const Header = () => {
     audioRef.current.addEventListener('play', () => setIsPlaying(true));
     audioRef.current.addEventListener('pause', () => setIsPlaying(false));
 
+    // 초기 재생 시도
+    if (volume > 0) {
+      audioRef.current.play().catch(error => {
+        console.error('초기 오디오 재생 실패:', error);
+      });
+    }
+
     // 컴포넌트가 언마운트될 때 오디오 정리
     return () => {
       if (audioRef.current) {
@@ -49,7 +56,7 @@ const Header = () => {
         audioRef.current = null;
       }
     };
-  }, [currentMusic]);
+  }, []);
 
   // 볼륨 상태가 변경될 때마다 슬라이더 업데이트
   useEffect(() => {
@@ -95,11 +102,16 @@ const Header = () => {
       audioRef.current.pause();
       const selectedMusic = musicOptions.find(option => option.label === newMusic);
       audioRef.current.src = selectedMusic.file;
-      if (volume > 0) {
-        audioRef.current.play().catch(error => {
-          console.error('오디오 재생 실패:', error);
-        });
-      }
+      audioRef.current.load();
+      
+      // loadeddata 이벤트를 기다렸다가 재생
+      audioRef.current.addEventListener('loadeddata', () => {
+        if (volume > 0) {
+          audioRef.current.play().catch(error => {
+            console.error('오디오 재생 실패:', error);
+          });
+        }
+      }, { once: true }); // 이벤트 리스너를 한 번만 실행
     }
   };
 
