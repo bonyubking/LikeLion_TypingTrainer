@@ -6,7 +6,7 @@ import styles from './postdetail.module.css';
 function PostDetailPage() {
   
   const didLoadRef = useRef(false);
-  const userId = 1;
+  const userId = sessionStorage.getItem('userId');   // 로그인 정보
   const { postId } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);

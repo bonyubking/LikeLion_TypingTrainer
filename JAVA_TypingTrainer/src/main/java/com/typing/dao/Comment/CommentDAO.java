@@ -21,7 +21,7 @@ public interface CommentDAO {
        "WHERE c.post_id = ? "+
       "ORDER BY c.created_at ASC ";
 	
-	String insert = "INSERT INTO comments(user_id, content, post_id, created_at) VALUES (?,?,?,?,NOW())";
+	String insert = "INSERT INTO comments(user_id, content, post_id, created_at) VALUES (?,?,?,NOW())";
  
 	
 	

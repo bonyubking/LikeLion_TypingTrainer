@@ -3,6 +3,7 @@ import { BrowserRouter, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import AppRoutes from './Router';
 
+
 function AppContent() {
   const location = useLocation();
   const isSignupPage = location.pathname === '/signup';
