@@ -1,0 +1,158 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 1rem;
+  z-index: 1000;
+  width: 100%;
+}
+
+.header_content { 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.back_button, 
+.notification_button,
+.volume_button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.back_button:hover,
+.notification_button:hover,
+.volume_button:hover {
+  color: #666;
+}
+
+.notification_button.active {
+  color: #007bff;
+}
+
+.audio_controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nickname {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.music_select {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.music_select:hover {
+  border-color: #007bff;
+}
+
+.music_select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.volume_slider_container {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+}
+
+.volume_slider {
+  -webkit-appearance: none;
+  width: 100px;
+  height: 4px;
+  border-radius: 2px;
+  background: #ddd;
+  outline: none;
+  position: relative;
+}
+
+/* 슬라이더의 채워진 부분을 위한 가상 요소 */
+.volume_slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #007bff 0%, #007bff var(--volume-level, 50%), #ddd var(--volume-level, 50%), #ddd 100%);
+  border-radius: 2px;
+}
+
+.volume_slider::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #007bff 0%, #007bff var(--volume-level, 50%), #ddd var(--volume-level, 50%), #ddd 100%);
+  border-radius: 2px;
+}
+
+.volume_slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: -6px; /* 슬라이더 중앙에 위치하도록 조정 */
+}
+
+.volume_slider::-webkit-slider-thumb:hover {
+  background: #0056b3;
+}
+
+.volume_slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border: none;
+}
+
+.volume_slider::-moz-range-thumb:hover {
+  background: #0056b3;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem;
+  }
+  
+  .header_content {
+    padding: 0 0.5rem;
+  }
+
+  .music_select {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+} 
+

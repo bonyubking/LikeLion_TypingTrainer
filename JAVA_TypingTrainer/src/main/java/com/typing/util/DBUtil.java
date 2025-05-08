@@ -21,10 +21,13 @@ public class DBUtil {
    public static Connection sharedConnection() {
 	   Connection sharedConnection = null; 
 	   Properties prop = new Properties();
-		try (InputStream input = DBUtil.class.getClassLoader().getResourceAsStream("db.properties")){
-			if(input == null) {
-				throw new RuntimeException("db 파일 찾을 수 없음");
-			}
+	   try (InputStream input = DBUtil.class.getClassLoader().getResourceAsStream("db.properties")) {
+		    if(input == null) {
+		        System.out.println("[DBUtil] db.properties 파일을 못 찾음!!");
+		        return null;
+		    } else {
+		        System.out.println("[DBUtil] db.properties 로드 성공");
+		    }
 
 			prop.load(input);
 			
@@ -50,9 +53,13 @@ public class DBUtil {
 		if(conn == null) {
 			Properties prop = new Properties();
 			try (InputStream input = DBUtil.class.getClassLoader().getResourceAsStream("db.properties")){
-				if(input == null) {
-					throw new RuntimeException("db 파일 찾을 수 없음");
-				}
+				
+				if (input == null) {
+	                System.out.println("❌ [DBUtil] db.properties 파일을 못 찾음!! (getConnection)");
+	                throw new RuntimeException("db 파일 찾을 수 없음");
+	            } else {
+	                System.out.println("✅ [DBUtil] db.properties 로드 성공 (getConnection)");
+	            }
 
 				prop.load(input);
 				
@@ -68,9 +75,12 @@ public class DBUtil {
 				
 				threadLocalConnection.set(conn);
 		
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
+			} 
+			catch (Exception e) {
+				System.out.println("❌ [DBUtil] getConnection 예외 발생: " + e.getMessage());
+				e.printStackTrace();
+			}
+
 		}
 		return conn;
 	} 

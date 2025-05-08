@@ -11,7 +11,8 @@ public interface CommentDAO {
 	String selectAll =  
             "SELECT c.comment_id, " +
             "c.user_id, " +
-            "u.uid, " +   
+            "u.uid, " +
+            "u.nickname, " +
             "c.post_id, " +
             "c.content, " +
             "c.created_at "+

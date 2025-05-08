@@ -5,6 +5,7 @@ public class SongRecordDTO {
 	private int recordId;
 	private int userId;
 	private String Uid;
+	private String nickname;
 	private int duration;
 	private int correctCount;
 	private String playedAt;
@@ -74,12 +75,13 @@ public class SongRecordDTO {
 		this.hintTime = hintTime;
 	}
 
-	public SongRecordDTO(int recordId, int userId, String uid, int duration, int correctCount, String playedAt, String genre,
+	public SongRecordDTO(int recordId, int userId, String uid, String nickname, int duration, int correctCount, String playedAt, String genre,
 			int hintTime) {
 		
 		this.recordId = recordId;
 		this.userId = userId;
 		this.Uid = uid;
+		this.nickname = nickname;
 		this.duration = duration;
 		this.correctCount = correctCount;
 		this.playedAt = playedAt;
@@ -87,6 +89,14 @@ public class SongRecordDTO {
 		this.hintTime = hintTime;
 	}
 	
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 	public SongRecordDTO() {
 		
 	}

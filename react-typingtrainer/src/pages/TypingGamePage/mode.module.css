@@ -1,0 +1,71 @@
+.title-wrapper {
+  margin-top: 1rem;
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  position: relative;
+  top: 0;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.cardWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5rem;
+  padding: 4rem;
+}
+
+.card {
+  background-color: #d5e9f0;
+  padding: 1.5rem;
+  border-radius: 12px;
+  min-width: 200px;
+  max-width: 300px;
+  flex: 1 1 250px;
+  min-height: 45vh;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.modeSelect {
+  margin-top: 5.5rem;
+  padding: 1rem;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.container {
+  max-width: 960px;
+  min-height: 70vh;
+  margin: 0 auto;
+  padding: 2rem;
+
+}
+
+
+.modalButton {
+  top: -30px;
+  background-color: var(--button-primary);
+  color: #000;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  margin-bottom: 3rem;
+}

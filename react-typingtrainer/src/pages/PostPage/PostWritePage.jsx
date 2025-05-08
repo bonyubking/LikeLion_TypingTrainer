@@ -5,7 +5,7 @@ import styles from './PostWritePage.module.css';
 
 function PostWritePage() {
   const navigate = useNavigate();
-  const userId = 1;     // 로그인 정보
+  const userId = sessionStorage.getItem('userId');   // 로그인 정보
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);

@@ -7,12 +7,20 @@ path = "/" -> http://localhost:3000/chat 임
 import { Routes, Route } from 'react-router-dom';
 
 import MainPage from './pages/MainPage';
-import ChatPage from './pages/ChatPage';
+// import ChatPage from './pages/ChatPage';
 import HomePage from './pages/HomePage';
+
 import PostPage from './pages/PostPage';
 import PostDetailPage from './pages/PostPage/PostDetailPage';
 import PostWritePage from './pages/PostPage/PostWritePage';
 import TypingRecordPage from './pages/TypingRecordPage';
+import GameStartPage from './pages/GameStartPage';
+
+
+import Mode from './pages/TypingGamePage/mode';
+import TypingGamePage from './pages/TypingGamePage/Play';
+import PlayWrapper from './pages/TypingGamePage/PlayWrapper';
+
 // import SignIn from './pages/SignIn';
 import SignupPage from './pages/SignupPage';
 import SongGamePage from './pages/SongGamePage';
@@ -24,13 +32,14 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
-      <Route path="/chat" element={<ChatPage />} />
+      {/* <Route path="/chat" element={<ChatPage />} /> */}
       <Route path="/home" element={<HomePage />} />
       <Route path="/signup" element={<SignupPage />} />
 
       {/* <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} /> */}
       {/* 다른 Route도 이 아래에 계속 추가 */}
+
       <Route path="/post" element={<PostPage />} />
       <Route path="/post/:postId" element={<PostDetailPage />} />
       <Route path="/post/write" element={<PostWritePage />} />
