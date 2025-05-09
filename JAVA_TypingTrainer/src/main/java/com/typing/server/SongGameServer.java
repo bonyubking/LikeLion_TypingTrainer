@@ -2,6 +2,7 @@ package com.typing.server;
 
 import com.google.gson.*;
 import com.typing.model.dto.SongDto;
+import com.typing.model.dto.SongGameResult;
 import com.typing.model.dto.SongGameSetting;
 import com.typing.service.Song.SongGameService;
 import com.typing.service.Song.SongGameServiceImpl;
@@ -10,7 +11,10 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,6 +42,8 @@ public class SongGameServer extends WebSocketServer {
         try {
             JsonObject json = JsonParser.parseString(message).getAsJsonObject();
             String type = json.get("type").getAsString();
+            
+            System.out.println("json : "+json);
 
             switch (type) {
                 case "startGame":
@@ -53,7 +59,7 @@ public class SongGameServer extends WebSocketServer {
                     handleSkip(conn);
                     break;
                 case "end":
-                    handleEnd(conn);
+                    handleEnd(conn, json.getAsJsonObject("data"));
                     break;
                 default:
                     conn.send("{\"type\":\"error\",\"message\":\"알 수 없는 메시지 타입입니다.\"}");
@@ -103,9 +109,29 @@ public class SongGameServer extends WebSocketServer {
         sendNextQuestion(conn, gameService.getCurrentSetting().getHintTime());
     }
 
-    private void handleEnd(WebSocket conn) {
+    private void handleEnd(WebSocket conn, JsonObject data) {
         stopHintTimer(conn);
-        gameService.endGame();
+        List<String> genreList = new ArrayList<>();
+        JsonElement genreElement = data.get("genre");
+
+        if (genreElement.isJsonArray()) {
+            JsonArray genreArray = genreElement.getAsJsonArray();
+            for (JsonElement el : genreArray) {
+                genreList.add(el.getAsString());
+            }
+        } else if (genreElement.isJsonPrimitive()) {
+            String[] genres = genreElement.getAsString().split(",");
+            genreList.addAll(Arrays.asList(genres));
+        }
+
+        SongGameResult result = new SongGameResult(
+            data.get("userId").getAsInt(), 
+            data.get("playtime").getAsInt(),
+            data.get("hintTime").getAsInt(),
+            data.get("correctCount").getAsInt(),
+            genreList
+        );
+        gameService.endGame(result);
         conn.send("{\"type\":\"end\"}");
         conn.close();
     }

@@ -1,5 +1,7 @@
 package com.typing.model.dto;
 
+import java.util.Date;
+
 public class SongRecordDTO {
 	
 	private int recordId;
@@ -8,10 +10,33 @@ public class SongRecordDTO {
 	private String nickname;
 	private int duration;
 	private int correctCount;
-	private String playedAt;
+	private Date playedAt;
 	private String genre;
 	private int hintTime;
-	
+	public SongRecordDTO(int recordId, int userId, String uid, String nickname, int duration, int correctCount, Date playedAt, String genre,
+			int hintTime) {
+		
+		this.recordId = recordId;
+		this.userId = userId;
+		this.Uid = uid;
+		this.nickname = nickname;
+		this.duration = duration;
+		this.correctCount = correctCount;
+		this.playedAt = playedAt;
+		this.genre = genre;
+		this.hintTime = hintTime;
+	}
+	public SongRecordDTO(int userId, int duration, int correctCount, Date playedAt, String genre,
+			int hintTime) {
+		
+		this.userId = userId;
+
+		this.duration = duration;
+		this.correctCount = correctCount;
+		this.playedAt = playedAt;
+		this.genre = genre;
+		this.hintTime = hintTime;
+	}
 	public int getDuration() {
 		return duration;
 	}
@@ -51,11 +76,11 @@ public class SongRecordDTO {
 		this.correctCount = correctCount;
 	}
 
-	public String getPlayedAt() {
+	public Date getPlayedAt() {
 		return playedAt;
 	}
 
-	public void setPlayedAt(String playedAt) {
+	public void setPlayedAt(Date playedAt) {
 		this.playedAt = playedAt;
 	}
 
@@ -75,19 +100,6 @@ public class SongRecordDTO {
 		this.hintTime = hintTime;
 	}
 
-	public SongRecordDTO(int recordId, int userId, String uid, String nickname, int duration, int correctCount, String playedAt, String genre,
-			int hintTime) {
-		
-		this.recordId = recordId;
-		this.userId = userId;
-		this.Uid = uid;
-		this.nickname = nickname;
-		this.duration = duration;
-		this.correctCount = correctCount;
-		this.playedAt = playedAt;
-		this.genre = genre;
-		this.hintTime = hintTime;
-	}
 	
 	public String getNickname() {
 		return nickname;
