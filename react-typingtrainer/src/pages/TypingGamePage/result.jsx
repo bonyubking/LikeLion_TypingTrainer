@@ -4,6 +4,9 @@ import './result.css';
 export function GameResultPopup({
     userId, accuracy, typingSpeed, correctCount, wrongCount, totalTime, closePopup, saveGameRecord
 }) {
+
+    const userId = sessionStorage.getItem('userId');
+    
     const gameResult = {
         userId,
         accuracy,
@@ -46,7 +49,7 @@ export function GameResultPopup({
 export default function Game() {
     const [isPopupVisible, setPopupVisible] = useState(false);  // 팝업 상태 관리
     const [gameStats, setGameStats] = useState({
-        userId: 'testUser',  // 기본 사용자 ID (로그인 시 실제 ID로 교체)
+        userId: sessionStorage.getItem('userId'),  // 기본 사용자 ID (로그인 시 실제 ID로 교체)
         accuracy: 100,       // 정확도 (초기값)
         typingSpeed: 0,      // 타수 (초기값)
         correctCount: 0,     // 맞춘 문제 수 (초기값)
@@ -74,7 +77,7 @@ export default function Game() {
     const saveGameRecord = async (result) => {
         try {
             // 예시: 게임 기록을 저장하는 API 호출
-            const response = await fetch('YOUR_API_URL_HERE', {
+            const response = await fetch(`${SERVER_URL}/game/typing`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

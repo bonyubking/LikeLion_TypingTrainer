@@ -42,7 +42,7 @@ function countTypingUnits(text, language) {
 
 export default function TypingPlay() {
     const location = useLocation();
-    const { userId = 'testUser', language, difficulty, type, totalTime } = location.state || {};
+    const { userId = sessionStorage.getItem('userId'), language, difficulty, type, totalTime } = location.state || {};
 
     const [question, setQuestion] = useState('');
     const [userInput, setUserInput] = useState('');

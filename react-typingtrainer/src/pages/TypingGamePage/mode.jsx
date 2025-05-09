@@ -26,7 +26,7 @@ export default function TypingIntro() {
 
         navigate('/typing/play', {
             state: {
-                userId: 'testUser',
+                userId: sessionStorage.getItem('userId'),
                 difficulty: level,
                 type: mode.split('/')[1],
                 language: mode.split('/')[0],
