@@ -34,10 +34,6 @@ CREATE TABLE Song_records (
     genre VARCHAR(50),
     hint_time INT,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 );
 
 CREATE TABLE Song_records (
