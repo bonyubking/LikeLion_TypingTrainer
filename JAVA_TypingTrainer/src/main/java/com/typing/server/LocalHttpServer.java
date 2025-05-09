@@ -23,10 +23,7 @@ import com.typing.util.QueryString;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-
 import java.net.URLDecoder;
-
-
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +62,6 @@ public class LocalHttpServer {
             }
             // 응답 반환
         });
-
-
 
         // 회원가입 
         httpServer.createContext("/signup", exchange -> {
@@ -114,9 +109,6 @@ public class LocalHttpServer {
         });
         
         // 로그인
-
-
-
         httpServer.createContext("/login", exchange -> {
         	// 프리플라이트 처리 완료
         	if (CORSFilter.handlePreflight(exchange)) {

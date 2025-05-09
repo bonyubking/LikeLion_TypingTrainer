@@ -18,5 +18,6 @@ public interface TypingRecordDAO {
 	
 	List<TypingRecordDTO> selectByFilter(TypingFilter filter);
 	
+	public void save(TypingRecordDTO gameRecord);
 
 }

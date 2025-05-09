@@ -1,3 +1,4 @@
+
 const handleStart = () => {
     if (!difficulty || !time || !languageType) {
         alert('모든 항목을 선택해주세요.');
@@ -19,7 +20,7 @@ const handleStart = () => {
             difficulty,
             type: languageType.type,
             language: languageType.language,
-            totalTime: seconds,
+            totalTime: seconds, // 선택한 제한 시간을 전달
         },
     });
 };

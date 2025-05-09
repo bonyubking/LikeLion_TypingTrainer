@@ -41,7 +41,7 @@ export default function TypingIntro() {
                 <div className={styles.cardWrapper}>
                     <div className={styles.card}>
                         <h2>난이도</h2>
-                        <select onChange={(e) => setLevel(e.target.value)} defaultValue="">
+                        <select className={styles.modeSelect} onChange={(e) => setLevel(e.target.value)} defaultValue="">
                             <option value="" disabled>난이도</option>
                             <option>하</option>
                             <option>중</option>
@@ -52,7 +52,7 @@ export default function TypingIntro() {
 
                     <div className={styles.card}>
                         <h2>제한 시간</h2>
-                        <select onChange={(e) => setTime(e.target.value)} defaultValue="">
+                        <select className={styles.modeSelect} onChange={(e) => setTime(e.target.value)} defaultValue="">
                             <option value="" disabled>시간</option>
                             <option>1분</option>
                             <option>2분</option>

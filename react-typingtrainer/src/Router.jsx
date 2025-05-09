@@ -45,6 +45,11 @@ export default function AppRoutes() {
       <Route path="/post/write" element={<PostWritePage />} />
       <Route path="/typing-record" element={<TypingRecordPage />} />
       <Route path="/song-record" element={<TypingRecordPage />} />
+      <Route path="/game-start" element={<GameStartPage />} />
+
+      <Route path="/typing/mode" element={<Mode />} />
+      <Route path="/typing/play" element={<PlayWrapper />} />
+
       <Route path="/song-game" element={<SongGamePage />} />
       <Route path="/song-game/play" element={<SongGamePlayPage />} />
     </Routes>

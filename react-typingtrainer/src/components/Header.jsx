@@ -120,8 +120,8 @@ const Header = () => {
         </button>
         <div className={styles.audio_controls}>
           {nickname && <span className={styles.nickname}><strong>{nickname}</strong>님</span>}
-          <select 
-            value={currentMusic} 
+          <select
+            value={currentMusic}
             onChange={handleMusicChange}
             className={styles.music_select}
           >
@@ -131,7 +131,7 @@ const Header = () => {
               </option>
             ))}
           </select>
-          <button 
+          <button
             className={styles.volume_button}
             onClick={toggleVolumeSlider}
           >

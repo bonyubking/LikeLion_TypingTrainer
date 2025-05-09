@@ -9,7 +9,10 @@
   width: 100%;
 }
 
-.header_content { 
+
+.header_content {
+
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,7 +20,11 @@
   margin: 0 auto;
 }
 
-.back_button, 
+
+.back_button,
+
+.back_button,
+
 .notification_button,
 .volume_button {
   background: none;
@@ -119,7 +126,13 @@
   background: #007bff;
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-top: -6px; /* 슬라이더 중앙에 위치하도록 조정 */
+
+  margin-top: -6px;
+  /* 슬라이더 중앙에 위치하도록 조정 */
+
+  margin-top: -6px;
+  /* 슬라이더 중앙에 위치하도록 조정 */
+
 }
 
 .volume_slider::-webkit-slider-thumb:hover {
@@ -145,7 +158,10 @@
   .header {
     padding: 0.5rem;
   }
-  
+
+
+
+
   .header_content {
     padding: 0 0.5rem;
   }
@@ -154,5 +170,5 @@
     font-size: 0.8rem;
     padding: 4px 8px;
   }
-} 
 
+}

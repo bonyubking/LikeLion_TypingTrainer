@@ -1,5 +1,6 @@
 package com.typing.model.dto;
 
+
 public class UserDto {
 	private Long userId; //pk
 	private String uId; //회원ID
