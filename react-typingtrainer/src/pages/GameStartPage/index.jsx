@@ -14,7 +14,8 @@ export default function GameStartPage() {
           <div className={styles.icon}>🎧</div>
           <div className={styles.cardTitle}>노래 맞추기 모드</div>
           <div className={styles.cardDesc}>제한 시간 내 가사를 듣고 맞춰보세요!</div>
-          <button className={styles.startBtn}>시작하기</button>
+          <button onClick={() => navigate("/song-game")}
+          className={styles.startBtn}>시작하기</button>
         </div>
         <div className={styles.card}>
           <div className={styles.icon}>😊</div>
