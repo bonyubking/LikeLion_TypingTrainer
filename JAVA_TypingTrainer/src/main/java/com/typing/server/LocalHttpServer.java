@@ -18,8 +18,6 @@ import com.typing.model.dto.TypingRecordDTO;
 import com.typing.model.dto.UserDto;
 import com.typing.util.CORSFilter;
 import com.typing.util.JsonUtil;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
 
 
@@ -27,11 +25,17 @@ import com.typing.util.QueryString;
 
 
 
+
+<<<<<<< Updated upstream
+import com.typing.util.QueryString;
+
+
+import com.typing.util.QueryString;
+
+import com.typing.util.QueryString;
 =======
 import com.typing.util.QueryString;
->>>>>>> Stashed changes
-=======
-import com.typing.util.QueryString;
+
 >>>>>>> Stashed changes
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,8 +82,11 @@ public class LocalHttpServer {
             }
             // 응답 반환
         });
-<<<<<<< HEAD
 
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
 
 
         // 회원가입 
@@ -582,20 +589,16 @@ public class LocalHttpServer {
 		    }
 		});
 <<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-		
+
+
 		// 타자게임 문제 불러오기 API
         httpServer.createContext("/api/problem/random", exchange -> {
             if (CORSFilter.handlePreflight(exchange)) return;
-<<<<<<< Updated upstream
 =======
+>>>>>>> Stashed changes
 
-            if ("GET".equals(exchange.getRequestMethod())) {
-                CORSFilter.applyCORS(exchange);
 
+<<<<<<< Updated upstream
                 String query = exchange.getRequestURI().getQuery();
                 String language = null, difficulty = null, type = null;
 
@@ -634,55 +637,13 @@ public class LocalHttpServer {
                 exchange.close();
             }
         });
->>>>>>> Stashed changes
-
-            if ("GET".equals(exchange.getRequestMethod())) {
-                CORSFilter.applyCORS(exchange);
-
-                String query = exchange.getRequestURI().getQuery();
-                String language = null, difficulty = null, type = null;
-
-                for (String param : query.split("&")) {
-                    String[] pair = param.split("=");
-                    if (pair.length == 2) {
-                        switch (pair[0]) {
-                            case "lang" -> language = java.net.URLDecoder.decode(pair[1], "UTF-8");
-                            case "diff" -> difficulty = java.net.URLDecoder.decode(pair[1], "UTF-8");
-                            case "type" -> type = java.net.URLDecoder.decode(pair[1], "UTF-8");
-                        }
-                    }
-                }
-
-                try {
-                    TypingProblemServer problemServer = new TypingProblemServer();  // 정상 선언
-                    String json = problemServer.getProblemJson(language, difficulty, type);
-                    System.out.println("🟢 최종 JSON 응답 → " + json);
-                    byte[] responseBytes = json.getBytes(StandardCharsets.UTF_8);
-
-                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
-                    exchange.sendResponseHeaders(200, responseBytes.length);
-                    exchange.getResponseBody().write(responseBytes);
-                } catch (Exception e) {
-                    String error = "{\"message\":\"" + e.getMessage() + "\"}";
-                    byte[] errorBytes = error.getBytes(StandardCharsets.UTF_8);
-
-                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
-                    exchange.sendResponseHeaders(500, errorBytes.length);
-                    exchange.getResponseBody().write(errorBytes);
-                } finally {
-                    exchange.getResponseBody().close();
-                }
-            } else {
-                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
-                exchange.close();
-            }
-        });
->>>>>>> Stashed changes
+=======
 
  
 		// 타자게임 문제 불러오기 API
         httpServer.createContext("/api/problem/random", exchange -> {
             if (CORSFilter.handlePreflight(exchange)) return;
+>>>>>>> Stashed changes
 
             if ("GET".equals(exchange.getRequestMethod())) {
                 CORSFilter.applyCORS(exchange);
@@ -725,7 +686,10 @@ public class LocalHttpServer {
                 exchange.close();
             }
         });
->>>>>>> feat-Typing
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
         //httpServer 시작
         httpServer.start();

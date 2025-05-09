@@ -14,6 +14,8 @@ import PostPage from './pages/PostPage';
 import PostDetailPage from './pages/PostPage/PostDetailPage';
 import PostWritePage from './pages/PostPage/PostWritePage';
 import TypingRecordPage from './pages/TypingRecordPage';
+import GameStartPage from './pages/GameStartPage';
+
 
 import Mode from './pages/TypingGamePage/mode';
 import TypingGamePage from './pages/TypingGamePage/Play';
@@ -41,6 +43,7 @@ export default function AppRoutes() {
       <Route path="/post/write" element={<PostWritePage />} />
       <Route path="/typing-record" element={<TypingRecordPage />} />
       <Route path="/song-record" element={<TypingRecordPage />} />
+      <Route path="/game-start" element={<GameStartPage />} />
 
       <Route path="/typing/mode" element={<Mode />} />
       <Route path="/typing/play" element={<PlayWrapper />} />

@@ -82,6 +82,28 @@ public class TypingRecordDAOImpl implements TypingRecordDAO {
 
         return list;
     }
+
+
+@Override
+public void save(TypingRecordDTO gameRecord) {
+    // 게임 기록을 DB에 저장하는 코드
+    String sql = "INSERT INTO typing_records (user_id, correct_count, typing_speed, accuracy, played_at, content_type, difficulty, language) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    try (Connection conn = sharedConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, gameRecord.getUserId());
+        stmt.setInt(2, gameRecord.getCorrectCount());
+        stmt.setInt(3, gameRecord.getTypingSpeed());
+        stmt.setBigDecimal(4, gameRecord.getAccuracy());
+        stmt.setString(5, gameRecord.getPlayedAt());
+        stmt.setString(6, gameRecord.getContentType());
+        stmt.setString(7, gameRecord.getDifficulty());
+        stmt.setString(8, gameRecord.getLanguage());
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        throw new RuntimeException("게임 기록 DB 저장 오류", e);
+    }
+}
 }
 
 

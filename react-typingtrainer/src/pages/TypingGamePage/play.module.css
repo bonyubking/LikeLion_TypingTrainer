@@ -5,6 +5,7 @@
     font-weight: 500;
     font-size: 1rem;
     padding-top: 20px;
+    margin-top: 150px;
 }
 
 .questionBox {
@@ -52,4 +53,14 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
+}
+
+
+.inputField {
+    width: 60vh;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    /* 모서리 둥글기 고정 */
 }
