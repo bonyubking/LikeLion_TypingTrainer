@@ -26,6 +26,6 @@ public class SongGameController {
     }
 
     public void endGame() {
-        gameService.endGame();
+      //  gameService.endGame();
     }
 }
