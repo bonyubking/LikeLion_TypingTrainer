@@ -6,7 +6,7 @@ export default function GameResultModal({ onClose, accuracy, typingSpeed, correc
     const navigate = useNavigate();
 
     const goHome = () => {
-        navigate('/home');
+        navigate('/');
     };
     const replay = () => {
         navigate('/typing/mode');

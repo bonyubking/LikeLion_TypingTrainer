@@ -7,8 +7,11 @@ import com.typing.model.dto.TypingRecordDTO;
 
 public interface TypingRecordService {
 	
+
     public List<TypingRecordDTO> fetchByFilter(TypingFilter f);
 
 	public void saveGameRecord(TypingRecordDTO gameRecord);
+
+
 
 }

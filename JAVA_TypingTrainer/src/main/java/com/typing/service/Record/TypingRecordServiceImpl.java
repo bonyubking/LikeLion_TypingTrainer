@@ -9,6 +9,7 @@ import com.typing.model.dto.TypingRecordDTO;
 
 public class TypingRecordServiceImpl implements TypingRecordService {
 
+
     private final TypingRecordDAO dao = new TypingRecordDAOImpl();
 
     @Override
@@ -22,3 +23,7 @@ public class TypingRecordServiceImpl implements TypingRecordService {
         dao.save(gameRecord); // 예시로, save 메서드 구현을 TypingRecordDAO에 추가해야 할 수도 있습니다
     }
 }
+
+    
+	
+

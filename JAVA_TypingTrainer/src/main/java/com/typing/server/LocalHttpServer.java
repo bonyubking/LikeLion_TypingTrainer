@@ -19,7 +19,13 @@ import com.typing.model.dto.UserDto;
 import com.typing.util.CORSFilter;
 import com.typing.util.JsonUtil;
 
+
 import com.typing.util.QueryString;
+
+
+
+import com.typing.util.QueryString;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
@@ -62,6 +68,8 @@ public class LocalHttpServer {
             }
             // 응답 반환
         });
+
+
 
         // 회원가입 
         httpServer.createContext("/signup", exchange -> {
@@ -109,6 +117,7 @@ public class LocalHttpServer {
         });
         
         // 로그인
+
         httpServer.createContext("/login", exchange -> {
         	// 프리플라이트 처리 완료
         	if (CORSFilter.handlePreflight(exchange)) {
@@ -399,54 +408,81 @@ public class LocalHttpServer {
         });
 
         httpServer.createContext("/typing-records", exchange -> {
+            if (CORSFilter.handlePreflight(exchange)) return;
 
-            if (CORSFilter.handlePreflight(exchange)) {
-                return; // 프리플라이트 처리 완료
+            String method = exchange.getRequestMethod();
+
+            if ("POST".equals(method)) {
+                CORSFilter.applyCORS(exchange);
+                try {
+                    InputStream inputStream = exchange.getRequestBody();
+                    byte[] bytes = inputStream.readAllBytes();
+                    String body = new String(bytes, StandardCharsets.UTF_8);
+
+                    TypingRecordDTO gameRecord = JsonUtil.fromJson(body, TypingRecordDTO.class);
+
+                    // ❗ 실제 로그인 사용자 객체로 바꿔야 합니다. 지금은 테스트용 "testUser"
+                    UserDto loggedInUser = new UserDto(gameRecord.getUid(), "", gameRecord.getNickname());
+
+                    TypingRecordController controller = new TypingRecordController();
+                    controller.saveGameRecord(loggedInUser, gameRecord);
+
+                    String success = "{\"message\":\"기록 저장 완료\"}";
+                    byte[] responseBytes = success.getBytes(StandardCharsets.UTF_8);
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                    exchange.sendResponseHeaders(200, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    String error = "{\"message\":\"" + e.getMessage() + "\"}";
+                    byte[] responseBytes = error.getBytes(StandardCharsets.UTF_8);
+                    exchange.sendResponseHeaders(500, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                } finally {
+                    exchange.getResponseBody().close();
+                }
             }
 
-            if ("GET".equals(exchange.getRequestMethod())) {
-                // CORS 헤더 적용
+            else if ("GET".equals(method)) {
                 CORSFilter.applyCORS(exchange);
- 
-	            Map<String,String> qs = QueryString.parse(exchange.getRequestURI().getQuery());
-	            
-	            TypingFilter filter = new TypingFilter();
-	            
-	            if (qs.containsKey("userId")) 
-	                filter.setUserId(Integer.parseInt(qs.get("userId")));
-	            filter.setDifficulty(qs.get("difficulty"));
-	            filter.setLanguage(qs.get("language"));
-	            filter.setContentType(qs.get("content_type"));
-	            
-	            if (qs.containsKey("duration") && !qs.get("duration").isEmpty()) {
-	                try {
-	                    filter.setDuration(Integer.parseInt(qs.get("duration")));
-	                } catch (NumberFormatException e) {
-	                    filter.setDuration(null);
-	                }
-	            }
 
+                Map<String, String> qs = QueryString.parse(exchange.getRequestURI().getQuery());
+                TypingFilter filter = new TypingFilter();
 
-	            	
-	            System.out.println("GET /typing-records?"+exchange.getRequestURI().getQuery());
-	            System.out.println("Filter → " + filter);
+                if (qs.containsKey("userId")) filter.setUserId(Integer.parseInt(qs.get("userId")));
+                if (qs.containsKey("content_type")) filter.setContentType(qs.get("content_type"));
+                if (qs.containsKey("difficulty")) filter.setDifficulty(qs.get("difficulty"));
+                if (qs.containsKey("language")) filter.setLanguage(qs.get("language"));
+                if (qs.containsKey("duration") && !qs.get("duration").isEmpty()) {
+                    try {
+                        filter.setDuration(Integer.parseInt(qs.get("duration")));
+                    } catch (NumberFormatException e) {
+                        filter.setDuration(null);
+                    }
+                }
 
-	            List<TypingRecordDTO> list = 
-	                new TypingRecordController().getByFilter(filter);
-	            
-	            System.out.println("DAO 반환 개수 = " + list.size());
-	
-	            String json = JsonUtil.toJson(list);
-	            exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
-	            byte[] responseBytes = json.getBytes("UTF-8");
-	            exchange.sendResponseHeaders(200, responseBytes.length);
-	            exchange.getResponseBody().write(responseBytes);
-	            exchange.getResponseBody().close();
-        } else {
-            exchange.sendResponseHeaders(405, -1); // Method Not Allowed
-            exchange.close();
-        }
+                System.out.println("GET /typing-records?" + exchange.getRequestURI().getQuery());
+                System.out.println("Filter → " + filter);
+
+                TypingRecordController controller = new TypingRecordController();
+                List<TypingRecordDTO> list = controller.getByFilter(filter);
+
+                System.out.println("DAO 반환 개수 = " + list.size());
+
+                String json = JsonUtil.toJson(list);
+                byte[] responseBytes = json.getBytes(StandardCharsets.UTF_8);
+                exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                exchange.sendResponseHeaders(200, responseBytes.length);
+                exchange.getResponseBody().write(responseBytes);
+                exchange.getResponseBody().close();
+            }
+
+            else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.close();
+            }
         });
+
         
         httpServer.createContext("/song-records", exchange -> {
         	
@@ -560,6 +596,8 @@ public class LocalHttpServer {
 		    }
 		});
 
+
+
 		// 타자게임 문제 불러오기 API
         httpServer.createContext("/api/problem/random", exchange -> {
             if (CORSFilter.handlePreflight(exchange)) return;
@@ -605,6 +643,11 @@ public class LocalHttpServer {
                 exchange.close();
             }
         });
+
+        
+
+        
+
 
         //httpServer 시작
         httpServer.start();

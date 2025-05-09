@@ -42,7 +42,7 @@ function countTypingUnits(text, language) {
 
 export default function TypingPlay() {
     const location = useLocation();
-    const { userId = 'testUser', language, difficulty, type, totalTime } = location.state || {};
+    const { userId = sessionStorage.getItem('userId'), language, difficulty, type, totalTime } = location.state || {};
 
     const [question, setQuestion] = useState('');
     const [userInput, setUserInput] = useState('');
@@ -86,16 +86,10 @@ export default function TypingPlay() {
         ? 100
         : Math.round((correctCount / (correctCount + wrongCount)) * 100);
 
-    // 문제를 불러오는 함수
     const loadQuestion = async () => {
-        try {
-            const data = await fetchRandomProblem(language, difficulty, type);  // 문제를 서버에서 불러옴
-            setQuestion(data.content);  // 문제 내용 업데이트
-        } catch (error) {
-            console.error('문제 로딩 실패:', error);
-        }
+        const data = await fetchRandomProblem(language, difficulty, type);
+        setQuestion(data.content);
     };
-
 
     function handleSubmit() {
         const typedUnits = countTypingUnits(userInput, language);
