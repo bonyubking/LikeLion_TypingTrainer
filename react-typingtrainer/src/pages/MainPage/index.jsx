@@ -112,8 +112,6 @@ const MainPage = () => {
           >Start Game</button>
 
 
-          <button>Start Game</button>
-
         </div>
 
         <div className={styles.card}>
