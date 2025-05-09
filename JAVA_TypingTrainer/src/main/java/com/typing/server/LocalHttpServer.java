@@ -7,7 +7,11 @@ import com.typing.model.dto.ChatMessageDto;
 import com.typing.util.CORSFilter;
 import com.typing.util.JsonUtil;
 
+<<<<<<< Updated upstream
 
+=======
+import com.typing.util.QueryString;
+>>>>>>> Stashed changes
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -43,7 +47,62 @@ public class LocalHttpServer {
             }
             // 응답 반환
         });
+<<<<<<< Updated upstream
 /*
+=======
+
+
+
+        // 회원가입 
+        httpServer.createContext("/signup", exchange -> {
+        	
+        	// 프리플라이트 처리 완료
+        	if (CORSFilter.handlePreflight(exchange)) {
+                return;
+            }
+        	
+        	if("POST".equals(exchange.getRequestMethod())) {
+        		// CORS 설정
+        		CORSFilter.applyCORS(exchange);
+        		
+        		// 요청 바디 읽고 DTO로 변환
+        		InputStream inputStream = exchange.getRequestBody();
+        		byte[] bytes = inputStream.readAllBytes();
+        		String body = new String(bytes);
+        		UserDto dto = JsonUtil.fromJson(body,UserDto.class);
+        		System.out.println("signup requestbody"+body);
+        		
+                // userController.signup(dto) 호출
+        		try {
+        			userController.signup(dto);
+ 			
+        			// 응답 헤더 설정
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+
+                    // 응답 전송
+                    exchange.sendResponseHeaders(200,-1);  // 200 OK, -1이 기본값인듯
+                    exchange.close();
+        		}catch(Exception e) {//dao, service에서 던진 예외들 여기서 처리 
+        			// 예외 발생 시: 에러 응답
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+
+                    // 에러 메시지 설정
+                    String errorMessage = "{\"message\":\"" + e.getMessage() + "\"}";  // 예외 메시지 ex. throw new Exception("") 여기서 설정한 메세지
+                    byte[] responseBytes = errorMessage.getBytes("UTF-8");
+                    System.out.println("signup error response"+errorMessage);	
+                    // 상태 코드 설정 (500 Internal Server Error 등)
+                    exchange.sendResponseHeaders(500, responseBytes.length);  // 500 Internal Server Error
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();
+        		}
+        	}
+        });
+        
+        // 로그인
+
+
+
+>>>>>>> Stashed changes
         httpServer.createContext("/login", exchange -> {
             // POST /login -> userController.login 호출
         });
@@ -345,7 +404,11 @@ public class LocalHttpServer {
 		        exchange.close();
 		    }
 		});
+<<<<<<< Updated upstream
 		*/
+=======
+
+>>>>>>> Stashed changes
 		// 타자게임 문제 불러오기 API
         httpServer.createContext("/api/problem/random", exchange -> {
             if (CORSFilter.handlePreflight(exchange)) return;
@@ -391,6 +454,80 @@ public class LocalHttpServer {
                 exchange.close();
             }
         });
+<<<<<<< Updated upstream
+=======
+        
+
+        // 게임 기록 저장
+        httpServer.createContext("/typing-records", exchange -> {
+            if (CORSFilter.handlePreflight(exchange)) {
+                return; // 프리플라이트 처리 완료
+            }
+
+            // POST 요청 처리 (게임 기록 저장)
+            if ("POST".equals(exchange.getRequestMethod())) {
+                // CORS 헤더 적용
+                CORSFilter.applyCORS(exchange);
+
+                // 요청 바디 읽고 DTO로 변환
+                InputStream inputStream = exchange.getRequestBody();
+                byte[] bytes = inputStream.readAllBytes();
+                String body = new String(bytes, StandardCharsets.UTF_8);
+
+                try {
+                    TypingRecordDTO gameRecord = JsonUtil.fromJson(body, TypingRecordDTO.class);
+
+                    // 로그인된 사용자의 정보를 받아 게임 기록을 저장
+                    UserDto loggedInUser = userController.login(new UserDto("testUser", "password", "nickname")); // 로그인 검증을 실제 구현에 맞게 수정
+                    TypingRecordController typingRecordController = new TypingRecordController(); // 인스턴스 생성
+                    typingRecordController.saveGameRecord(loggedInUser, gameRecord); // 인스턴스를 통해 메서드 호출
+
+                    String successMessage = "{\"message\":\"게임 기록이 저장되었습니다.\"}";
+                    byte[] responseBytes = successMessage.getBytes("UTF-8");
+
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                    exchange.sendResponseHeaders(200, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();
+                } catch (Exception e) {
+                    // 예외 발생 시: 에러 응답
+                    exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                    String errorMessage = "{\"message\":\"" + e.getMessage() + "\"}";
+                    byte[] responseBytes = errorMessage.getBytes("UTF-8");
+                    exchange.sendResponseHeaders(500, responseBytes.length);
+                    exchange.getResponseBody().write(responseBytes);
+                    exchange.close();
+                }
+            }
+
+            // GET 요청 처리 (게임 기록 조회)
+            if ("GET".equals(exchange.getRequestMethod())) {
+                CORSFilter.applyCORS(exchange);
+
+                // 쿼리 파라미터 처리
+                Map<String, String> qs = QueryString.parse(exchange.getRequestURI().getQuery());
+                TypingFilter filter = new TypingFilter();
+
+                if (qs.containsKey("userId")) filter.setUserId(Integer.parseInt(qs.get("userId")));
+                if (qs.containsKey("content_type")) filter.setContentType(qs.get("content_type"));
+                if (qs.containsKey("difficulty")) filter.setDifficulty(qs.get("difficulty"));
+                if (qs.containsKey("language")) filter.setLanguage(qs.get("language"));
+
+                TypingRecordController typingRecordController = new TypingRecordController(); // 인스턴스 생성
+                List<TypingRecordDTO> gameRecords = typingRecordController.getByFilter(filter); // 인스턴스를 통해 메서드 호출
+
+                String jsonResponse = JsonUtil.toJson(gameRecords);
+                byte[] responseBytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
+
+                exchange.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
+                exchange.sendResponseHeaders(200, responseBytes.length);
+                exchange.getResponseBody().write(responseBytes);
+                exchange.close();
+            }
+        });
+
+
+>>>>>>> Stashed changes
 
         //httpServer 시작
         httpServer.start();
