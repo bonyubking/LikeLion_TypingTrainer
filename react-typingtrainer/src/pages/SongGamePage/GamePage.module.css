@@ -1,0 +1,85 @@
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: sans-serif;
+  }
+  
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  .questionBox {
+    background-color: #e7f0fa;
+    padding: 3rem;
+    text-align: center;
+    border-radius: 12px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  
+  .hintSection {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .hintBox {
+    width: 45%;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .timer {
+    text-align: center;
+    color: #005bff;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+
+  .inputSection {
+    text-align: center;
+  }
+  
+  .inputGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .inputField {
+    width: 50%;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  .submitButton {
+    background-color: #005bff;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .skipButton {
+    background-color: #ff0022;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }

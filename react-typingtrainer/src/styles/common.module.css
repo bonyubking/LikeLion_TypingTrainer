@@ -3,10 +3,4 @@
     min-width: 320px;
     max-width: 1440px;
     margin: 0 auto;
-
-    height: 70vh;
-    padding-top: 0;
-    flex-direction: column;
-    background-color: rgb(187, 214, 223);
-
 }

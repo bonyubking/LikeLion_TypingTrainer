@@ -19,30 +19,11 @@ import com.typing.model.dto.UserDto;
 import com.typing.util.CORSFilter;
 import com.typing.util.JsonUtil;
 
-
-
 import com.typing.util.QueryString;
-
-
-
-
-
-import com.typing.util.QueryString;
-
-
-import com.typing.util.QueryString;
-
-import com.typing.util.QueryString;
-
-import com.typing.util.QueryString;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-
 import java.net.URLDecoder;
-
-
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -81,8 +62,6 @@ public class LocalHttpServer {
             }
             // 응답 반환
         });
-
-
 
         // 회원가입 
         httpServer.createContext("/signup", exchange -> {
@@ -130,9 +109,6 @@ public class LocalHttpServer {
         });
         
         // 로그인
-
-
-
         httpServer.createContext("/login", exchange -> {
         	// 프리플라이트 처리 완료
         	if (CORSFilter.handlePreflight(exchange)) {
@@ -584,13 +560,9 @@ public class LocalHttpServer {
 		    }
 		});
 
-
-
- 
 		// 타자게임 문제 불러오기 API
         httpServer.createContext("/api/problem/random", exchange -> {
             if (CORSFilter.handlePreflight(exchange)) return;
-
 
             if ("GET".equals(exchange.getRequestMethod())) {
                 CORSFilter.applyCORS(exchange);
@@ -633,7 +605,6 @@ public class LocalHttpServer {
                 exchange.close();
             }
         });
-
 
         //httpServer 시작
         httpServer.start();

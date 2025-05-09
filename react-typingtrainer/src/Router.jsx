@@ -23,6 +23,8 @@ import PlayWrapper from './pages/TypingGamePage/PlayWrapper';
 
 // import SignIn from './pages/SignIn';
 import SignupPage from './pages/SignupPage';
+import SongGamePage from './pages/SongGamePage';
+import SongGamePlayPage from './pages/SongGamePage/GamePage';
 // 필요한 페이지 import...
 
 
@@ -48,6 +50,8 @@ export default function AppRoutes() {
       <Route path="/typing/mode" element={<Mode />} />
       <Route path="/typing/play" element={<PlayWrapper />} />
 
+      <Route path="/song-game" element={<SongGamePage />} />
+      <Route path="/song-game/play" element={<SongGamePlayPage />} />
     </Routes>
   );
 }

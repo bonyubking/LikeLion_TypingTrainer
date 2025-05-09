@@ -3,23 +3,34 @@ const SERVER_URL = process.env.REACT_APP_HTTP_URL;
 
 export async function fetchRandomProblem(language, difficulty, type) {
     try {
-        const response = await fetch(`${SERVER_URL}/api/problem/random?lang=${language}&diff=${difficulty}&type=${type}`);
-
-        if (!response.ok) {
-            throw new Error('문제를 불러오는 데 실패했습니다. 상태 코드: ' + response.status);
-        }
-
-        const contentType = response.headers.get('Content-Type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('응답이 JSON 형식이 아닙니다.');
-        }
-
-        const data = await response.json();
-        console.log("🔵 문제 로딩 성공:", data);
-
+        const res = await fetch(`${SERVER_URL}/api/problem/random?lang=${language}&diff=${difficulty}&type=${type}`);
+        const data = await res.json();
+        console.log("🔵 서버 응답:", data);
+        if (!res.ok) throw new Error('문제 로딩 실패');
         return data;
-    } catch (error) {
-        console.error('문제 로딩 실패:', error);
+    } catch (err) {
+        console.error("❌ 문제 로딩 실패:", err);
         return { content: '문제를 불러올 수 없습니다.' };
     }
 }
+
+
+
+/**
+ * 게임 기록 저장
+ * @param {Object} data - 기록할 정보
+ * @param {string} data.userId - 사용자 ID
+ * @param {number} data.speed - 타수 (타자 속도)
+ * @param {number} data.accuracy - 정확도 (%)
+ * @param {number} data.problemIndex - 푼 문제 수
+ * @param {number} data.totalTime - 전체 제한 시간 (초)
+ */
+export const saveGameRecord = async (data) => {
+    try {
+        const response = await axios.post(`${SERVER_URL}/api/gamerecord/save`, data);
+        return response.data;
+    } catch (error) {
+        console.error('게임 기록 저장 실패:', error);
+        throw error;
+    }
+};
