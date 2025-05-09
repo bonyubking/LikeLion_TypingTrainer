@@ -15,6 +15,7 @@ const GamePlayPage = () => {
   const [problemTime, setProblemTime] = useState(60);
   const [hintTimer, setHintTimer] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [startTime, setStartTime] = useState(null);
 
   const hintCountRef = useRef(0);
   const hintRequestedRef = useRef(false);
@@ -24,6 +25,7 @@ const GamePlayPage = () => {
   useEffect(() => {
     const savedSettings = JSON.parse(sessionStorage.getItem("songGameSettings"));
     setSettings(savedSettings);
+    setStartTime(new Date());
 
     if (!savedSettings) {
       alert("게임 설정이 없습니다. 처음 화면으로 돌아갑니다.");
@@ -85,11 +87,34 @@ const GamePlayPage = () => {
         case "skipped":
           alert("문제를 건너뜁니다.");
           break;
-        case "end":
-          clearInterval(intervalRef.current);
-          setShowResult(true);
-          ws.close();
-          break;
+        // case "end":
+        //   clearInterval(intervalRef.current);
+        //   const endTime = new Date();
+          
+        //   // 디버깅을 위한 로그 추가
+        //   console.log("startTime:", startTime);
+        //   console.log("endTime:", endTime);
+        //   console.log("userId:", sessionStorage.getItem("userId"));
+        //   console.log("settings:", settings);
+        //   console.log("correctCount:", correctCount);
+        //   console.log("hintTimer:", hintTimer);
+          
+        //   const gameData = {
+        //     type: "end",
+        //     data: {
+        //       userId: Number(sessionStorage.getItem("userId")),
+        //       playtime: Math.floor((endTime - startTime) / 1000),
+        //       correctCount: correctCount,
+        //       genre: settings.genres,
+        //       hintTime: hintTimer
+        //     }
+        //   };
+          
+        //   console.log("전송할 데이터:", gameData);
+        //   ws.send(JSON.stringify(gameData));
+        //   setShowResult(true);
+        //   ws.close();
+        //   break;
         default:
           break;
       }
@@ -116,9 +141,22 @@ const GamePlayPage = () => {
       // 전체 시간 타이머
       setGlobalTime((prev) => {
         if (prev <= 1) {
-          socket.send(JSON.stringify({ type: "end" }));
+          const endTime = new Date();
+          const gameData = {
+            type: "end",
+            data: {
+              userId: Number(sessionStorage.getItem("userId")),
+              playtime: Math.floor((endTime - startTime) / 1000),
+              correctCount: correctCount,
+              genre: settings.genres,
+              hintTime: hintTimer
+            }
+          };
+          console.log("전송할 데이터:", gameData);
+          socket.send(JSON.stringify(gameData));
           clearInterval(intervalRef.current);
-          return 0;
+          setShowResult(true);
+          window.location.href = "/song-game";
         }
         return prev - 1;
       });

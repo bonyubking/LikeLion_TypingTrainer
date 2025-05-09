@@ -3,10 +3,12 @@ package com.typing.service.Song;
 import com.typing.dao.Song.SongDao;
 import com.typing.dao.Song.SongDaoImpl;
 import com.typing.model.dto.SongDto;
+import com.typing.model.dto.SongGameResult;
 import com.typing.model.dto.SongGameSetting;
 import com.typing.model.dto.SongRecordDTO;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SongGameServiceImpl implements SongGameService {
@@ -37,13 +39,14 @@ public class SongGameServiceImpl implements SongGameService {
     }
 
     @Override
-    public void endGame() {
-        SongRecordDTO record = new SongRecordDTO();
-        record.setUserId(userId);
-        record.setCorrectCount(correctCount);
-        record.setGenre(String.join(",", setting.getGenre()));
-        record.setHintTime(setting.getHintTime());
-        record.setDuration(setting.getPlaytime());
+    public void endGame(SongGameResult result) {
+        SongRecordDTO record = new SongRecordDTO(
+        		result.getUserId(),
+        		result.getPlaytime(),
+        		result.getCorrectCount(),
+        		new Date(),
+        		String.join(",",result.getGenre()),
+        		result.getHintTime());
 
         songDao.saveRecord(record);
     }

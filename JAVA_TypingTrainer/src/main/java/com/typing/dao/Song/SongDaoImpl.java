@@ -10,8 +10,7 @@ import com.typing.model.dto.SongRecordDTO;
 import com.typing.util.DBUtil;
 
 public class SongDaoImpl implements SongDao {
-
-    @Override
+	@Override
     public List<SongDto> getRandomSongsByGenre(SongGameSetting setting) {
         List<SongDto> result = new ArrayList<>();
         List<String> genres = setting.getGenre();
@@ -73,8 +72,8 @@ public class SongDaoImpl implements SongDao {
         String sql = "INSERT INTO song_records (user_id, duration, correct_count, played_at, genre, hint_time) "
                    + "VALUES (?, SEC_TO_TIME(?), ?, NOW(), ?, ?)";
 
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.sharedConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, record.getUserId());
             stmt.setInt(2, record.getDuration());
@@ -84,7 +83,7 @@ public class SongDaoImpl implements SongDao {
 
             int result = stmt.executeUpdate();
             System.out.println(result > 0 ? "✅ Game Record Saved" : "⚠️ Game Record Not Saved");
-
+            connection.commit();
         } catch (SQLException e) {
             System.err.println("❌ SQL 오류 발생 in saveRecord");
             e.printStackTrace();
