@@ -37,7 +37,10 @@ export default function TypingIntro() {
 
     return (
         <>
+
             <div className={common.container}>
+                <h2 className={styles.title}> 타자 게임 </h2>
+                <p>높은 랭킹에 도전해 보세요!</p>
                 <div className={styles.cardWrapper}>
                     <div className={styles.card}>
                         <h2>난이도</h2>
