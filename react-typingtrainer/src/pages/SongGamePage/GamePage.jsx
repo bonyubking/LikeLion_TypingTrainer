@@ -14,8 +14,8 @@ const GamePlayPage = () => {
   const [globalTime, setGlobalTime] = useState(0);
   const [problemTime, setProblemTime] = useState(60);
   const [hintTimer, setHintTimer] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
-  // ✅ hint 상태 추적을 useRef로
   const hintCountRef = useRef(0);
   const hintRequestedRef = useRef(false);
 
@@ -86,7 +86,8 @@ const GamePlayPage = () => {
           alert("문제를 건너뜁니다.");
           break;
         case "end":
-          alert("게임이 종료되었습니다.");
+          clearInterval(intervalRef.current);
+          setShowResult(true);
           ws.close();
           break;
         default:
@@ -209,6 +210,20 @@ const GamePlayPage = () => {
           </button>
         </div>
       </div>
+
+      {showResult && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.resultModal}>
+            <h2>게임 종료!</h2>
+            <p>총 제한 시간: {settings.playtime}초</p>
+            <p>맞춘 문제 수: {correctCount}개</p>
+            <div className={styles.modalButtons}>
+              <button onClick={() => window.location.href = "/song-game"}>다시 하기</button>
+              <button onClick={() => window.location.href = "/"}>홈으로</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
