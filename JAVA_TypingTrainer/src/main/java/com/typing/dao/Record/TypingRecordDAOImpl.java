@@ -81,6 +81,7 @@ public class TypingRecordDAOImpl implements TypingRecordDAO {
         }
 
         return list;
+
     }
 
 
@@ -105,6 +106,10 @@ public void save(TypingRecordDTO gameRecord) {
     }
 }
 }
+
+    
+
+	
 
 
                        
