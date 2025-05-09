@@ -156,7 +156,7 @@ const GamePlayPage = () => {
           socket.send(JSON.stringify(gameData));
           clearInterval(intervalRef.current);
           setShowResult(true);
-          return 0;
+          window.location.href = "/song-game";
         }
         return prev - 1;
       });
