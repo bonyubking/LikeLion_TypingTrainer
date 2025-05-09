@@ -6,7 +6,7 @@ export function GameResultPopup({
 }) {
 
     const userId = sessionStorage.getItem('userId');
-    
+
     const gameResult = {
         userId,
         accuracy,
@@ -138,4 +138,3 @@ export default function Game() {
         </div>
     );
 }
-

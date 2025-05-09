@@ -153,7 +153,7 @@ export default function TypingPlay() {
                     <ResultModal
                         onClose={() => setShowResultModal(false)}  // 모달 닫기 함수
                         accuracy={accuracy}
-                        typingSpeed={gameStats.typingSpeed}
+                        typingSpeed={speed}
                         correctCount={correctCount}
                         wrongCount={wrongCount}
                         totalTime={totalTime}

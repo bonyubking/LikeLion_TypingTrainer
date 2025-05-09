@@ -14,8 +14,6 @@ export async function fetchRandomProblem(language, difficulty, type) {
     }
 }
 
-
-
 /**
  * 게임 기록 저장
  * @param {Object} data - 기록할 정보
